@@ -1,0 +1,97 @@
+<div class="brand">
+
+  <!-- logo -->
+  <div class="brand-logo">
+    <img data-ng-src="images/eos.jpg" height="35" alt="">
+  </div>
+  <!-- /logo -->
+
+  <!-- toggle small sidebar menu -->
+  <a href="javascript:;" class="toggle-sidebar hidden-xs hamburger-icon v3" data-ng-click="app.layout.isSmallSidebar = !app.layout.isSmallSidebar">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </a>
+  <!-- /toggle small sidebar menu -->
+
+</div>
+
+<!-- main navigation -->
+<nav role="navigation" side-navigation>
+
+  <ul class="nav">
+
+    <!-- dashboard -->
+    <li ui-sref-active="active">
+      <a href="#/">
+        <i class="fa fa-flask"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <!-- /dashboard -->
+
+    <!-- charts -->
+    <li data-ng-class="{open: $state.includes('app.charts')}">
+      <a href="javascript:;">
+        <i class="fa fa-pie-chart"></i>
+        <span>Views</span>
+      </a>
+      <ul class="sub-menu">
+        <li ui-sref-active="active">
+          <a ui-sref="app.charts.flot">
+            <span>Space</span>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="app.charts.easypie">
+            <span>Nodes</span>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="app.charts.chartjs">
+            <span>Group</span>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="app.charts.rickshaw">
+            <span>File System</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <!-- /charts -->
+
+    <!-- maps -->
+    <li data-ng-class="{open: $state.includes('app.maps')}">
+      <a href="javascript:;">
+        <span class="label label-success pull-right">2</span>
+        <i class="fa fa-map-marker"></i>
+        <span>Clusters</span>
+      </a>
+    </li>
+    <!-- /maps -->
+
+    <!-- customizer -->
+    <!-- <li ui-sref-active="active">
+      <a href="http://customizer.nyasha.me/#urban" target="_blank">
+        <span class="label label-danger pull-right">hot</span>
+        <i class="fa fa-sliders"></i>
+        <span>Customizer</span>
+      </a>
+    </li> -->
+    <!-- /customizer -->
+
+    <!-- html version -->
+   <!--  <li>
+      <a href="http://urban.nyasha.me/html/" target="_blank">
+        <span class="label label-info pull-right">new</span>
+        <i class="fa fa-circle"></i>
+        <span>HTML Version</span>
+      </a>
+    </li> -->
+    <!-- /html version -->
+
+  </ul>
+</nav>
+<!-- /main navigation -->
