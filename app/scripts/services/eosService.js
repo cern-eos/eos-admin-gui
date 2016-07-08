@@ -70,7 +70,7 @@ function eosServiceAPI($http) {
         url: 'http://eosservicetest2:8000/proc/user/',
         params: {
           'mgm.cmd': 'version',
-          'mgm.option': 'f',
+          'mgm.option': 'fm',
           'eos.ruid': '0',
           'eos.rgid': '0',
           'callback':'JSON_CALLBACK'
@@ -103,12 +103,47 @@ function eosServiceAPI($http) {
           'mgm.space': 'default',
           'eos.ruid': '0',
           'eos.rgid': '0',
-          'mgm.option': 'm',
+          'mgm.outformat': 'm',
           'callback':'JSON_CALLBACK'
         }
       });
     };
-    
+
+    eosAPI.setSpaceQuota = function(spacename, entity) {
+      return $http({
+        method: 'JSONP',
+        url: 'http://eosservicetest2:8000/proc/admin/',
+        params: {
+          'mgm.cmd': 'space',
+          'mgm.subcmd': 'quota',
+          'mgm.space': spacename,
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'm',
+          'callback':'JSON_CALLBACK',
+          'mgm.space.quota': entity
+        }
+      });
+    };
+
+    eosAPI.setSpaceConfig = function(spacename, key, value) {
+      return $http({
+        method: 'JSONP',
+        url: 'http://eosservicetest2:8000/proc/admin/',
+        params: {
+          'mgm.cmd': 'space',
+          'mgm.subcmd': 'config',
+          'mgm.space.name': spacename,
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'm',
+          'callback':'JSON_CALLBACK',
+          'mgm.space.key': key,
+          'mgm.space.value': value
+        }
+      });
+    };
+
     return eosAPI;
 }
 

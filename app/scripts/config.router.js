@@ -62,9 +62,9 @@ angular
                                 'vendor/angular-flot/angular-flot.js'
                             ]
                         }]).then(function () {
-              return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
-                return $ocLazyLoad.load('scripts/services/eosService.js');
-              });
+                return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+                  return $ocLazyLoad.load('scripts/services/eosService.js');
+                });
 
             });
                     }]
@@ -74,48 +74,47 @@ angular
         }
       })
 
-
-      // Tables routes
-      .state('app.tables', {
+      .state('app.views', {
           template: '<div ui-view></div>',
           abstract: true,
-          url: '/tables',
+          url: '/views',
         })
-        .state('app.tables.table_basic', {
-          url: '/table_basic',
-          templateUrl: 'views/table-basic.html',
-          resolve: {
-            deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-              return $ocLazyLoad.load([
-                {
-                  insertBefore: '#load_styles_before',
-                  files: [
-                                'vendor/sortable/css/sortable-theme-bootstrap.css'
-                            ]
-                        },
-                {
-                  files: [
-                                'vendor/sortable/js/sortable.min.js'
-                            ]
-                        }]).then(function () {
-                Sortable.init();
-              });
-                    }]
-          },
-          data: {
-            title: 'Basic Table',
-          }
-        })
-        .state('app.tables.table_responsive', {
-          url: '/table_responsive',
-          templateUrl: 'views/table-responsive.html',
-          data: {
-            title: 'Responsive Table',
-          }
-        })
-        .state('app.tables.datatable', {
-          url: '/datatable',
-          templateUrl: 'views/table-datatable.html',
+        .state('app.views.fileSystemView', {
+            url: '/fileSystems',
+            templateUrl: 'views/fileSystems.html',
+            resolve: {
+              deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    insertBefore: '#load_styles_before',
+                    files: [
+                                  'vendor/chosen_v1.4.0/chosen.min.css',
+                                  'vendor/datatables/media/css/jquery.dataTables.css'
+                              ]
+                          },
+                  {
+                    serie: true,
+                    files: [
+                                  'vendor/chosen_v1.4.0/chosen.jquery.min.js',
+                                  'vendor/datatables/media/js/jquery.dataTables.js',
+                                  'scripts/extentions/bootstrap-datatables.js'
+                              ]
+                          }]).then(function () {
+
+                  return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+                      return $ocLazyLoad.load('scripts/services/eosService.js');
+                  });
+                });
+                      }]
+            },
+            data: {
+              title: 'File System View',
+            }
+          })
+
+        .state('app.views.groupView', {
+          url: '/groups',
+          templateUrl: 'views/groups.html',
           resolve: {
             deps: ['$ocLazyLoad', function ($ocLazyLoad) {
               return $ocLazyLoad.load([
@@ -134,41 +133,80 @@ angular
                                 'scripts/extentions/bootstrap-datatables.js'
                             ]
                         }]).then(function () {
-                return $ocLazyLoad.load('scripts/controllers/table.js');
+                return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+                    return $ocLazyLoad.load('scripts/services/eosService.js');
+                });
               });
                     }]
           },
           data: {
-            title: 'Datatable',
+            title: 'Group View',
           }
         })
-        .state('app.tables.table_editable', {
-          url: '/table_editable',
-          templateUrl: 'views/table-editable.html',
+
+        .state('app.views.spaceView', {
+          url: '/spaces',
+          templateUrl: 'views/spaces.html',
           resolve: {
             deps: ['$ocLazyLoad', function ($ocLazyLoad) {
               return $ocLazyLoad.load([
                 {
                   insertBefore: '#load_styles_before',
                   files: [
-                                'vendor/angular-xeditable/dist/css/xeditable.css'
+                                'vendor/chosen_v1.4.0/chosen.min.css',
+                                'vendor/datatables/media/css/jquery.dataTables.css'
                             ]
                         },
                 {
-                  name: 'xeditable',
+                  serie: true,
                   files: [
-                                'vendor/angular-xeditable/dist/js/xeditable.js'
+                                'vendor/chosen_v1.4.0/chosen.jquery.min.js',
+                                'vendor/datatables/media/js/jquery.dataTables.js',
+                                'scripts/extentions/bootstrap-datatables.js'
                             ]
                         }]).then(function () {
-                return $ocLazyLoad.load('scripts/controllers/editable.js');
+                return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+                    return $ocLazyLoad.load('scripts/services/eosService.js');
+                });
               });
                     }]
           },
           data: {
-            title: 'Editable Table',
+            title: 'Space View',
           }
         })
 
+        .state('app.views.nodeView', {
+          url: '/nodes',
+          templateUrl: 'views/nodes.html',
+          resolve: {
+            deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+              return $ocLazyLoad.load([
+                {
+                  insertBefore: '#load_styles_before',
+                  files: [
+                                'vendor/chosen_v1.4.0/chosen.min.css',
+                                'vendor/datatables/media/css/jquery.dataTables.css'
+                            ]
+                        },
+                {
+                  serie: true,
+                  files: [
+                                'vendor/chosen_v1.4.0/chosen.jquery.min.js',
+                                'vendor/datatables/media/js/jquery.dataTables.js',
+                                'scripts/extentions/bootstrap-datatables.js'
+                            ]
+                        }]).then(function () {
+                return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+                    return $ocLazyLoad.load('scripts/services/eosService.js');
+                });
+              });
+                    }]
+          },
+          data: {
+            title: 'Node View',
+          }
+        })
 
       .state('app.404', {
           url: '/404',

@@ -31,4 +31,30 @@ angular
     border: '#e4e4e4',
     bodyBg: '#e0e8f2',
     textColor: '#6B6B6B',
-  });
+  })
+  .filter( 'filesize', function () {
+      var units = [
+        'bytes',
+        'KB',
+        'MB',
+        'GB',
+        'TB',
+        'PB'
+      ];
+
+      return function( bytes, precision ) {
+        if ( isNaN( parseFloat( bytes )) || ! isFinite( bytes ) ) {
+          return '?';
+        }
+
+        var unit = 0;
+
+        //TODO: Should be 1024, ask Andreas (for space ls)
+        while ( bytes >= 1000 ) {
+          bytes /= 1000;
+          unit ++;
+        }
+
+        return bytes.toFixed( + precision ) + ' ' + units[ unit ];
+      };
+    });

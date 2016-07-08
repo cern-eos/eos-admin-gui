@@ -1,0 +1,43 @@
+<div data-ng-controller="dashboardCtrl">
+
+  <div class="row">
+
+    <div class="panel">
+      <div class="panel-heading border">
+      <p>Node View</p>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
+          <thead>
+            <tr>
+              <th>Hostport</th>
+              <th>Geotag</th>
+              <th>Status</th>
+              <th>Txgw</th>
+              <th>Gw-queued</th>
+              <th>Gw-ntx</th>
+              <th>Gw-rate</th>
+              <th>Heartbeatdelta</th>
+              <th>Nofs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="node in nodes">
+              <td>{{node.hostport}}</td>
+              <td>{{node.cfg.stat.geotag}}</td>
+              <td>{{node.status}}</td>
+              <td>{{node.cfg.txgw}}</td>
+              <td>{{node.stat.gw.queued}}</td>
+              <td>{{node.gw.ntx}}</td>
+              <td>{{node.gw.rate}}</td>
+              <td>{{node.heartbeatdelta}}</td>
+              <td>{{node.nofs}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>

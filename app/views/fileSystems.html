@@ -1,0 +1,44 @@
+<div data-ng-controller="dashboardCtrl">
+
+  <div class="row">
+
+    <div class="panel">
+      <div class="panel-heading border">
+      <p>File System View</p>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
+          <thead>
+            <tr>
+              <th>Host</th>
+              <th>Id</th>
+              <th>Path</th>
+              <th>Schedgroup</th>
+              <th>Geo-tag</th>
+              <th>Boot</th>
+              <th>Config-status</th>
+              <th>Drain</th>
+              <th>Active</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="fileSystem in fileSystems">
+              <td>{{fileSystem.host}}</td>
+              <td>{{fileSystem.id}}</td>
+              <td>{{fileSystem.path}}</td>
+              <td>{{fileSystem.schedgroup}}</td>
+              <td>{{fileSystem.stat.geotag}}</td>
+              <td>{{fileSystem.stat.boot}}</td>
+              <td>{{fileSystem.configstatus}}</td>
+              <td>{{fileSystem.stat.drain}}</td>
+              <td>{{fileSystem.stat.active}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>

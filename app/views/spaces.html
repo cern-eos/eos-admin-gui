@@ -1,0 +1,49 @@
+<div data-ng-controller="dashboardCtrl">
+
+  <div class="row">
+
+    <div class="panel">
+      <div class="panel-heading border">
+      <p>Space View</p>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Groupsize</th>
+              <th>Groupmod</th>
+              <th>N(fs)</th>
+              <!-- <th>N(fs-rw)</th> -->
+              <th>sum(usedbytes)</th>
+              <th>sum(capacity)</th>
+              <th>capacity(rw)</th>
+              <th>nom.capacity</th>
+              <th>threshold</th>
+<!--               <th>ntx</th>
+              <th>active</th>
+              <th>intergroup</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="space in spaces">
+              <td>{{space.name}}</td>
+              <td>{{space.cfg.groupsize}}</td>
+              <td>{{space.cfg.groupmod}}</td>
+              <td>{{space.nofs}}</td>
+              <!-- <td>{{space.sum.\<n\>?configstatus\@rw}}</td> -->
+              <td>{{space.sum.stat.statfs.usedbytes | filesize:2}}</td>
+              <td>{{space.sum.stat.statfs.capacity | filesize:2}}</td>
+              <td>{{space.sum.stat.statfs.capacity | filesize:2}}*</td>
+             <!--  <td>{{space.sum.stat.statfs.capacity?configstatus\@rw}}</td> -->
+              <td>{{space.stat.active}}*</td>
+              <td>{{space.cfg.balancer.threshold}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>

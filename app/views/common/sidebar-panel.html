@@ -31,36 +31,37 @@
     </li>
     <!-- /dashboard -->
 
-    <!-- charts -->
-    <li data-ng-class="{open: $state.includes('app.charts')}">
+    <!-- views -->
+    <li data-ng-class="{open: $state.includes('app.views')}">
       <a href="javascript:;">
-        <i class="fa fa-pie-chart"></i>
+        <i class="fa fa-tag"></i>
         <span>Views</span>
       </a>
       <ul class="sub-menu">
         <li ui-sref-active="active">
-          <a ui-sref="app.charts.flot">
-            <span>Space</span>
-          </a>
-        </li>
-        <li ui-sref-active="active">
-          <a ui-sref="app.charts.easypie">
-            <span>Nodes</span>
-          </a>
-        </li>
-        <li ui-sref-active="active">
-          <a ui-sref="app.charts.chartjs">
+          <a ui-sref="app.views.groupView">
             <span>Group</span>
           </a>
         </li>
         <li ui-sref-active="active">
-          <a ui-sref="app.charts.rickshaw">
+          <a ui-sref="app.views.spaceView">
+            <span>Space</span>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="app.views.fileSystemView">
             <span>File System</span>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="app.views.nodeView">
+            <span>Node</span>
           </a>
         </li>
       </ul>
     </li>
-    <!-- /charts -->
+    <!-- /views -->
+
 
     <!-- maps -->
     <li data-ng-class="{open: $state.includes('app.maps')}">

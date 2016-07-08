@@ -7,7 +7,7 @@
           <i class="fa fa-bookmark-o"></i>
         </div>
         <div class="widget-details">
-          <h4 class="no-margin">eosTest2</h4>
+          <h4 class="no-margin">{{versionData.instance.name}}</h4>
           <span>EOS Instance</span>
         </div>
       </div>
@@ -17,16 +17,16 @@
           <div class="widget bg-white">
             <div class="widget-details widget-list">
               <a href="javascript:;" class="widget-list-item">
-                <span class="label label-info pull-right">0.3.192</span> Version
+                <span class="label label-info pull-right">{{versionData.instance.version}}</span> Version
               </a>
               <a href="javascript:;" class="widget-list-item">
-                <span class="label label-danger pull-right">{{tempVar}}</span> Release
+                <span class="label label-danger pull-right">{{versionData.instance.release}}</span> Release
               </a>
               <a href="javascript:;" class="widget-list-item">
-                <span class="label label-warning pull-right">curl</span> Feature: Encodepath
+                <span class="label label-warning pull-right">{{versionData.encodepath}}</span> Feature: Encodepath
               </a>
               <a href="javascript:;" class="widget-list-item">
-                <span class="label label-warning pull-right">true</span> Feature: Lazyopen
+                <span class="label label-warning pull-right">{{versionData.lazyopen}}</span> Feature: Lazyopen
               </a>
             </div>
           </div>
@@ -36,10 +36,10 @@
           <div class="widget bg-white">
             <div class="widget-details widget-list">
               <a href="javascript:;" class="widget-list-item">
-                <span class="label label-info pull-right">0.3.192</span> Version
+                <span class="label label-info pull-right">{{versionData.instance.version}}</span> Version
               </a>
               <a href="javascript:;" class="widget-list-item">
-                <span class="label label-danger pull-right">1</span> Release
+                <span class="label label-danger pull-right">{{versionData.instance.release}}</span> Release
               </a>
             </div>
           </div>
@@ -56,10 +56,10 @@
 
           <div class="widget bg-white">
             <div class="widget-details widget-list">
-              
+
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" checked>
+                  <input type="checkbox" ng-model="balancer" ng-change="switchBalancer(balancer)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -69,7 +69,7 @@
               
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" checked>
+                  <input type="checkbox" ng-model="converter" ng-change="switchConverter(converter)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -78,7 +78,7 @@
               </a>
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" unchecked>
+                  <input type="checkbox" ng-model="geoTagBalancer" ng-change="switchGeoTagBalancer(geoTagBalancer)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -87,7 +87,7 @@
               </a>
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" unchecked>
+                  <input type="checkbox" ng-model="groupBalancer" ng-change="switchGroupBalancer(groupBalancer)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -96,7 +96,7 @@
               </a>
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" checked>
+                  <input type="checkbox" ng-model="quota" ng-change="switchQuota(quota)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -134,7 +134,7 @@
               <tr>
                 <td>
                   <span></span>Files</td>
-                <td>{{NsStatData[0].ns.total.files}}</td>
+                <td>{{nsStatData[0].ns.total.files}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm no-margin">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
@@ -146,7 +146,7 @@
               <tr>
                 <td>
                   <span></span>Directories</td>
-                <td>{{NsStatData[1].ns.total.directories}}</td>
+                <td>{{nsStatData[1].ns.total.directories}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm no-margin">
                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: 23%">
@@ -158,7 +158,7 @@
               <tr>
                 <td>
                   <span></span>Files Changelog Size</td>
-                <td>2040**</td>
+                <td>{{nsStatData[2].ns.total.files.changelog.size}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm no-margin">
                     <div class="progress-bar" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
@@ -170,7 +170,7 @@
               <tr>
                 <td>
                   <span></span>Directories Changelog Size</td>
-                <td>4720**</td>
+                <td>{{nsStatData[3].ns.total.directories.changelog.size}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm progress-striped active no-margin">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100" style="width: 56%">
@@ -182,7 +182,7 @@
               <tr>
                 <td>
                   <span></span>Files Changelog Avg Entry</td>
-                <td>291.43**</td>
+                <td>{{nsStatData[4].ns.total.files.changelog.avg_entry_size}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm progress-striped no-margin">
                     <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%">
@@ -194,7 +194,7 @@
               <tr>
                 <td>
                   <span></span>Directories Changelog Avg Entry</td>
-                <td>429.09**</td>
+                <td>{{nsStatData[5].ns.total.directories.changelog.avg_entry_size}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm progress-striped no-margin">
                     <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%">
@@ -222,7 +222,7 @@
               <tr>
                 <td>
                   <span></span>Boot Status</td>
-                <td>{{NsStatData[7].ns.boot.status}}</td>
+                <td>{{nsStatData[7].ns.boot.status}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm no-margin">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
@@ -234,7 +234,7 @@
               <tr>
                 <td>
                   <span></span>Boot Time</td>
-                <td>{{NsStatData[8].ns.boot.time}}</td>
+                <td>{{nsStatData[8].ns.boot.time}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm no-margin">
                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: 23%">
@@ -246,7 +246,7 @@
               <tr>
                 <td>
                   <span></span>Latency Avg</td>
-                <td>{{NsStatData[9].ns.latency.avg}}</td>
+                <td>{{nsStatData[9].ns.latency.avg}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm no-margin">
                     <div class="progress-bar" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
@@ -258,7 +258,7 @@
               <tr>
                 <td>
                   <span></span>Latency Sigma</td>
-                <td>{{NsStatData[10].ns.latency.sig}}</td>
+                <td>{{nsStatData[10].ns.latency.sig}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm progress-striped active no-margin">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100" style="width: 56%">
@@ -270,7 +270,7 @@
               <tr>
                 <td>
                   <span></span>Threads</td>
-                <td>{{NsStatData[15].ns.stat.threads}}</td>
+                <td>{{nsStatData[15].ns.stat.threads}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm progress-striped no-margin">
                     <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%">
@@ -282,7 +282,7 @@
               <tr>
                 <td>
                   <span></span>Uptime</td>
-                <td>{{NsStatData[17].ns.uptime}}</td>
+                <td>{{nsStatData[17].ns.uptime}}</td>
                 <td class="align-middle">
                   <div class="progress progress-sm progress-striped no-margin">
                     <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%">
@@ -306,7 +306,7 @@
         <div class="widget-icon bg-blue pull-left fa fa-microphone">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{NsStatData[12].ns.memory.virtual}}</span>
+          <span class="widget-title">{{nsStatData[12].ns.memory.virtual}}</span>
           <span class="widget-subtitle">Virtual Memory</span>
         </div>
       </div>
@@ -316,7 +316,7 @@
         <div class="widget-icon bg-danger pull-left fa fa-tint">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{NsStatData[13].ns.memory.resident}}</span>
+          <span class="widget-title">{{nsStatData[13].ns.memory.resident}}</span>
           <span class="widget-subtitle">Resident Memory</span>
         </div>
       </div>
@@ -326,7 +326,7 @@
         <div class="widget-icon bg-success pull-left fa fa-paper-plane">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{NsStatData[14].ns.memory.share}}</span>
+          <span class="widget-title">{{nsStatData[14].ns.memory.share}}</span>
           <span class="widget-subtitle">Share Memory</span>
         </div>
       </div>
@@ -336,7 +336,7 @@
         <div class="widget-icon bg-purple pull-left fa fa-envelope">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{NsStatData[16].ns.memory.growth}}</span>
+          <span class="widget-title">{{nsStatData[16].ns.memory.growth}}</span>
           <span class="widget-subtitle">Growth Memory</span>
         </div>
       </div>
@@ -359,185 +359,6 @@
         </thead>
       </table>
     </div>
-  </div>
-
-    <div class="panel">
-      <div class="panel-heading border">
-      <p>Group View</p>
-      </div>
-      <div class="panel-body">
-        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Status</th>
-              <th>Nofs</th>
-              <th>Dev(Filled)</th>
-              <th>Avg(Filled)</th>
-              <th>Sig(Filled)</th>
-              <th>Balancing</th>
-              <th>Bal-shd</th>
-              <th>Drain-shd</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="group in groups">
-              <td>{{group.name}}</td>
-              <td>on**</td>
-              <td>{{group.nofs}}</td>
-              <td>{{group.dev.stat.statfs.filled}}</td>
-              <td>{{group.avg.stat.statfs.filled}}</td>
-              <td>{{group.sig.stat.statfs.filled}}</td>
-              <td>{{group.cfg.stat.balancing}}</td>
-              <td>{{group.sum.stat.balancer.running}}</td>
-              <td>{{group.sum.stat.drainer.running}}</td>
-            </tr>
-            <tr>
-              <td>Rosy</td>
-              <td>3</td>
-              <td>Nofs</td>
-              <td>Dev(Filled)</td>
-              <td>Avg(Filled)</td>
-              <td>Sig(Filled)</td>
-              <td>Balancing</td>
-              <td>Bal-shd</td>
-              <td>Drain-shd</td>
-            </tr>
-            <tr>
-              <td>Reshu</td>
-              <td>10</td>
-              <td>Nofs</td>
-              <td>Dev(Filled)</td>
-              <td>Avg(Filled)</td>
-              <td>Sig(Filled)</td>
-              <td>Balancing</td>
-              <td>Bal-shd</td>
-              <td>Drain-shd</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-
-  <div class="row">
-
-    <div class="panel">
-      <div class="panel-heading border">
-      <p>File System View</p>
-      </div>
-      <div class="panel-body">
-        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
-          <thead>
-            <tr>
-              <th>Host</th>
-              <th>Id</th>
-              <th>Path</th>
-              <th>Schedgroup</th>
-              <th>Geo-tag</th>
-              <th>Boot</th>
-              <th>Config-status</th>
-              <th>Drain</th>
-              <th>Active</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="fileSystem in fileSystems">
-              <td>{{fileSystem.host}}</td>
-              <td>{{fileSystem.id}}</td>
-              <td>{{fileSystem.path}}</td>
-              <td>{{fileSystem.schedgroup}}</td>
-              <td>{{fileSystem.stat.geotag}}</td>
-              <td>{{fileSystem.stat.boot}}</td>
-              <td>{{fileSystem.configstatus}}</td>
-              <td>{{fileSystem.stat.drain}}</td>
-              <td>{{fileSystem.stat.active}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="row">
-
-    <div class="panel">
-      <div class="panel-heading border">
-      <p>Node View</p>
-      </div>
-      <div class="panel-body">
-        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
-          <thead>
-            <tr>
-              <th>Hostport</th>
-              <th>Geotag</th>
-              <th>Status</th>
-              <th>Txgw</th>
-              <th>Gw-queued</th>
-              <th>Gw-ntx</th>
-              <th>Gw-rate</th>
-              <th>Heartbeatdelta</th>
-              <th>Nofs</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="node in nodes">
-              <td>{{node.hostport}}</td>
-              <td>{{node.cfg.stat.geotag}}</td>
-              <td>{{node.status}}</td>
-              <td>{{node.cfg.txgw}}</td>
-              <td>{{node.stat.gw.queued}}</td>
-              <td>{{node.gw.ntx}}</td>
-              <td>{{node.gw.rate}}</td>
-              <td>{{node.heartbeatdelta}}</td>
-              <td>{{node.nofs}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="row">
-
-    <div class="panel">
-      <div class="panel-heading border">
-      <p>Space View</p>
-      </div>
-      <div class="panel-body">
-        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
-          <thead>
-            <tr>
-              <th>Host</th>
-              <th>Id</th>
-              <th>Path</th>
-              <th>Schedgroup</th>
-              <th>Geo-tag</th>
-              <th>Boot</th>
-              <th>Config-status</th>
-              <th>Drain</th>
-              <th>Active</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="fileSystem in fileSystems">
-              <td>{{fileSystem.host}}</td>
-              <td>{{fileSystem.id}}</td>
-              <td>{{fileSystem.path}}</td>
-              <td>{{fileSystem.schedgroup}}</td>
-              <td>{{fileSystem.stat.geotag}}</td>
-              <td>{{fileSystem.stat.boot}}</td>
-              <td>{{fileSystem.configstatus}}</td>
-              <td>{{fileSystem.stat.drain}}</td>
-              <td>{{fileSystem.stat.active}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
   </div>
 
 </div>
