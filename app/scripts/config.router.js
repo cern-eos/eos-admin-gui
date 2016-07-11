@@ -130,6 +130,7 @@ angular
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
+                                'vendor/angularUtils-pagination/dirPagination.js',
                                 'scripts/extentions/bootstrap-datatables.js'
                             ]
                         }]).then(function () {

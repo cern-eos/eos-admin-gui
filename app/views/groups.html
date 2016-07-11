@@ -6,11 +6,17 @@
     </div>
     <div class="panel-body">
       <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
-      <form class="form-inline">
-        <div class="form-group">
-            <input type="text" ng-model="search" class="form-control" placeholder="Search">
+      <div class="row">
+        <div class="col-sm-6">
+          <form class="form-inline">
+            <div class="form-group ">
+                <input type="text" ng-model="search" class="form-control" placeholder="Search">
+            </div>
+          </form>
         </div>
-      </form>
+        <div class="col-sm-6">
+        </div>
+      </div>
       <br>
       <table class="table table-bordered bordered table-striped table-condensed datatable">
         <thead>
@@ -45,7 +51,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="group in groups|orderBy:sortKey:reverse|filter:search">
+          <tr dir-paginate="group in groups|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
             <td>{{group.name}}</td>
             <td>{{group.cfg.status}}</td>
             <td>{{group.nofs}}</td>
@@ -58,6 +64,14 @@
           </tr>
         </tbody>
       </table>
+      <div class="row">
+        <div class="col-sm-9">
+        </div>
+        <div class="col-sm-3">
+          <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true" >
+        </dir-pagination-controls>
+        </div>
+      </div>         
     </div>
   </div>
 

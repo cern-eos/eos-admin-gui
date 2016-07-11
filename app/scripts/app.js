@@ -17,7 +17,8 @@ angular
     'ngStorage',
     'ngSanitize',
     'ui.utils',
-    'ngTouch'
+    'ngTouch',
+    'angularUtils.directives.dirPagination'
   ])
   .constant('COLORS', {
     'default': '#e2e2e2',
