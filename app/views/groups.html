@@ -5,22 +5,47 @@
     <p>Group View</p>
     </div>
     <div class="panel-body">
-      <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
+      <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
+      <form class="form-inline">
+        <div class="form-group">
+            <input type="text" ng-model="search" class="form-control" placeholder="Search">
+        </div>
+      </form>
+      <br>
+      <table class="table table-bordered bordered table-striped table-condensed datatable">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Nofs</th>
-            <th>Dev(Filled)</th>
-            <th>Avg(Filled)</th>
-            <th>Sig(Filled)</th>
-            <th>Balancing</th>
-            <th>Bal-shd</th>
-            <th>Drain-shd</th>
+            <th ng-click="sort('name')">Name
+                <span class="glyphicon sort-icon" ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('cfg.status')">Status
+                <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('nofs')">Nofs
+                <span class="glyphicon sort-icon" ng-show="sortKey=='nofs'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('dev.stat.statfs.filled')">Dev (Filled)
+                <span class="glyphicon sort-icon" ng-show="sortKey=='dev.stat.statfs.filled'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('avg.stat.statfs.filled')">Avg (Filled)
+                <span class="glyphicon sort-icon" ng-show="sortKey=='avg.stat.statfs.filled'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('sig.stat.statfs.filled')">Sig (Filled)
+                <span class="glyphicon sort-icon" ng-show="sortKey=='sig.stat.statfs.filled'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('cfg.stat.balancing')">Balancing
+                <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.stat.balancing'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('sum.stat.balancer.running')">Bal-shd
+                <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.balancer.running'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
+            <th ng-click="sort('sum.stat.drainer.running')">Drain-shd
+                <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.drainer.running'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="group in groups">
+          <tr ng-repeat="group in groups|orderBy:sortKey:reverse|filter:search">
             <td>{{group.name}}</td>
             <td>{{group.cfg.status}}</td>
             <td>{{group.nofs}}</td>
@@ -30,28 +55,6 @@
             <td>{{group.cfg.stat.balancing}}</td>
             <td>{{group.sum.stat.balancer.running}}</td>
             <td>{{group.sum.stat.drainer.running}}</td>
-          </tr>
-          <tr>
-            <td>Rosy</td>
-            <td>3</td>
-            <td>Nofs</td>
-            <td>Dev(Filled)</td>
-            <td>Avg(Filled)</td>
-            <td>Sig(Filled)</td>
-            <td>Balancing</td>
-            <td>Bal-shd</td>
-            <td>Drain-shd</td>
-          </tr>
-          <tr>
-            <td>Reshu</td>
-            <td>10</td>
-            <td>Nofs</td>
-            <td>Dev(Filled)</td>
-            <td>Avg(Filled)</td>
-            <td>Sig(Filled)</td>
-            <td>Balancing</td>
-            <td>Bal-shd</td>
-            <td>Drain-shd</td>
           </tr>
         </tbody>
       </table>

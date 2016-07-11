@@ -22,6 +22,11 @@ function dashboardCtrl($scope, $interval, eosService, COLORS) {
     eosService.setSpaceConfig('default', 'space.converter',$scope.checkState(value));
   };
 
+  $scope.sort = function(keyname){
+        $scope.sortKey = keyname;   //set the sortKey to the param passed
+        $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+    };
+
   $scope.checkValue = function (state) {
     if (state === 'on') {
       return true;
