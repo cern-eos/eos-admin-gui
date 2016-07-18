@@ -2,7 +2,7 @@
 
   <!-- logo -->
   <div class="brand-logo">
-    <img data-ng-src="images/eos.jpg" height="35" alt="">
+    <img data-ng-src="images/eos2.png" height="35" alt="">
   </div>
   <!-- /logo -->
 
@@ -25,7 +25,7 @@
     <!-- dashboard -->
     <li ui-sref-active="active">
       <a href="#/">
-        <i class="fa fa-flask"></i>
+        <i class="fa fa-dashboard"></i>
         <span>Dashboard</span>
       </a>
     </li>
@@ -34,7 +34,7 @@
     <!-- views -->
     <li data-ng-class="{open: $state.includes('app.views')}">
       <a href="javascript:;">
-        <i class="fa fa-tag"></i>
+        <i class="fa fa-eye"></i>
         <span>Views</span>
       </a>
       <ul class="sub-menu">
@@ -67,8 +67,9 @@
     <li data-ng-class="{open: $state.includes('app.maps')}">
       <a href="javascript:;">
         <span class="label label-success pull-right">2</span>
-        <i class="fa fa-map-marker"></i>
+        <i class="fa fa-cogs"></i>
         <span>Clusters</span>
+        <!-- https://github.com/cern-eos/kineticio/blob/master/test/localhost.json -->
       </a>
     </li>
     <!-- /maps -->

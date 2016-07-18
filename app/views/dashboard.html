@@ -114,6 +114,77 @@
   </div>
 
   <div class="row">
+    <div class="col-md-6 col-lg-3">
+      <div class="panel bg-danger">
+        <div class="panel-heading border">
+          Default Space
+        </div>
+        <div class="panel-body text-center">
+          <div class="piechart m25">
+            <div class="bounce_pie" easypiechart options="options1" percent="percent1">
+              <div>
+                <div class="percent h1"></div>
+                <small>Group Activity</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="panel bg-success">
+        <div class="panel-heading border">
+          Signup rate
+        </div>
+        <div class="panel-body text-center">
+          <div class="piechart m25">
+            <div class="total" easypiechart options="options2" percent="percent2">
+              <div>
+                <div class="percent h1"></div>
+                <small>New user signup Rate</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="panel bg-info">
+        <div class="panel-heading border">
+          Visitors
+        </div>
+        <div class="panel-body text-center">
+          <div class="piechart m25">
+            <div class="dailyvisitors" easypiechart options="options3" percent="percent3">
+              <div>
+                <div class="percent h1"></div>
+                <small>Daily visitors</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="panel bg-warning">
+        <div class="panel-heading border">
+          New Visitors
+        </div>
+        <div class="panel-body text-center">
+          <div class="piechart m25">
+            <div class="newvisitors" easypiechart options="options4" percent="percent4">
+              <div>
+                <div class="percent h1"></div>
+                <small>Percentage new visitors</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-md-12">
       <div class="panel mb25">
         <div class="panel-heading">
@@ -303,7 +374,7 @@
   <div class="row">
     <div class="col-sm-6 col-md-3">
       <div class="widget bg-white">
-        <div class="widget-icon bg-blue pull-left fa fa-microphone">
+        <div class="widget-icon bg-blue pull-left fa fa-database">
         </div>
         <div class="overflow-hidden">
           <span class="widget-title">{{nsStatData[12].ns.memory.virtual}}</span>
@@ -313,7 +384,7 @@
     </div>
     <div class="col-sm-6 col-md-3">
       <div class="widget bg-white">
-        <div class="widget-icon bg-danger pull-left fa fa-tint">
+        <div class="widget-icon bg-danger pull-left fa fa-home">
         </div>
         <div class="overflow-hidden">
           <span class="widget-title">{{nsStatData[13].ns.memory.resident}}</span>
@@ -323,7 +394,7 @@
     </div>
     <div class="col-sm-6 col-md-3">
       <div class="widget bg-white">
-        <div class="widget-icon bg-success pull-left fa fa-paper-plane">
+        <div class="widget-icon bg-success pull-left fa fa-share-alt">
         </div>
         <div class="overflow-hidden">
           <span class="widget-title">{{nsStatData[14].ns.memory.share}}</span>
@@ -333,7 +404,7 @@
     </div>
     <div class="col-sm-6 col-md-3">
       <div class="widget bg-white">
-        <div class="widget-icon bg-purple pull-left fa fa-envelope">
+        <div class="widget-icon bg-purple pull-left fa fa-cube">
         </div>
         <div class="overflow-hidden">
           <span class="widget-title">{{nsStatData[16].ns.memory.growth}}</span>
@@ -343,7 +414,7 @@
     </div>
   </div>
 
-  <div class="panel">
+<!--   <div class="panel">
     <div class="panel-heading border">
     </div>
     <div class="panel-body">
@@ -359,6 +430,6 @@
         </thead>
       </table>
     </div>
-  </div>
+  </div> -->
 
 </div>

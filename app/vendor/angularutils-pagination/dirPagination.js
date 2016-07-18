@@ -1,4 +1,3 @@
-'use strict';
 /**
  * dirPagination - AngularJS module for paginating (almost) anything.
  *

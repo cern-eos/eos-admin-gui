@@ -29,7 +29,6 @@ angular
       .state('app.dashboard', {
         url: '/',
         templateUrl: 'views/dashboard.html',
-
         resolve: {
           deps: ['$ocLazyLoad', function ($ocLazyLoad) {
             return $ocLazyLoad.load([
@@ -53,7 +52,8 @@ angular
                                 'vendor/flot/jquery.flot.categories.js',
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
-                                'scripts/extentions/bootstrap-datatables.js'
+                                'scripts/extentions/bootstrap-datatables.js',
+                                'vendor/jquery.easy-pie-chart/dist/angular.easypiechart.js'
                             ]
                         },
               {
@@ -97,6 +97,7 @@ angular
                     files: [
                                   'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                   'vendor/datatables/media/js/jquery.dataTables.js',
+                                  'vendor/angularutils-pagination/dirPagination.js',
                                   'scripts/extentions/bootstrap-datatables.js'
                               ]
                           }]).then(function () {
@@ -130,7 +131,7 @@ angular
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
-                                'vendor/angularUtils-pagination/dirPagination.js',
+                                'vendor/angularutils-pagination/dirPagination.js',
                                 'scripts/extentions/bootstrap-datatables.js'
                             ]
                         }]).then(function () {
@@ -163,6 +164,7 @@ angular
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
+                                'vendor/angularutils-pagination/dirPagination.js',
                                 'scripts/extentions/bootstrap-datatables.js'
                             ]
                         }]).then(function () {
@@ -195,6 +197,7 @@ angular
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
+                                'vendor/angularutils-pagination/dirPagination.js',
                                 'scripts/extentions/bootstrap-datatables.js'
                             ]
                         }]).then(function () {

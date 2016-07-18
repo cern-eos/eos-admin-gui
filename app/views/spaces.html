@@ -6,27 +6,60 @@
       <div class="panel-heading border">
       <p>Space View</p>
       </div>
+      
       <div class="panel-body">
-        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
+        <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
+        <div class="row">
+          <div class="col-sm-9">
+          </div>
+          <div class="col-sm-3">
+            <form class="form-inline pull-right">
+              <div class="form-group ">
+                  <input type="text" ng-model="search" class="form-control" placeholder="Search">
+              </div>
+            </form>
+          </div>
+        </div>
+        <br>
+        <table class="table table-bordered bordered table-striped table-condensed datatable">
           <thead>
+
             <tr>
-              <th>Name</th>
-              <th>Groupsize</th>
-              <th>Groupmod</th>
-              <th>N(fs)</th>
-              <!-- <th>N(fs-rw)</th> -->
-              <th>sum(usedbytes)</th>
-              <th>sum(capacity)</th>
-              <th>capacity(rw)</th>
-              <th>nom.capacity</th>
-              <th>threshold</th>
-<!--               <th>ntx</th>
+              <th ng-click="sort('name')">Name
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('space.cfg.groupsize')">Groupsize
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='space.cfg.groupsize'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('space.cfg.groupmod')">Groupmod
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='space.cfg.groupmod'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('nofs')">N(fs)
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='nofs'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <!-- N(fs-rw) -->
+              <th ng-click="sort('dev.stat.statfs.filled')">sum(usedbytes)
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='dev.stat.statfs.filled'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('sum.stat.statfs.capacity')">sum(capacity)
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.statfs.capacity'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('sum.stat.statfs.capacity')">capacity(rw)
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.statfs.capacity'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('sum.stat.statfs.capacity')">nom.capacity
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.statfs.capacity'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('cfg.balancer.threshold')">threshold
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.balancer.threshold'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <!--               <th>ntx</th>
               <th>active</th>
               <th>intergroup</th> -->
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="space in spaces">
+            <tr dir-paginate="space in spaces|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
               <td>{{space.name}}</td>
               <td>{{space.cfg.groupsize}}</td>
               <td>{{space.cfg.groupmod}}</td>
@@ -38,9 +71,20 @@
              <!--  <td>{{space.sum.stat.statfs.capacity?configstatus\@rw}}</td> -->
               <td>{{space.stat.active}}*</td>
               <td>{{space.cfg.balancer.threshold}}</td>
+
             </tr>
           </tbody>
         </table>
+        <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true" >
+          </dir-pagination-controls>
+
+        <!-- <div class="row">
+          <div class="col-sm-9">
+          </div>
+          <div class="col-sm-3">
+            
+          </div>
+        </div>    -->      
       </div>
     </div>
 

@@ -6,23 +6,55 @@
       <div class="panel-heading border">
       <p>File System View</p>
       </div>
+
       <div class="panel-body">
-        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
+        <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
+        <div class="row">
+          <div class="col-sm-9">
+          </div>
+          <div class="col-sm-3">
+            <form class="form-inline pull-right">
+              <div class="form-group ">
+                  <input type="text" ng-model="search" class="form-control" placeholder="Search">
+              </div>
+            </form>
+          </div>
+        </div>
+        <br>
+        <table class="table table-bordered bordered table-striped table-condensed datatable">
           <thead>
             <tr>
-              <th>Host</th>
-              <th>Id</th>
-              <th>Path</th>
-              <th>Schedgroup</th>
-              <th>Geo-tag</th>
-              <th>Boot</th>
-              <th>Config-status</th>
-              <th>Drain</th>
-              <th>Active</th>
+              <th ng-click="sort('host')">Host
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='host'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('id')">Id
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('path')">Path
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='path'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('schedgroup')">Schedgroup
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='schedgroup'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('stat.geotag')">Geo-tag
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='stat.geotag'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('stat.boot')">Boot
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='stat.boot'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('configstatus')">Config-status
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='configstatus'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('stat.drain')">Drain
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='stat.drain'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('stat.active')">Active
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='stat.active'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="fileSystem in fileSystems">
+            <tr dir-paginate="fileSystem in fileSystems|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
               <td>{{fileSystem.host}}</td>
               <td>{{fileSystem.id}}</td>
               <td>{{fileSystem.path}}</td>
@@ -35,6 +67,16 @@
             </tr>
           </tbody>
         </table>
+        <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true" >
+          </dir-pagination-controls>
+
+        <!-- <div class="row">
+          <div class="col-sm-9">
+          </div>
+          <div class="col-sm-3">
+            
+          </div>
+        </div>    -->      
       </div>
     </div>
 

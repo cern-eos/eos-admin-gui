@@ -6,23 +6,55 @@
       <div class="panel-heading border">
       <p>Node View</p>
       </div>
+
       <div class="panel-body">
-        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable">
+        <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
+        <div class="row">
+          <div class="col-sm-9">
+          </div>
+          <div class="col-sm-3">
+            <form class="form-inline pull-right">
+              <div class="form-group ">
+                  <input type="text" ng-model="search" class="form-control" placeholder="Search">
+              </div>
+            </form>
+          </div>
+        </div>
+        <br>
+        <table class="table table-bordered bordered table-striped table-condensed datatable">
           <thead>
             <tr>
-              <th>Hostport</th>
-              <th>Geotag</th>
-              <th>Status</th>
-              <th>Txgw</th>
-              <th>Gw-queued</th>
-              <th>Gw-ntx</th>
-              <th>Gw-rate</th>
-              <th>Heartbeatdelta</th>
-              <th>Nofs</th>
+              <th ng-click="sort('hostport')">Hostport
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='hostport'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('cfg.stat.geotag')">Geotag
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.stat.geotag'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('status')">Status
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('cfg.txgw')">Txgw
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.txgw'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('stat.gw.queued')">Gw-queued
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='stat.gw.queued'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('gw.ntx')">Gw-ntx
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='gw.ntx'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('gw.rate')">Gw-rate
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='gw.rate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('heartbeatdelta')">Heartbeatdelta
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='heartbeatdelta'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
+              <th ng-click="sort('nofs')">Nofs
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='nofs'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="node in nodes">
+            <tr dir-paginate="node in nodes|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
               <td>{{node.hostport}}</td>
               <td>{{node.cfg.stat.geotag}}</td>
               <td>{{node.status}}</td>
@@ -35,7 +67,18 @@
             </tr>
           </tbody>
         </table>
+        <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true" >
+          </dir-pagination-controls>
+
+        <!-- <div class="row">
+          <div class="col-sm-9">
+          </div>
+          <div class="col-sm-3">
+            
+          </div>
+        </div>    -->      
       </div>
+
     </div>
 
   </div>
