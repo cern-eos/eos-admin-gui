@@ -31,19 +31,7 @@
             </div>
           </div>
         </tab>
-
-        <tab heading="Client">
-          <div class="widget bg-white">
-            <div class="widget-details widget-list">
-              <a href="javascript:;" class="widget-list-item">
-                <span class="label label-info pull-right">{{versionData.instance.version}}</span> Version
-              </a>
-              <a href="javascript:;" class="widget-list-item">
-                <span class="label label-danger pull-right">{{versionData.instance.release}}</span> Release
-              </a>
-            </div>
-          </div>
-        </tab>
+        
       </tabset>
     </div>
 
@@ -78,12 +66,12 @@
               </a>
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" ng-model="geoTagBalancer" ng-change="switchGeoTagBalancer(geoTagBalancer)">
+                  <input type="checkbox" ng-model="geoBalancer" ng-change="switchGeoBalancer(geoBalancer)">
                   <span> 
                     <i class="handle"></i>
                   </span>
                 </label>
-                Geo-tag Balancer
+                Geo Balancer
               </a>
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
@@ -377,7 +365,7 @@
         <div class="widget-icon bg-blue pull-left fa fa-database">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{nsStatData[12].ns.memory.virtual}}</span>
+          <span class="widget-title">{{nsStatData[12].ns.memory.virtual |filesize:2}}</span>
           <span class="widget-subtitle">Virtual Memory</span>
         </div>
       </div>
@@ -387,7 +375,7 @@
         <div class="widget-icon bg-danger pull-left fa fa-home">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{nsStatData[13].ns.memory.resident}}</span>
+          <span class="widget-title">{{nsStatData[13].ns.memory.resident | filesize:2}}</span>
           <span class="widget-subtitle">Resident Memory</span>
         </div>
       </div>
@@ -397,7 +385,7 @@
         <div class="widget-icon bg-success pull-left fa fa-share-alt">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{nsStatData[14].ns.memory.share}}</span>
+          <span class="widget-title">{{nsStatData[14].ns.memory.share | filesize:2}}</span>
           <span class="widget-subtitle">Share Memory</span>
         </div>
       </div>
@@ -407,7 +395,7 @@
         <div class="widget-icon bg-purple pull-left fa fa-cube">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{nsStatData[16].ns.memory.growth}}</span>
+          <span class="widget-title">{{nsStatData[16].ns.memory.growth | filesize:2}}</span>
           <span class="widget-subtitle">Growth Memory</span>
         </div>
       </div>

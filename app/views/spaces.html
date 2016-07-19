@@ -44,11 +44,11 @@
               <th ng-click="sort('sum.stat.statfs.capacity')">sum(capacity)
                   <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.statfs.capacity'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
               </th>
-              <th ng-click="sort('sum.stat.statfs.capacity')">capacity(rw)
-                  <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.statfs.capacity'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              <th ng-click="sort('sum.stat.statfs.capacity_rw')">capacity(rw)
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.statfs.capacity_rw'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
               </th>
-              <th ng-click="sort('sum.stat.statfs.capacity')">nom.capacity
-                  <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.statfs.capacity'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              <th ng-click="sort('cfg.nominalsize')">nom.capacity
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.nominalsize'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
               </th>
               <th ng-click="sort('cfg.balancer.threshold')">threshold
                   <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.balancer.threshold'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
@@ -64,12 +64,10 @@
               <td>{{space.cfg.groupsize}}</td>
               <td>{{space.cfg.groupmod}}</td>
               <td>{{space.nofs}}</td>
-              <!-- <td>{{space.sum.\<n\>?configstatus\@rw}}</td> -->
               <td>{{space.sum.stat.statfs.usedbytes | filesize:2}}</td>
               <td>{{space.sum.stat.statfs.capacity | filesize:2}}</td>
-              <td>{{space.sum.stat.statfs.capacity | filesize:2}}*</td>
-             <!--  <td>{{space.sum.stat.statfs.capacity?configstatus\@rw}}</td> -->
-              <td>{{space.stat.active}}*</td>
+              <td>{{space.sum.stat.statfs.capacity_rw | filesize:2}}</td>
+              <td>{{space.cfg.nominalsize}}</td>
               <td>{{space.cfg.balancer.threshold}}</td>
 
             </tr>

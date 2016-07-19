@@ -39,11 +39,11 @@
               <th ng-click="sort('stat.gw.queued')">Gw-queued
                   <span class="glyphicon sort-icon" ng-show="sortKey=='stat.gw.queued'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
               </th>
-              <th ng-click="sort('gw.ntx')">Gw-ntx
-                  <span class="glyphicon sort-icon" ng-show="sortKey=='gw.ntx'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              <th ng-click="sort('cfg.gw.ntx')">Gw-ntx
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.gw.ntx'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
               </th>
-              <th ng-click="sort('gw.rate')">Gw-rate
-                  <span class="glyphicon sort-icon" ng-show="sortKey=='gw.rate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+              <th ng-click="sort('cfg.gw.rate')">Gw-rate
+                  <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.gw.rate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
               </th>
               <th ng-click="sort('heartbeatdelta')">Heartbeatdelta
                   <span class="glyphicon sort-icon" ng-show="sortKey=='heartbeatdelta'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
@@ -60,8 +60,8 @@
               <td>{{node.status}}</td>
               <td>{{node.cfg.txgw}}</td>
               <td>{{node.stat.gw.queued}}</td>
-              <td>{{node.gw.ntx}}</td>
-              <td>{{node.gw.rate}}</td>
+              <td>{{node.cfg.gw.ntx}}</td>
+              <td>{{node.cfg.gw.rate}}</td>
               <td>{{node.heartbeatdelta}}</td>
               <td>{{node.nofs}}</td>
             </tr>
