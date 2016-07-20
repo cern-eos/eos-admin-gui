@@ -33,6 +33,11 @@ angular
     bodyBg: '#e0e8f2',
     textColor: '#6B6B6B',
   })
+  .filter('mathPow', function(){
+    return function(base, exponent){
+        return Math.pow(base, exponent);
+    };
+  })
   .filter( 'filesize', function () {
       var units = [
         'bytes',

@@ -31,6 +31,15 @@
             </div>
           </div>
         </tab>
+        <tab heading="Client">
+          <div class="widget bg-white">
+            <div class="widget-details widget-list">
+              <a href="javascript:;" class="widget-list-item">
+                <span class="label label-info pull-right">{{clientInfo.nclients}}</span> nclients
+              </a>
+            </div>
+          </div>
+        </tab>
         
       </tabset>
     </div>
@@ -105,14 +114,14 @@
     <div class="col-md-6 col-lg-3">
       <div class="panel bg-danger">
         <div class="panel-heading border">
-          Default Space
+          Default Space - Group Status
         </div>
         <div class="panel-body text-center">
           <div class="piechart m25">
             <div class="bounce_pie" easypiechart options="options1" percent="percent1">
               <div>
                 <div class="percent h1"></div>
-                <small>Group Activity</small>
+                <small>Active Groups</small>
               </div>
             </div>
           </div>
@@ -122,14 +131,14 @@
     <div class="col-md-6 col-lg-3">
       <div class="panel bg-success">
         <div class="panel-heading border">
-          Signup rate
+          Space Used
         </div>
         <div class="panel-body text-center">
           <div class="piechart m25">
-            <div class="total" easypiechart options="options2" percent="percent2">
+            <div class="servernodes" easypiechart options="options2" percent="percent2">
               <div>
                 <div class="percent h1"></div>
-                <small>New user signup Rate</small>
+                <small>Usedbytes / Capacity</small>
               </div>
             </div>
           </div>
@@ -139,14 +148,14 @@
     <div class="col-md-6 col-lg-3">
       <div class="panel bg-info">
         <div class="panel-heading border">
-          Visitors
+          Network IO In
         </div>
         <div class="panel-body text-center">
           <div class="piechart m25">
             <div class="dailyvisitors" easypiechart options="options3" percent="percent3">
               <div>
                 <div class="percent h1"></div>
-                <small>Daily visitors</small>
+                <small>Inratemib / Ethratemib</small>
               </div>
             </div>
           </div>
@@ -156,14 +165,14 @@
     <div class="col-md-6 col-lg-3">
       <div class="panel bg-warning">
         <div class="panel-heading border">
-          New Visitors
+          Network IO Out
         </div>
         <div class="panel-body text-center">
           <div class="piechart m25">
-            <div class="newvisitors" easypiechart options="options4" percent="percent4">
+            <div class="servernodes" easypiechart options="options4" percent="percent4">
               <div>
                 <div class="percent h1"></div>
-                <small>Percentage new visitors</small>
+                <small>Outratemib / Ethratemib</small>
               </div>
             </div>
           </div>
@@ -186,81 +195,46 @@
                 <th class="col-md-6">
                   <span></span>Entity</th>
                 <th class="col-md-3">Value</th>
-                <th class="col-md-3">Progress</th>
+                <!-- <th class="col-md-3">Progress</th> -->
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>
                   <span></span>Files</td>
-                <td>{{nsStatData[0].ns.total.files}}</td>
-                <td class="align-middle">
+                <td>{{nsStatData[0].ns.total.files}} Million</td>
+    <!--             <td class="align-middle">
                   <div class="progress progress-sm no-margin">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
                       <span class="sr-only">40% Complete (success)</span>
                     </div>
                   </div>
-                </td>
+                </td> -->
               </tr>
               <tr>
                 <td>
                   <span></span>Directories</td>
-                <td>{{nsStatData[1].ns.total.directories}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm no-margin">
-                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: 23%">
-                      <span class="sr-only">23% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
+                <td>{{nsStatData[1].ns.total.directories}} Million</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Files Changelog Size</td>
                 <td>{{nsStatData[2].ns.total.files.changelog.size}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm no-margin">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
-                      <span class="sr-only">78% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
               </tr>
               <tr>
                 <td>
                   <span></span>Directories Changelog Size</td>
                 <td>{{nsStatData[3].ns.total.directories.changelog.size}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm progress-striped active no-margin">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100" style="width: 56%">
-                      <span class="sr-only">56% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
               </tr>
               <tr>
                 <td>
                   <span></span>Files Changelog Avg Entry</td>
                 <td>{{nsStatData[4].ns.total.files.changelog.avg_entry_size}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm progress-striped no-margin">
-                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%">
-                      <span class="sr-only">49% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
               </tr>
               <tr>
                 <td>
                   <span></span>Directories Changelog Avg Entry</td>
                 <td>{{nsStatData[5].ns.total.directories.changelog.avg_entry_size}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm progress-striped no-margin">
-                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%">
-                      <span class="sr-only">49% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
               </tr>
 
             </tbody>
@@ -274,7 +248,6 @@
                 <th class="col-md-6">
                   <span></span>Entity</th>
                 <th class="col-md-3">Value</th>
-                <th class="col-md-3">Progress</th>
               </tr>
             </thead>
             <tbody>
@@ -282,73 +255,31 @@
                 <td>
                   <span></span>Boot Status</td>
                 <td>{{nsStatData[7].ns.boot.status}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm no-margin">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                      <span class="sr-only">40% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
               </tr>
               <tr>
                 <td>
                   <span></span>Boot Time</td>
-                <td>{{nsStatData[8].ns.boot.time}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm no-margin">
-                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: 23%">
-                      <span class="sr-only">23% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
+                <td>{{nsStatData[8].ns.boot.time}} Seconds</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Latency Avg</td>
-                <td>{{nsStatData[9].ns.latency.avg}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm no-margin">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
-                      <span class="sr-only">78% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
+                <td>{{nsStatData[9].ns.latency.avg}} Seconds</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Latency Sigma</td>
-                <td>{{nsStatData[10].ns.latency.sig}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm progress-striped active no-margin">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100" style="width: 56%">
-                      <span class="sr-only">56% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
+                <td>{{nsStatData[10].ns.latency.sig}} Seconds</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Threads</td>
                 <td>{{nsStatData[15].ns.stat.threads}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm progress-striped no-margin">
-                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%">
-                      <span class="sr-only">49% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
               </tr>
               <tr>
                 <td>
                   <span></span>Uptime</td>
                 <td>{{nsStatData[17].ns.uptime}}</td>
-                <td class="align-middle">
-                  <div class="progress progress-sm progress-striped no-margin">
-                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%">
-                      <span class="sr-only">49% Complete (success)</span>
-                    </div>
-                  </div>
-                </td>
               </tr>
 
             </tbody>
@@ -399,6 +330,46 @@
           <span class="widget-subtitle">Growth Memory</span>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <section class="widget bg-lightblue">
+        <div class="widget-details">
+            <div class="widget-icon bg-white pull-right fa fa-clock-o">
+            <div class="status bg-primary text-white mt5" data-animation="rubberBand"></div>
+        </div>
+        <div class="widget-details overflow-hidden">
+          <h2 class="no-margin bold">{{avgExecLatency}} +- {{sigExecLatency}} ms</h2>
+          <small class="text-uppercase">Execution Time Latency</small>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-md-4">
+      <section class="widget bg-brown text-center">
+        <div class="widget-details col-xs-6">
+          <h2 class="no-margin">{{(readratemb/1000).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
+          <small class="text-uppercase">Disk-Read</small>
+        </div>
+        <div class="widget-details col-xs-6">
+          <h2 class="no-margin">{{(writeratemb/1000).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
+          <small class="text-uppercase">Disk-Write</small>
+        </div>
+      </section>
+    </div>
+    <div class="col-md-4">
+      <section class="widget bg-success text-center">
+        <div class="widget-details col-xs-6">
+          <h2 class="no-margin">{{((inratemib*1024*1024)/(10|mathPow:9)).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
+          <small class="text-uppercase">Net-In</small>
+        </div>
+        <div class="widget-details col-xs-6">
+          <h2 class="no-margin">{{((outratemib*1024*1024)/(10|mathPow:9)).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
+          <small class="text-uppercase">Net-Out</small>
+        </div>
+      </section>
     </div>
   </div>
 

@@ -78,6 +78,20 @@ function eosServiceAPI($http) {
       });
     };
 
+    eosAPI.getClientInfo = function() {
+      return $http({
+        method: 'JSONP',
+        url: 'http://eosservicetest2:8000/proc/user/',
+        params: {
+          'mgm.cmd': 'who',
+          'mgm.option': 'sm',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
     eosAPI.getNsStat = function() {
       return $http({
         method: 'JSONP',

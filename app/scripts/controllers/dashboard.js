@@ -41,12 +41,24 @@ function dashboardCtrl($scope, $interval, eosService, COLORS) {
     }
   };
 
+  $scope.activeGroupsCount = function(groups) {
+    var count = 0;
+    angular.forEach(groups, function(group){
+        count += group.cfg.status === 'on' ? 1 : 0;
+    });
+    return count; 
+  };
+
   $scope.dataTableOpt = {
     'ajax': 'data/datatables-arrays.json'
   };
 
   eosService.getGroups().success(function (response) {
       $scope.groups = response[0].group.ls;
+      var nGroups = $scope.groups.length;
+      var nActiveGroups = $scope.activeGroupsCount($scope.groups);
+      // For the Tachometer
+      $scope.percent1 = (nActiveGroups/nGroups)*100;  
     });
 
   eosService.getFileSystems().success(function (response) {
@@ -55,21 +67,21 @@ function dashboardCtrl($scope, $interval, eosService, COLORS) {
 
   eosService.getNodes().success(function (response) {
       $scope.nodes = response[0].node.ls;
-      console.log($scope.nodes);
-    });
-
-  eosService.getSpaces().success(function (response) {
-      $scope.spaces = response[0].space.ls;
-      console.log($scope.spaces);
     });
 
   eosService.getVersion().success(function (response) {
-      //Ask Andreas about Client verison and release
       $scope.versionData = response[0].version[0].eos;
+    });
+
+  eosService.getClientInfo().success(function (response) {
+      var whoResponse = response[0].who;
+      $scope.clientInfo = whoResponse[whoResponse.length - 1];
     });
 
   eosService.getNsStat().success(function (response) {
       $scope.nsStatData = response[0].ns.stat;
+      $scope.avgExecLatency = parseFloat($scope.nsStatData[18].total.exec.avg);
+      $scope.sigExecLatency = $scope.nsStatData[18].total.exec.sigma;
     });
 
   eosService.getSpaceStatus().success(function (response) {
@@ -81,7 +93,21 @@ function dashboardCtrl($scope, $interval, eosService, COLORS) {
       $scope.quota =  $scope.checkValue(response[0].space.status[0].quota);
     });
 
-  $scope.percent1 = 100;
+
+  eosService.getSpaces().success(function (response) {
+      $scope.spaces = response[0].space.ls;
+      $scope.readratemb = $scope.spaces[0].sum.stat.disk.readratemb;
+      $scope.writeratemb = $scope.spaces[0].sum.stat.disk.writeratemb;
+      $scope.inratemib = $scope.spaces[0].sum.stat.net.inratemib;
+      $scope.outratemib = $scope.spaces[0].sum.stat.net.outratemib;
+      $scope.ethratemib = $scope.spaces[0].sum.stat.net.ethratemib;
+      // For the Tachometers
+      $scope.percent2 = ($scope.spaces[0].sum.stat.statfs.usedbytes/$scope.spaces[0].sum.stat.statfs.capacity)*100;
+      $scope.percent3 = ($scope.inratemib/$scope.ethratemib)*100;
+      $scope.percent3 = ($scope.outratemib/$scope.ethratemib)*100;
+
+    });
+
   $scope.options1 = {
     size: 180,
     lineWidth: 8,
@@ -94,7 +120,6 @@ function dashboardCtrl($scope, $interval, eosService, COLORS) {
     }
   };
 
-  $scope.percent2 = 52;
   $scope.options2 = {
     size: 180,
     lineWidth: 8,
@@ -107,12 +132,12 @@ function dashboardCtrl($scope, $interval, eosService, COLORS) {
     }
   };
 
-  $scope.percent3 = 76;
   $scope.options3 = {
     size: 180,
-    lineWidth: 15,
+    lineWidth: 8,
     barColor: 'rgba(255,255,255,.7)',
-    trackColor: false,
+    // trackColor: false,
+    trackColor: 'rgba(0,0,0,.1)',
     lineCap: 'round',
     easing: 'easeOutBounce',
     onStep: function (from, to, percent) {
@@ -120,56 +145,13 @@ function dashboardCtrl($scope, $interval, eosService, COLORS) {
     }
   };
 
-  $scope.percent4 = 82;
   $scope.options4 = {
-    size: 180,
-    lineWidth: 15,
-    barColor: 'rgba(255,255,255,.7)',
-    trackColor: 'rgba(0,0,0,.1)',
-    lineCap: 'butt',
-    easing: 'easeOutBounce',
-    onStep: function (from, to, percent) {
-      angular.element(this.el).find('.percent').text(Math.round(percent));
-    }
-  };
-
-  $scope.percent5 = 54;
-  $scope.options5 = {
     size: 180,
     lineWidth: 8,
     barColor: 'rgba(255,255,255,.7)',
     trackColor: 'rgba(0,0,0,.1)',
-    lineCap: 'round',
-    easing: 'easeOutBounce',
-    scaleColor: false,
-    onStep: function (from, to, percent) {
-      angular.element(this.el).find('.percent').text(Math.round(percent));
-    }
-  };
-
-  $scope.percent6 = 43;
-  $scope.options6 = {
-    size: 180,
-    lineWidth: 2,
-    barColor: 'rgba(255,255,255,.7)',
-    trackColor: 'rgba(0,0,0,.1)',
-    lineCap: 'round',
-    easing: 'easeOutBounce',
-    scaleColor: false,
-    onStep: function (from, to, percent) {
-      angular.element(this.el).find('.percent').text(Math.round(percent));
-    }
-  };
-
-  $scope.percent7 = 43;
-  $scope.options7 = {
-    size: 180,
-    lineWidth: 14,
-    barColor: 'rgba(255,255,255,.7)',
-    trackColor: 'rgba(0,0,0,.1)',
     lineCap: 'butt',
     easing: 'easeOutBounce',
-    scaleColor: false,
     onStep: function (from, to, percent) {
       angular.element(this.el).find('.percent').text(Math.round(percent));
     }
