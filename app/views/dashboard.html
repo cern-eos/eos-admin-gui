@@ -202,7 +202,7 @@
               <tr>
                 <td>
                   <span></span>Files</td>
-                <td>{{nsStatData[0].ns.total.files}} Million</td>
+                <td>{{nsStatData[0].ns.total.files}}</td>
     <!--             <td class="align-middle">
                   <div class="progress progress-sm no-margin">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
@@ -214,27 +214,27 @@
               <tr>
                 <td>
                   <span></span>Directories</td>
-                <td>{{nsStatData[1].ns.total.directories}} Million</td>
+                <td>{{nsStatData[1].ns.total.directories}}</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Files Changelog Size</td>
-                <td>{{nsStatData[2].ns.total.files.changelog.size}}</td>
+                <td>{{nsStatData[2].ns.total.files.changelog.size | filesize:2}}</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Directories Changelog Size</td>
-                <td>{{nsStatData[3].ns.total.directories.changelog.size}}</td>
+                <td>{{nsStatData[3].ns.total.directories.changelog.size | filesize:2}}</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Files Changelog Avg Entry</td>
-                <td>{{nsStatData[4].ns.total.files.changelog.avg_entry_size}}</td>
+                <td>{{nsStatData[4].ns.total.files.changelog.avg_entry_size | filesize:2}}</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Directories Changelog Avg Entry</td>
-                <td>{{nsStatData[5].ns.total.directories.changelog.avg_entry_size}}</td>
+                <td>{{nsStatData[5].ns.total.directories.changelog.avg_entry_size | filesize:2}}</td>
               </tr>
 
             </tbody>

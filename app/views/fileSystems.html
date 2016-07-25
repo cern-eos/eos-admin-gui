@@ -10,9 +10,20 @@
       <div class="panel-body">
         <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
         <div class="row">
-          <div class="col-sm-9">
+
+          <div class="col-sm-6">
+            <div class="dataTables_length" id="DataTables_Table_0_length">
+              <label style="display:inline;">
+                Show <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-control">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>  entries
+              </label>
+            </div>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-6">
             <form class="form-inline pull-right">
               <div class="form-group ">
                   <input type="text" ng-model="search" class="form-control" placeholder="Search">

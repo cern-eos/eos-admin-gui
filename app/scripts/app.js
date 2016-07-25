@@ -18,7 +18,8 @@ angular
     'ngSanitize',
     'ui.utils',
     'ngTouch',
-    'angularUtils.directives.dirPagination'
+    'angularUtils.directives.dirPagination',
+    'xeditable'
   ])
   .constant('COLORS', {
     'default': '#e2e2e2',

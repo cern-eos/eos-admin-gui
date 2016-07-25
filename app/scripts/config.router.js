@@ -211,6 +211,43 @@ angular
             title: 'Node View',
           }
         })
+      
+      .state('app.clusters', {
+          url: '/clusters',
+          templateUrl: 'views/clusters.html',
+          resolve: {
+            deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+              return $ocLazyLoad.load([
+                {
+                  insertBefore: '#load_styles_before',
+                  files: [
+                                'vendor/checkbo/src/0.1.4/css/checkBo.min.css',
+                                'vendor/chosen_v1.4.0/chosen.min.css',
+                                'vendor/angular-xeditable/dist/css/xeditable.css'
+                            ]
+                        },
+                {
+                  files: [
+                                'vendor/checkbo/src/0.1.4/js/checkBo.min.js',
+                                'vendor/chosen_v1.4.0/chosen.jquery.min.js',
+                                'vendor/card/lib/js/jquery.card.js',
+                                'vendor/bootstrap/js/tab.js',
+                                'vendor/jquery-validation/dist/jquery.validate.min.js',
+                                'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
+                                'vendor/angular-xeditable/dist/js/xeditable.js'
+                            ]
+                        }]).then(function () {
+                return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+                      return $ocLazyLoad.load('scripts/services/eosService.js');
+                  });
+                });
+                    }]
+          },
+          data: {
+            title: 'Clusters',
+          }
+        })
+      
 
       .state('app.404', {
           url: '/404',

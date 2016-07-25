@@ -3,11 +3,15 @@
 function eosServiceAPI($http) {
 
   var eosAPI = {};
+    // var url_admin = 'http://eosservicetest2:8000/proc/admin/';
+    // var url_user = 'http://eosservicetest2:8000/proc/user/';
+    var url_admin = 'http://p05614910a92540.cern.ch:8000/proc/admin/';
+    var url_user = 'http://p05614910a92540.cern.ch:8000/proc/user/';
 
     eosAPI.getGroups = function() {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/admin/',
+        url: url_admin,
         params: {
           'mgm.cmd': 'group',
           'mgm.subcmd': 'ls',
@@ -22,7 +26,7 @@ function eosServiceAPI($http) {
     eosAPI.getFileSystems = function() {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/admin/',
+        url: url_admin,
         params: {
           'mgm.cmd': 'fs',
           'mgm.subcmd': 'ls',
@@ -37,7 +41,7 @@ function eosServiceAPI($http) {
     eosAPI.getNodes = function() {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/admin/',
+        url: url_admin,
         params: {
           'mgm.cmd': 'node',
           'mgm.subcmd': 'ls',
@@ -52,7 +56,7 @@ function eosServiceAPI($http) {
     eosAPI.getSpaces = function() {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/admin/',
+        url: url_admin,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'ls',
@@ -67,7 +71,7 @@ function eosServiceAPI($http) {
     eosAPI.getVersion = function() {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/user/',
+        url: url_user,
         params: {
           'mgm.cmd': 'version',
           'mgm.option': 'fm',
@@ -81,7 +85,7 @@ function eosServiceAPI($http) {
     eosAPI.getClientInfo = function() {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/user/',
+        url: url_user,
         params: {
           'mgm.cmd': 'who',
           'mgm.option': 'sm',
@@ -95,7 +99,7 @@ function eosServiceAPI($http) {
     eosAPI.getNsStat = function() {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/admin/',
+        url: url_admin,
         params: {
           'mgm.cmd': 'ns',
           'mgm.subcmd': 'stat',
@@ -110,7 +114,7 @@ function eosServiceAPI($http) {
     eosAPI.getSpaceStatus = function() {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/admin/',
+        url: url_admin,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'status',
@@ -126,7 +130,7 @@ function eosServiceAPI($http) {
     eosAPI.setSpaceQuota = function(spacename, entity) {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/admin/',
+        url: url_admin,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'quota',
@@ -143,7 +147,7 @@ function eosServiceAPI($http) {
     eosAPI.setSpaceConfig = function(spacename, key, value) {
       return $http({
         method: 'JSONP',
-        url: 'http://eosservicetest2:8000/proc/admin/',
+        url: url_admin,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'config',
@@ -157,6 +161,24 @@ function eosServiceAPI($http) {
         }
       });
     };
+
+    eosAPI.getClusterInfo = function(infoType, spacename) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        params: {
+          'mgm.cmd': 'space',
+          'mgm.subcmd': 'node-get',
+          'mgm.space': spacename,
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.format': 'fuse',
+          'callback':'JSON_CALLBACK',
+          'mgm.space.node-get.key': 'kinetic.' + infoType + '.default'
+        }
+      });
+    };
+
 
     return eosAPI;
 }
