@@ -222,8 +222,7 @@ angular
                   insertBefore: '#load_styles_before',
                   files: [
                                 'vendor/checkbo/src/0.1.4/css/checkBo.min.css',
-                                'vendor/chosen_v1.4.0/chosen.min.css',
-                                'vendor/angular-xeditable/dist/css/xeditable.css'
+                                'vendor/chosen_v1.4.0/chosen.min.css'
                             ]
                         },
                 {
@@ -233,8 +232,7 @@ angular
                                 'vendor/card/lib/js/jquery.card.js',
                                 'vendor/bootstrap/js/tab.js',
                                 'vendor/jquery-validation/dist/jquery.validate.min.js',
-                                'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
-                                'vendor/angular-xeditable/dist/js/xeditable.js'
+                                'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js'
                             ]
                         }]).then(function () {
                 return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
