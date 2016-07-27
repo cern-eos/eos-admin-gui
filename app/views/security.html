@@ -1,0 +1,110 @@
+<div data-ng-controller="dashboardCtrl" ui-jq="checkBo">
+  <form id="commentForm" class="form-horizontal" role="form" ui-jq="validate" ui-options="validationOpt">
+    <div class="box-tab justified" id="rootwizard" ui-jq="bootstrapWizard" ui-options="wizardOpt">
+      <ul class="nav nav-tabs">
+        <li><a href="#tab1" data-toggle="tab">Space Details</a>
+        </li>
+        <li><a href="#tab2" data-toggle="tab">Security Details</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <br>
+
+        <div class="tab-pane" id="tab1">
+
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Space Name</label>
+            <div class="col-sm-5">
+              <select class="form-control" ng-model="spaceName" ng-options="space.name as space.name for space in spaces | orderBy:'name'" ng-change="setSpaceName(spaceName)" required>
+                <option style="display:none" value="">Select</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab2">
+          <div class="panel mb25">
+            <div class="panel-body">
+
+              <div class="row no-margin">
+                <form class="form-horizontal bordered-group" role="form">
+                  <div class="form-group">
+                    <h5>Update Security Definition</h5>
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                          <div>
+                            <textarea ng-model="securityJSON" class="form-control" rows="4" placeholder="Ensure that the data format is correct."></textarea>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" nowrap>
+                       <button type="button" class="btn btn-warning btn-sm" ng-click="updateSecurityDefinition(securityJSON)">
+                        <span class="glyphicon glyphicon-upload"></span> Update
+                      </button>
+                      <button type="button" class="btn btn-success btn-sm" ng-click="activateChangedConfig()">
+                        <span class="fa fa-send"></span> Activate
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+                <hr>
+
+              <div class="row no-margin">
+                <div class="col-sm-9">
+                </div>
+                <div class="col-sm-3">
+                  <form class="form-inline pull-right">
+                    <div class="form-group ">
+                        <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                    </div>
+                  </form>
+                </div>
+              </div><br>
+              <table class="table table-bordered bordered table-striped table-condensed datatable">
+                <thead>
+                  <tr>
+                    <th ng-click="sort('wwn')">WWN
+                        <span class="glyphicon sort-icon" ng-show="sortKey=='wwn'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                    </th>
+                    <th ng-click="sort('userId')">UserId
+                        <span class="glyphicon sort-icon" ng-show="sortKey=='userId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                    </th><th ng-click="sort('key')">Key
+                        <span class="glyphicon sort-icon" ng-show="sortKey=='key'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr dir-paginate="row in securityDefinition.security|orderBy:sortKey:reverse|filter:search|itemsPerPage:25">
+                    <td>{{row.wwn}}</td>
+                    <td>{{row.userId}}</td>
+                    <td>{{row.key}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true" >
+                </dir-pagination-controls>
+
+                <!-- <div class="row">
+                  <div class="col-sm-9">
+                  </div>
+                  <div class="col-sm-3">
+                    
+                  </div>
+                </div>    -->
+            </div>
+          </div>
+        </div>
+
+        <div class="wizard-pager">
+          <div class="pull-right">
+            <button type="button" class="btn btn-default button-previous">Previous</button>
+            <button type="button" class="btn btn-primary button-next">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

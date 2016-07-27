@@ -179,6 +179,56 @@ function eosServiceAPI($http) {
       });
     };
 
+    eosAPI.updateCluster = function(infoType, spacename, base64_encoded_json) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        params: {
+          'mgm.cmd': 'space',
+          'mgm.subcmd': 'kinetic-json-store',
+          'mgm.space': spacename,
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'callback':'JSON_CALLBACK',
+          'mgm.space.kinetic-json-store.key': infoType,
+          'mgm.space.kinetic-json-store.val': 'base64:' + base64_encoded_json
+        }
+      });
+    };
+
+    eosAPI.publishCluster = function(infoType, spacename) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        params: {
+          'mgm.cmd': 'space',
+          'mgm.subcmd': 'node-set',
+          'mgm.space': spacename,
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'callback':'JSON_CALLBACK',
+          'mgm.space.node-set.key': 'kinetic.' + infoType + '.default',
+          'mgm.space.node-set.val': 'file:\/var\/eos\/kinetic\/kinetic-' + infoType + '-default.json'
+        }
+      });
+    };
+
+    eosAPI.triggerReload = function(spacename) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        params: {
+          'mgm.cmd': 'space',
+          'mgm.subcmd': 'node-set',
+          'mgm.space': spacename,
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'callback':'JSON_CALLBACK',
+          'mgm.space.node-set.key': 'kinetic.reload',
+          'mgm.space.node-set.val': 'default'
+        }
+      });
+    };
 
     return eosAPI;
 }

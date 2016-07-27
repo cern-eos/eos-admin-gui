@@ -1,5 +1,5 @@
 'use strict';
-function dashboardCtrl($scope, $filter, $http, eosService, COLORS) {
+function dashboardCtrl($scope, $state, $filter, $http, eosService, SweetAlert, COLORS) {
 
 
   $scope.switchQuota = function (value) {
@@ -114,28 +114,76 @@ function dashboardCtrl($scope, $filter, $http, eosService, COLORS) {
 
   //Kinetic Cluster Info
 
-  $scope.loadClusterDefiniton = function (spaceName) {
-    eosService.getClusterInfo('cluster',spaceName).success(function (response) {
-      var value = response[0].space['node-get'][0]['*:'];
-      $scope.clusterDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
-      console.log($scope.clusterDefinition);
-    });
+  $scope.setSpaceName = function (spaceName) {
+
+    $scope.space = spaceName;
+    $scope.loadClusterInfo();
+
   };
 
-  eosService.getClusterInfo('security','default').success(function (response) {
+  $scope.loadClusterInfo = function () {
+
+    eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
+      var value = response[0].space['node-get'][0]['*:'];
+      $scope.clusterDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
+      // console.log($scope.clusterDefinition);
+    });
+
+    eosService.getClusterInfo('security',$scope.space).success(function (response) {
       var value = response[0].space['node-get'][0]['*:'];
       $scope.securityDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
       // console.log($scope.securityDefinition);
     });
 
- 
-
-  eosService.getClusterInfo('location','default').success(function (response) {
+    eosService.getClusterInfo('location',$scope.space).success(function (response) {
       var value = response[0].space['node-get'][0]['*:'];
       $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
       // console.log($scope.locationDefinition);
     });
 
+  };
+
+  $scope.updateClusterDefinition = function (updatedClusterDefinition) {
+    var base64_encoded_json = updatedClusterDefinition;
+    eosService.updateCluster('cluster', $scope.space, btoa(base64_encoded_json)).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+
+  };
+  $scope.updateLocationDefinition = function (updatedLocationDefinition) {
+    var base64_encoded_json = updatedLocationDefinition;
+    eosService.updateCluster('location', $scope.space, btoa(base64_encoded_json)).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    SweetAlert.swal('Success!', 'Updated Location Definition!', 'success');
+    $state.reload();
+
+  };
+  $scope.updateSecurityDefinition = function (updatedSecurityDefinition) {
+    var base64_encoded_json = updatedSecurityDefinition;
+    eosService.updateCluster('security', $scope.space, btoa(base64_encoded_json)).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    SweetAlert.swal('Success!', 'Updated Security Definition!', 'success');
+    $state.reload();
+  };
+
+  $scope.activateChangedConfig = function () { 
+    eosService.publishCluster('cluster', $scope.space).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    eosService.publishCluster('location', $scope.space).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    eosService.publishCluster('security', $scope.space).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    eosService.triggerReload($scope.space).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    SweetAlert.swal('Success!', 'Activated New Configuration!', 'success');
+    $state.reload();
+  };
 
   //Dashboard Tachnometer Options 
   $scope.options1 = {
@@ -242,4 +290,4 @@ function dashboardCtrl($scope, $filter, $http, eosService, COLORS) {
 
 angular
   .module('urbanApp')
-  .controller('dashboardCtrl', ['$scope', '$filter', '$http', 'eosService', 'COLORS', dashboardCtrl]);
+  .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', 'eosService', 'SweetAlert', 'COLORS', dashboardCtrl]);

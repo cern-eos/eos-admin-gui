@@ -62,17 +62,31 @@
     </li>
     <!-- /views -->
 
-
-    <!-- maps -->
-    <li data-ng-class="{open: $state.includes('app.clusters')}">
-      <a ui-sref="app.clusters">
+    <li data-ng-class="{open: $state.includes('app.kineticClusters')}">
+      <a href="javascript:;">
         <span class="label label-success pull-right">2</span>
         <i class="fa fa-cogs"></i>
-        <span>Clusters</span>
-        <!-- https://github.com/cern-eos/kineticio/blob/master/test/localhost.json -->
+        <span>Kinetic Clusters</span>
       </a>
+      <ul class="sub-menu">
+        <li ui-sref-active="active">
+          <a ui-sref="app.kineticClusters.clusters">
+            <span>Clusters</span>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="app.kineticClusters.locations">
+            <span>Locations</span>
+          </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="app.kineticClusters.security">
+            <span>Security</span>
+          </a>
+        </li>
+      </ul>
     </li>
-    <!-- /maps -->
+
 
     <!-- customizer -->
     <!-- <li ui-sref-active="active">

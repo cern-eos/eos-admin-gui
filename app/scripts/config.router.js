@@ -53,7 +53,7 @@ angular
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
                                 'scripts/extentions/bootstrap-datatables.js',
-                                'vendor/jquery.easy-pie-chart/dist/angular.easypiechart.js'
+                                'vendor/jquery.easy-pie-chart/dist/angular.easypiechart.js',
                             ]
                         },
               {
@@ -212,39 +212,133 @@ angular
           }
         })
       
-      .state('app.clusters', {
-          url: '/clusters',
-          templateUrl: 'views/clusters.html',
-          resolve: {
+      .state('app.kineticClusters', {
+          template: '<div ui-view></div>',
+          abstract: true,
+          url: '/kineticClusters',
+        })
+        .state('app.kineticClusters.clusters', {
+            url: '/clusters',
+            templateUrl: 'views/clusters.html',
+            resolve: {
+              deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    insertBefore: '#load_styles_before',
+                    files: [
+                                  'vendor/checkbo/src/0.1.4/css/checkBo.min.css',
+                                  'vendor/chosen_v1.4.0/chosen.min.css',
+                                  'vendor/datatables/media/css/jquery.dataTables.css'
+                              ]
+                          },
+                  {
+                    serie: true,
+                    files: [
+                                'vendor/checkbo/src/0.1.4/js/checkBo.min.js',
+                                'vendor/card/lib/js/jquery.card.js',
+                                'vendor/bootstrap/js/tab.js',
+                                'vendor/jquery-validation/dist/jquery.validate.min.js',
+                                'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
+                                'vendor/chosen_v1.4.0/chosen.jquery.min.js',
+                                'vendor/datatables/media/js/jquery.dataTables.js',
+                                'vendor/angularutils-pagination/dirPagination.js',
+                                'scripts/extentions/bootstrap-datatables.js'
+                              ]
+                          }]).then(function () {
+                  return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+                        return $ocLazyLoad.load('scripts/services/eosService.js');
+                    });
+                  });
+                      }]
+            },
+            data: {
+              title: 'Clusters',
+            }
+          })
+        .state('app.kineticClusters.locations', {
+            url: '/locations',
+            templateUrl: 'views/locations.html',
+            resolve: {
             deps: ['$ocLazyLoad', function ($ocLazyLoad) {
               return $ocLazyLoad.load([
                 {
                   insertBefore: '#load_styles_before',
                   files: [
+                                'vendor/chosen_v1.4.0/chosen.min.css',
                                 'vendor/checkbo/src/0.1.4/css/checkBo.min.css',
-                                'vendor/chosen_v1.4.0/chosen.min.css'
+                                'vendor/datatables/media/css/jquery.dataTables.css',
+                                'vendor/sweetalert/dist/sweetalert.css'
                             ]
                         },
                 {
-                  files: [
+                  serie: true,
+                  name: 'oitozero.ngSweetAlert',
+                  files: [      
                                 'vendor/checkbo/src/0.1.4/js/checkBo.min.js',
-                                'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/card/lib/js/jquery.card.js',
                                 'vendor/bootstrap/js/tab.js',
                                 'vendor/jquery-validation/dist/jquery.validate.min.js',
-                                'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js'
+                                'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
+                                'vendor/chosen_v1.4.0/chosen.jquery.min.js',
+                                'vendor/datatables/media/js/jquery.dataTables.js',
+                                'vendor/angularutils-pagination/dirPagination.js',
+                                'scripts/extentions/bootstrap-datatables.js',
+                                'vendor/sweetalert/dist/sweetalert.min.js',
+                                'vendor/angular-sweetalert/SweetAlert.min.js'
                             ]
                         }]).then(function () {
                 return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
-                      return $ocLazyLoad.load('scripts/services/eosService.js');
-                  });
+                    return $ocLazyLoad.load('scripts/services/eosService.js');
+                    });
                 });
-                    }]
-          },
-          data: {
-            title: 'Clusters',
-          }
-        })
+              }]
+            },
+              data: {
+                title: 'Cluster Locations',
+              }
+          })
+        .state('app.kineticClusters.security', {
+            url: '/security',
+            templateUrl: 'views/security.html',
+            resolve: {
+            deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+              return $ocLazyLoad.load([
+                {
+                  insertBefore: '#load_styles_before',
+                  files: [
+                                'vendor/chosen_v1.4.0/chosen.min.css',
+                                'vendor/checkbo/src/0.1.4/css/checkBo.min.css',
+                                'vendor/datatables/media/css/jquery.dataTables.css',
+                                'vendor/sweetalert/dist/sweetalert.css'
+                            ]
+                        },
+                {
+                  serie: true,
+                  name: 'oitozero.ngSweetAlert',
+                  files: [      
+                                'vendor/checkbo/src/0.1.4/js/checkBo.min.js',
+                                'vendor/card/lib/js/jquery.card.js',
+                                'vendor/bootstrap/js/tab.js',
+                                'vendor/jquery-validation/dist/jquery.validate.min.js',
+                                'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
+                                'vendor/chosen_v1.4.0/chosen.jquery.min.js',
+                                'vendor/datatables/media/js/jquery.dataTables.js',
+                                'vendor/angularutils-pagination/dirPagination.js',
+                                'scripts/extentions/bootstrap-datatables.js',
+                                'vendor/sweetalert/dist/sweetalert.min.js',
+                                'vendor/angular-sweetalert/SweetAlert.min.js'
+                            ]
+                        }]).then(function () {
+                return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+                    return $ocLazyLoad.load('scripts/services/eosService.js');
+                    });
+                });
+              }]
+            },
+            data: {
+              title: 'Cluster Security',
+            }
+          })
       
 
       .state('app.404', {
