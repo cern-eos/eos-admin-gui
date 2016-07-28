@@ -1,5 +1,5 @@
 'use strict';
-function dashboardCtrl($scope, $state, $filter, $http, eosService, SweetAlert, COLORS) {
+function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
 
 
   $scope.switchQuota = function (value) {
@@ -114,19 +114,16 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, SweetAlert, C
 
   //Kinetic Cluster Info
 
-  $scope.setSpaceName = function (spaceName) {
-
-    $scope.space = spaceName;
-    $scope.loadClusterInfo();
-
-  };
-
   $scope.loadClusterInfo = function () {
 
     eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
       var value = response[0].space['node-get'][0]['*:'];
       $scope.clusterDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
-      // console.log($scope.clusterDefinition);
+      $scope.configFormData = {'cacheCapacityMB':$scope.clusterDefinition.configuration.cacheCapacityMB,
+                                'maxBackgroundIoThreads':$scope.clusterDefinition.configuration.maxBackgroundIoThreads,
+                                'maxBackgroundIoQueue':$scope.clusterDefinition.configuration.maxBackgroundIoQueue,
+                                'maxReadaheadWindow':$scope.clusterDefinition.configuration.maxReadaheadWindow
+                              };
     });
 
     eosService.getClusterInfo('security',$scope.space).success(function (response) {
@@ -140,31 +137,48 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, SweetAlert, C
       $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
       // console.log($scope.locationDefinition);
     });
+  };
 
+  $scope.space = 'default';  //ToDO make it space with max clusters..
+  $scope.loadClusterInfo();
+  console.log($scope.space);
+
+  $scope.setSpaceName = function (spaceName) {
+
+    $scope.space = spaceName;
+    $scope.loadClusterInfo();
+    // $scope.$digest();
+    console.log($scope.space);
+    // $state.reload();
+
+  };
+
+   $scope.submitConfig = function () {
+    var clusterJSON = $scope.clusterDefinition;
+    clusterJSON.configuration = $scope.configFormData;
+    $scope.updateClusterDefinition(clusterJSON);
   };
 
   $scope.updateClusterDefinition = function (updatedClusterDefinition) {
-    var base64_encoded_json = updatedClusterDefinition;
-    eosService.updateCluster('cluster', $scope.space, btoa(base64_encoded_json)).success(function (response) {
+    eosService.updateCluster('cluster', $scope.space, btoa(JSON.stringify(updatedClusterDefinition))).success(function (response) {
       console.log(response[0].errormsg);
     });
-
+    $state.reload();
+    console.log('Updating cluster');
   };
   $scope.updateLocationDefinition = function (updatedLocationDefinition) {
-    var base64_encoded_json = updatedLocationDefinition;
-    eosService.updateCluster('location', $scope.space, btoa(base64_encoded_json)).success(function (response) {
+    eosService.updateCluster('location', $scope.space,btoa(JSON.stringify(updatedLocationDefinition))).success(function (response) {
       console.log(response[0].errormsg);
     });
-    SweetAlert.swal('Success!', 'Updated Location Definition!', 'success');
+    console.log('Updating location');
     $state.reload();
 
   };
   $scope.updateSecurityDefinition = function (updatedSecurityDefinition) {
-    var base64_encoded_json = updatedSecurityDefinition;
-    eosService.updateCluster('security', $scope.space, btoa(base64_encoded_json)).success(function (response) {
+    eosService.updateCluster('security', $scope.space, btoa(JSON.stringify(updatedSecurityDefinition))).success(function (response) {
       console.log(response[0].errormsg);
     });
-    SweetAlert.swal('Success!', 'Updated Security Definition!', 'success');
+    console.log('Updating security');
     $state.reload();
   };
 
@@ -181,7 +195,7 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, SweetAlert, C
     eosService.triggerReload($scope.space).success(function (response) {
       console.log(response[0].errormsg);
     });
-    SweetAlert.swal('Success!', 'Activated New Configuration!', 'success');
+    console.log('Activating');
     $state.reload();
   };
 
@@ -253,15 +267,6 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, SweetAlert, C
       namefield: {
         required: true,
         minlength: 3
-      },
-      passwordfield: {
-        required: true,
-        minlength: 6
-      },
-      cpasswordfield: {
-        required: true,
-        minlength: 6,
-        equalTo: '#passwordfield'
       }
     }
   };
@@ -287,7 +292,58 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, SweetAlert, C
 
 }
 
+function ModalDemoCtrl($scope, $modal, $log, eosService) {
+
+  eosService.getClusterInfo('location',$scope.space).success(function (response) {
+    var value = response[0].space['node-get'][0]['*:'];
+    $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
+  });
+
+  // console.log($scope.locationDefinition);
+
+  $scope.open = function (size, driveName) {
+
+    $scope.modalInfo = $scope.locationDefinition.location.filter(function(item) { return item.wwn === driveName; });
+
+    console.log($scope.items);
+    var modalInstance = $modal.open({
+      templateUrl: 'myModalContent.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        items: function () {
+          return $scope.modalInfo;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      $scope.selected = selectedItem;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+}
+
+// Please note that $modalInstance represents a modal window (instance) dependency.
+// It is not the same as the $modal service used above.
+function ModalInstanceCtrl($scope, $modalInstance, items) {
+  $scope.items = items;
+  $scope.selected = {
+    item: 'that item'
+  };
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+}
 
 angular
   .module('urbanApp')
-  .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', 'eosService', 'SweetAlert', 'COLORS', dashboardCtrl]);
+  .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', 'eosService', 'COLORS', dashboardCtrl])
+  .controller('ModalDemoCtrl', ['$scope', '$modal', '$log', 'eosService', ModalDemoCtrl])
+  .controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'items', ModalInstanceCtrl]);

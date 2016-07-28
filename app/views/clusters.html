@@ -1,172 +1,270 @@
-<div data-ng-controller="dashboardCtrl" ui-jq="checkBo">
-  <form id="commentForm" class="form-horizontal" role="form" ui-jq="validate" ui-options="validationOpt">
-    <div class="box-tab justified" id="rootwizard" ui-jq="bootstrapWizard" ui-options="wizardOpt">
-      <ul class="nav nav-tabs">
-        <li><a href="#tab1" data-toggle="tab">Space Details</a>
-        </li>
-        <li><a href="#tab2" data-toggle="tab">Clusters</a>
-        </li>
-        <li><a href="#tab3" data-toggle="tab">Locations</a>
-        </li>
-        <li><a href="#tab4" data-toggle="tab">Register</a>
-        </li>
-      </ul>
+<div data-ng-controller="dashboardCtrl">
 
-      <div class="tab-content">
-        <br>
-        <div class="tab-pane" id="tab1">
+  <div class="row mb25">
+      <div class="form-group">
+      <label class="col-sm-2 control-label"><h5>Space</h5></label>
+      <div class="col-sm-3">
+        <select class="form-control" ng-model="spaceName" ng-options="space.name as space.name for space in spaces | orderBy:'name'" ng-change="setSpaceName(spaceName)" required>
+          <option style="display:none" value="">{{space}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
 
-          <div class="form-group">
-            <label class="col-sm-4 control-label">Space Name</label>
-            <div class="col-sm-5">
-              <select class="form-control" ng-model="spaceName" ng-options="space.name as space.name for space in spaces | orderBy:'name'" ng-change="setSpaceName(spaceName)" required>
-                <option style="display:none" value="">Select</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" id="tab2">
+  <div class="row mb25">
+    <div class="col-sm-12">
+      <tabset class="box-tab">
+        <tab heading="Library Configuration">
           <div class="panel mb25">
-            <div class="panel-heading border">
-              Configuration
-            </div>
             <div class="panel-body">
               <div class="row no-margin">
                 <div class="col-lg-12">
-                  <form class="form-horizontal bordered-group" role="form">
+                  <form class="form-horizontal bordered-group" ng-submit="submitConfig()" role="form">
 
                     <div class="form-group">
+                      <div class="col-sm-3"></div>
                       <label class="col-sm-3 control-label">Cache Capacity (in MB)</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" placeholder="{{clusterDefinition.configuration.cacheCapacityMB}}" value="{{clusterDefinition.configuration.cacheCapacityMB}}">
+                      <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="configFormData.cacheCapacityMB" placeholder="{{clusterDefinition.configuration.cacheCapacityMB}}">
                       </div>
                     </div>
                     <div class="form-group">
+                      <div class="col-sm-3"></div>
                       <label class="col-sm-3 control-label">Max. Backgound IO Threads</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" value="{{clusterDefinition.configuration.maxBackgroundIoThreads}}" placeholder="{{clusterDefinition.configuration.maxBackgroundIoThreads}}">
+                      <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="configFormData.maxBackgroundIoThreads" placeholder="{{clusterDefinition.configuration.maxBackgroundIoThreads}}">
                       </div>
                     </div>
                     <div class="form-group">
+                      <div class="col-sm-3"></div>
                       <label class="col-sm-3 control-label">Max. Background IO Queue</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" value="{{clusterDefinition.configuration.maxBackgroundIoQueue}}" placeholder="{{clusterDefinition.configuration.maxBackgroundIoQueue}}">
+                      <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="configFormData.maxBackgroundIoQueue" placeholder="{{clusterDefinition.configuration.maxBackgroundIoQueue}}">
                       </div>
                     </div>
                     <div class="form-group">
+                      <div class="col-sm-3"></div>
                       <label class="col-sm-3 control-label">Max. Read Ahead Window</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" value="{{clusterDefinition.configuration.maxReadaheadWindow}}" placeholder="{{clusterDefinition.configuration.maxReadaheadWindow}}">
+                      <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="configFormData.maxReadaheadWindow" placeholder="{{clusterDefinition.configuration.maxReadaheadWindow}}">
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label class="col-sm-2 control-label">Disabled input</label>
-                      <div class="col-sm-10">
-                        <input class="form-control" type="text" placeholder="Disabled input here" disabled="">
-                      </div>
+                    <div class="pull-right">
+                      <input type="submit" class="btn btn-primary btn-sm" id="submitConfig" value="Update" />
+                      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
                     </div>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="panel mb25">
-            <div class="panel-heading border">
-              Clusters
-            </div>
-            <div class="panel-body">
-
-            </div>
-          </div>
-                   
-        </div>
-
-        <div class="tab-pane" id="tab3">
-          <div class="panel mb25">
-            <div class="panel-body">
-
-              <div class="row no-margin">
-                <form class="form-horizontal bordered-group" role="form">
-                  <div class="form-group">
-                    <h5>Update Location Definition</h5>
-                    <div class="col-sm-9">
-                        <div class="form-group">
-                          <div>
-                            <textarea ng-model="locationJSON" class="form-control" rows="4" placeholder="Ensure that the data format is correct."></textarea>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3" nowrap>
-                       <button type="button" class="btn btn-warning btn-sm" ng-click="updateLocationDefinition(locationJSON)">
-                        <span class="glyphicon glyphicon-upload"></span> Update
-                      </button>
-                      <button type="button" class="btn btn-success btn-sm" ng-click="activateChangedConfig()">
-                        <span class="fa fa-send"></span> Activate
-                      </button>
-                    </div>
+        </tab>
+        <tab heading="Clusters">
+          <div class="panel-body">
+            <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
+            <div class="row">
+              <div class="col-sm-9">
+              </div>
+              <div class="col-sm-3">
+                <form class="form-inline pull-right">
+                  <div class="form-group ">
+                      <input type="text" ng-model="search" class="form-control" placeholder="Search">
                   </div>
                 </form>
               </div>
-
-                <hr>
-
-              <div class="row no-margin">
-                <div class="col-sm-9">
-                  <h5>Current Location Definition</h5>
-                </div>
-                <div class="col-sm-3">
-                  <form class="form-inline pull-right">
-                    <div class="form-group ">
-                        <input type="text" ng-model="search" class="form-control" placeholder="Search">
-                    </div>
-                  </form>
-                </div>
-              </div><br>
-              <table class="table table-bordered bordered table-striped table-condensed datatable">
-                <thead>
-                  <tr>
-                    <th ng-click="sort('wwn')">WWN
-                        <span class="glyphicon sort-icon" ng-show="sortKey=='wwn'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                    </th>
-                    <th ng-click="sort('port')">Port
-                        <span class="glyphicon sort-icon" ng-show="sortKey=='port'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr dir-paginate="location in locationDefinition.location|orderBy:sortKey:reverse|filter:search|itemsPerPage:25">
-                    <td>{{location.wwn}}</td>
-                    <td>{{location.port}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true" >
-                </dir-pagination-controls>
-
-                <!-- <div class="row">
-                  <div class="col-sm-9">
-                  </div>
-                  <div class="col-sm-3">
-                    
-                  </div>
-                </div>    -->
             </div>
-          </div>
-        </div>
+            <br>
+            <table class="table table-bordered bordered table-striped table-condensed datatable">
+              <thead>
 
-        <div class="tab-pane" id="tab4">
-          Congratulations your account has been created
-        </div>
+                <tr>
+                  <th ng-click="sort('clusterID')">Name
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='clusterID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('drives.length')">Drives
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='drives.length'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('numData')">Data
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='numData'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('numParity')">Parity
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='numParity'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('chunkSizeKB')">Chunk
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='chunkSizeKB'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('timeout')">Timeout
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='timeout'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('minReconnectInterval')">Connect
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='minReconnectInterval'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('clusterID')">Failed Drives*
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='clusterID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('clusterID')">Indicator*
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='clusterID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="cluster in clusterDefinition.cluster|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
+                  <td>{{cluster.clusterID}}</td>
+                  <td>{{cluster.drives.length}}</td>
+                  <td>{{cluster.numData}}</td>
+                  <td>{{cluster.numParity}}</td>
+                  <td>{{cluster.chunkSizeKB}} KB</td>
+                  <td>{{cluster.timeout}} seconds</td>
+                  <td>{{cluster.minReconnectInterval}} seconds</td>
+                  <td>{{cluster.clusterID}}</td>
+                  <td>{{cluster.clusterID}}</td>
+                  <td>
+                    <form editable-form name="rowformCluster" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
+                      <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
+                        save
+                      </button>
+                      <button type="button" ng-disabled="rowform.$waiting" ng-click="rowformCluster.$cancel()" class="btn btn-default btn-xs">
+                        cancel
+                      </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                      <button class="btn btn-primary btn-xs" ng-click="rowformCluster.$show()">edit</button>
+                      <button class="btn btn-danger btn-xs" ng-click="removeUser($index)">del</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true" >
+              </dir-pagination-controls>
 
-        <div class="wizard-pager">
-          <div class="pull-right">
-            <button type="button" class="btn btn-default button-previous">Previous</button>
-            <button type="button" class="btn btn-primary button-next">Next</button>
+            <!-- <div class="row">
+              <div class="col-sm-9">
+              </div>
+              <div class="col-sm-3">
+                
+              </div>
+            </div>    -->      
           </div>
-        </div>
-        
-      </div>
+        </tab>
+        <tab heading="Drives">
+          <div class="panel-body">
+            <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
+            <div class="row">
+              <div class="col-sm-9">
+              </div>
+              <div class="col-sm-3">
+                <form class="form-inline pull-right">
+                  <div class="form-group ">
+                      <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                  </div>
+                </form>
+              </div>
+            </div>
+            <br>
+            <table class="table table-bordered bordered table-striped table-condensed datatable">
+              <thead>
+                <tr>
+                  <th ng-click="sort('wwn')">WWN
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='wwn'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('inet4[0]')">ETH0
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='inet4[0]'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('inet4[1]')">ETH1
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='inet4[1]'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th ng-click="sort('port')">Port
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='port'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
+                  <th>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="drive in locationDefinition.location|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
+                  <td>{{drive.wwn}}</td>
+                  <td>{{drive.inet4[0]}}</td>
+                  <td>{{drive.inet4[1]}}</td>
+                  <td>{{drive.port}}</td>
+                  <td>
+                    <form editable-form name="rowformDrive" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
+                      <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
+                        save
+                      </button>
+                      <button type="button" ng-disabled="rowform.$waiting" ng-click="rowformDrive.$cancel()" class="btn btn-default btn-xs">
+                        cancel
+                      </button>
+                    </form>
+                    <div class="buttons" ng-controller="ModalDemoCtrl" ng-show="!rowform.$visible">
+                      <button class="btn btn-primary btn-xs" ng-click="open('', drive.wwn)">edit</button>
+                      <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+                      <button class="btn btn-danger btn-xs" ng-click="removeUser($index)">del</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true" >
+              </dir-pagination-controls>
+
+            <!-- <div class="row">
+              <div class="col-sm-9">
+              </div>
+              <div class="col-sm-3">
+                
+              </div>
+            </div>    -->      
+          </div>
+        </tab>
+      </tabset>
     </div>
-  </form>
+  </div>
+
 </div>
+
+
+<script type="text/ng-template" id="myModalContent.html">
+  <div class="modal-header">
+    <h3 class="modal-title"> Edit Drive</h3>
+  </div>
+  <div class="modal-body">
+    <div class="panel-body">
+      <form class="form-horizontal bordered-group" role="form">
+
+        <div class="form-group">
+          <label class="col-sm-3 control-label">WWN</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" placeholder="{{items[0].wwn}}" value="{{items[0].wwn}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">ETH0</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" value="{{items[0].inet4[0]}}" placeholder="{{items[0].inet4[0]}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">ETH1</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" value="{{items[0].inet4[1]}}" placeholder="{{items[0].inet4[1]}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Port</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" value="{{items[0].port}}" placeholder="{{items[0].port}}">
+          </div>
+        </div>
+      </form>
+    </div>
+      // <li ng-repeat="item in items">
+      //   <a ng-click="selected.item = item">{{ item }}</a>
+      // </li>
+    Selected: <b>{{ selected.item }}</b>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm" ng-click="ok()">Update</button>
+    <button class="btn btn-warning btn-sm" ng-click="cancel()">Cancel</button>
+  </div>
+</script>

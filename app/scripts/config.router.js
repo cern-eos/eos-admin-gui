@@ -297,48 +297,48 @@ angular
                 title: 'Cluster Locations',
               }
           })
-        .state('app.kineticClusters.security', {
-            url: '/security',
-            templateUrl: 'views/security.html',
-            resolve: {
-            deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-              return $ocLazyLoad.load([
-                {
-                  insertBefore: '#load_styles_before',
-                  files: [
-                                'vendor/chosen_v1.4.0/chosen.min.css',
-                                'vendor/checkbo/src/0.1.4/css/checkBo.min.css',
-                                'vendor/datatables/media/css/jquery.dataTables.css',
-                                'vendor/sweetalert/dist/sweetalert.css'
-                            ]
-                        },
-                {
-                  serie: true,
-                  name: 'oitozero.ngSweetAlert',
-                  files: [      
-                                'vendor/checkbo/src/0.1.4/js/checkBo.min.js',
-                                'vendor/card/lib/js/jquery.card.js',
-                                'vendor/bootstrap/js/tab.js',
-                                'vendor/jquery-validation/dist/jquery.validate.min.js',
-                                'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
-                                'vendor/chosen_v1.4.0/chosen.jquery.min.js',
-                                'vendor/datatables/media/js/jquery.dataTables.js',
-                                'vendor/angularutils-pagination/dirPagination.js',
-                                'scripts/extentions/bootstrap-datatables.js',
-                                'vendor/sweetalert/dist/sweetalert.min.js',
-                                'vendor/angular-sweetalert/SweetAlert.min.js'
-                            ]
-                        }]).then(function () {
-                return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
-                    return $ocLazyLoad.load('scripts/services/eosService.js');
-                    });
-                });
-              }]
-            },
-            data: {
-              title: 'Cluster Security',
-            }
-          })
+        // .state('app.kineticClusters.security', {
+        //     url: '/security',
+        //     templateUrl: 'views/security.html',
+        //     resolve: {
+        //     deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+        //       return $ocLazyLoad.load([
+        //         {
+        //           insertBefore: '#load_styles_before',
+        //           files: [
+        //                         'vendor/chosen_v1.4.0/chosen.min.css',
+        //                         'vendor/checkbo/src/0.1.4/css/checkBo.min.css',
+        //                         'vendor/datatables/media/css/jquery.dataTables.css',
+        //                         'vendor/sweetalert/dist/sweetalert.css'
+        //                     ]
+        //                 },
+        //         {
+        //           serie: true,
+        //           name: 'oitozero.ngSweetAlert',
+        //           files: [      
+        //                         'vendor/checkbo/src/0.1.4/js/checkBo.min.js',
+        //                         'vendor/card/lib/js/jquery.card.js',
+        //                         'vendor/bootstrap/js/tab.js',
+        //                         'vendor/jquery-validation/dist/jquery.validate.min.js',
+        //                         'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
+        //                         'vendor/chosen_v1.4.0/chosen.jquery.min.js',
+        //                         'vendor/datatables/media/js/jquery.dataTables.js',
+        //                         'vendor/angularutils-pagination/dirPagination.js',
+        //                         'scripts/extentions/bootstrap-datatables.js',
+        //                         'vendor/sweetalert/dist/sweetalert.min.js',
+        //                         'vendor/angular-sweetalert/SweetAlert.min.js'
+        //                     ]
+        //                 }]).then(function () {
+        //         return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+        //             return $ocLazyLoad.load('scripts/services/eosService.js');
+        //             });
+        //         });
+        //       }]
+        //     },
+        //     data: {
+        //       title: 'Cluster Security',
+        //     }
+        //   })
       
 
       .state('app.404', {
