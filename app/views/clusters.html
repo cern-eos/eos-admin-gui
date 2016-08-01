@@ -128,8 +128,8 @@
                         cancel
                       </button>
                     </form>
-                    <div class="buttons" ng-show="!rowform.$visible">
-                      <button class="btn btn-primary btn-xs" ng-click="rowformCluster.$show()">edit</button>
+                    <div class="buttons" ng-controller="ModalDemoCtrl" ng-show="!rowform.$visible">
+                      <button class="btn btn-primary btn-xs" ng-click="openClusterUpdateModal('', cluster.clusterID)">edit</button>
                       <button class="btn btn-danger btn-xs" ng-click="removeUser($index)">del</button>
                     </div>
                   </td>
@@ -197,7 +197,7 @@
                       </button>
                     </form>
                     <div class="buttons" ng-controller="ModalDemoCtrl" ng-show="!rowform.$visible">
-                      <button class="btn btn-primary btn-xs" ng-click="open('', drive.wwn)">edit</button>
+                      <button class="btn btn-primary btn-xs" ng-click="openDriveUpdateModal('', drive.wwn)">edit</button>
                       <div ng-show="selected">Selection from a modal: {{ selected }}</div>
                       <button class="btn btn-danger btn-xs" ng-click="removeUser($index)">del</button>
                     </div>
@@ -224,47 +224,105 @@
 </div>
 
 
-<script type="text/ng-template" id="myModalContent.html">
+<script type="text/ng-template" id="clusterUpdateModal.html">
+  <div class="modal-header">
+    <h3 class="modal-title"> Edit Cluster</h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="submitClusterUpdate()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Cluster ID</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.clusterID" placeholder="{{formData.clusterID}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Data</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.numData" placeholder="{{formData.numData}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Parity</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.numParity" placeholder="{{formData.numParity}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Chunk</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.chunkSizeKB" placeholder="{{formData.chunkSizeKB}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Timeout</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.timeout" placeholder="{{formData.timeout}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Reconnect Interval</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.minReconnectInterval" placeholder="{{formData.minReconnectInterval}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Drives</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.drives.length" placeholder="{{formData.drives.length}}">
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="submitClusterUpdate" value="Update" />
+      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
+      <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel</button>
+    </div>
+  </form>
+  
+</script>
+
+<script type="text/ng-template" id="driveUpdateModal.html">
   <div class="modal-header">
     <h3 class="modal-title"> Edit Drive</h3>
   </div>
-  <div class="modal-body">
-    <div class="panel-body">
-      <form class="form-horizontal bordered-group" role="form">
-
+  <form class="form-horizontal bordered-group" ng-submit="submitDriveUpdate()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
         <div class="form-group">
           <label class="col-sm-3 control-label">WWN</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" placeholder="{{items[0].wwn}}" value="{{items[0].wwn}}" disabled="">
+            <input type="text" class="form-control" ng-model="formData.wwn" placeholder="{{formData.wwn}}" disabled="">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">ETH0</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" value="{{items[0].inet4[0]}}" placeholder="{{items[0].inet4[0]}}">
+            <input type="text" class="form-control" ng-model="formData.inet4[0]" placeholder="{{formData.inet4[0]}}">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">ETH1</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" value="{{items[0].inet4[1]}}" placeholder="{{items[0].inet4[1]}}">
+            <input type="text" class="form-control" ng-model="formData.inet4[1]" placeholder="{{formData.inet4[1]}}">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">Port</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" value="{{items[0].port}}" placeholder="{{items[0].port}}">
+            <input type="text" class="form-control" ng-model="formData.port" placeholder="{{formData.port}}">
           </div>
-        </div>
-      </form>
+        </div>      
+      </div>
     </div>
-      // <li ng-repeat="item in items">
-      //   <a ng-click="selected.item = item">{{ item }}</a>
-      // </li>
-    Selected: <b>{{ selected.item }}</b>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary btn-sm" ng-click="ok()">Update</button>
-    <button class="btn btn-warning btn-sm" ng-click="cancel()">Cancel</button>
-  </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="submitDriveUpdate" value="Update" />
+      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
+      <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel</button>
+    </div>
+  </form>
+  
 </script>

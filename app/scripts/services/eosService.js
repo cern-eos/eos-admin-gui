@@ -230,6 +230,13 @@ function eosServiceAPI($http) {
       });
     };
 
+    eosAPI.updateConfig = function(spacename) {
+      eosAPI.publishCluster('cluster', spacename);
+      eosAPI.publishCluster('location', spacename);
+      eosAPI.publishCluster('security', spacename);
+      eosAPI.triggerReload(spacename);
+    };
+
     return eosAPI;
 }
 
