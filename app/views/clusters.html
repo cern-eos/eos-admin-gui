@@ -1,13 +1,23 @@
 <div data-ng-controller="dashboardCtrl">
 
   <div class="row mb25">
-      <div class="form-group">
+    <div class="form-group">
       <label class="col-sm-2 control-label"><h5>Space</h5></label>
       <div class="col-sm-3">
         <select class="form-control" ng-model="spaceName" ng-options="space.name as space.name for space in spaces | orderBy:'name'" ng-change="setSpaceName(spaceName)" required>
           <option style="display:none" value="">{{space}}</option>
         </select>
       </div>
+    </div>
+    <div class="pull-right" ng-controller="ModalDemoCtrl">
+      <button class="btn btn-sm btn-info btn-icon mr5" ng-click="openNewClusterModal('lg')"> 
+        <i class="fa fa-send"></i> 
+         <span>Add New Cluster</span>
+      </button>
+      <button class="btn btn-sm btn-primary btn-icon mr5" ng-click="openNewClusterModal('lg')"> 
+        <i class="fa fa-exclamation-triangle"></i> 
+         <span>Set Security</span>
+      </button>
     </div>
   </div>
 
@@ -90,7 +100,7 @@
                   <th ng-click="sort('numParity')">Parity
                       <span class="glyphicon sort-icon" ng-show="sortKey=='numParity'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
-                  <th ng-click="sort('chunkSizeKB')">Chunk
+                  <th ng-click="sort('chunkSizeKB')">Chunk Size
                       <span class="glyphicon sort-icon" ng-show="sortKey=='chunkSizeKB'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
                   <th ng-click="sort('timeout')">Timeout
@@ -250,7 +260,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="col-sm-3 control-label">Chunk</label>
+          <label class="col-sm-3 control-label">Chunk Size</label>
           <div class="col-sm-9">
             <input type="text" class="form-control" ng-model="formData.chunkSizeKB" placeholder="{{formData.chunkSizeKB}}" disabled="">
           </div>
@@ -278,6 +288,89 @@
     </div>
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary btn-sm" id="submitClusterUpdate" value="Update" />
+      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
+      <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel</button>
+    </div>
+  </form>
+  
+</script>
+
+<script type="text/ng-template" id="newClusterModal.html">
+  <div class="modal-header">
+    <h3 class="modal-title"> Add Cluster</h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="addNewCluster()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Cluster ID</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="formData.clusterID" placeholder="This must be unique.">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Data</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="formData.numData" placeholder="numData">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Parity</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="formData.numParity" placeholder="numParity">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Chunk Size</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="formData.chunkSizeKB" placeholder="in KB">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Timeout</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="formData.timeout" placeholder="in seconds">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Reconnect Interval</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="formData.minReconnectInterval" placeholder="in seconds">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Drives</label>
+          <div class="col-sm-6">
+            <select multiple class="form-control" ng-model="formData.drives">
+              <option value="{{drive.wwn}}" ng-repeat="drive in locationDefinition.location | orderBy:'wwn'">
+                  {{drive.wwn}} | {{drive.inet4[0]}} | {{drive.inet4[1]}} | {{drive.port}}
+              </option>
+            </select>
+          </div>
+          <div class="col-sm-4">
+            <div class="input-group mb15">
+              <span class="input-group-addon">
+                  <input type="checkbox" ng-model="formData.automaticSelection">
+              </span>
+              <input type="text" ng-model="formData.numDrives" placeholder="Choose Drives Automatically" class="form-control">
+            </div>
+
+            <div class="input-group mb15">
+              <span class="input-group-addon">
+                  <input type="checkbox" ng-model="formData.sharing">
+              </span>
+              <input type="text" ng-model="formData.numShare" placeholder="Allow Sharing Among Drives" class="form-control">
+            </div>
+
+          </div>
+        </div>
+
+        // {{formData}}
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="addNewCluster" value="Add" />
       <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
       <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel</button>
     </div>

@@ -67,6 +67,7 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
 
   eosService.getFileSystems().success(function (response) {
       $scope.fileSystems = response[0].fs.ls;
+      // console.log($scope.fileSystems);
     });
 
   eosService.getNodes().success(function (response) {
@@ -310,6 +311,48 @@ function ModalDemoCtrl($scope, $modal, $log, eosService) {
     });
   };
 
+  
+
+  $scope.openNewClusterModal = function (size) {
+
+    eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
+      var value = response[0].space['node-get'][0]['*:'];
+      $scope.clusterDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1))); //changed original
+    });
+
+    $scope.formData = {'clusterID': '',
+                          'numData': '',
+                          'numParity': '',
+                          'chunkSizeKB': '',
+                          'minReconnectInterval': '',
+                          'timeout': '',
+                          'drives': [],
+                          'automaticSelection': false,
+                          'numDrives': '',
+                          'sharing': false,
+                          'numShare':''
+                        };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'newClusterModal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return $scope.clusterDefinition;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
+
+
   $scope.openClusterUpdateModal = function (size, clusterID) {
 
     eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
@@ -346,7 +389,6 @@ function ModalDemoCtrl($scope, $modal, $log, eosService) {
     });
   };
 
-
 }
 
 // Please note that $modalInstance represents a modal window (instance) dependency.
@@ -354,6 +396,10 @@ function ModalDemoCtrl($scope, $modal, $log, eosService) {
 function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, originalItem, space, eosService) {
   $scope.formData = updatedItem;
   $scope.space = space;
+  eosService.getClusterInfo('location',$scope.space).success(function (response) {
+      var value = response[0].space['node-get'][0]['*:'];
+      $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
+    });
 
   $scope.submitDriveUpdate = function () {
     var driveJSON = originalItem;
@@ -388,10 +434,42 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     $state.reload();
   };
 
+  $scope.addNewCluster = function () {
+    var newClusterJSON = {};
+    newClusterJSON.numData = parseInt(updatedItem.numData);
+    newClusterJSON.numParity = parseInt(updatedItem.numParity);
+    newClusterJSON.chunkSizeKB = parseInt(updatedItem.chunkSizeKB);
+    newClusterJSON.minReconnectInterval = parseInt(updatedItem.minReconnectInterval);
+    newClusterJSON.timeout = parseInt(updatedItem.timeout);
+    newClusterJSON.drives = [];
+    var i;
+    var drives = $scope.locationDefinition.location;
+    if (updatedItem.automaticSelection === true) {
+      for ( i = 0; i < updatedItem.numDrives; ++i) {
+        newClusterJSON.drives.push({'wwn': drives[Math.floor(Math.random() * (drives.length))].wwn});
+      }
+    }
+    else {
+      for ( i = 0; i < newClusterJSON.drives.length; ++i) {
+        newClusterJSON.drives.push({'wwn': updatedItem.drives[i]});
+      }
+    }
+    
+    console.log('I am here');
+    originalItem.cluster.push(newClusterJSON);
+    originalItem = btoa(JSON.stringify(originalItem));
+
+    eosService.updateCluster('cluster', $scope.space, originalItem).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    $state.reload();
+  };
+
+
   $scope.activateChangedConfig = function () {
     eosService.updateConfig($scope.space);
     $state.reload();
-    // $modalInstance.dismiss('cancel');
+    $modalInstance.dismiss('cancel');
   };
 
   $scope.cancel = function () {
