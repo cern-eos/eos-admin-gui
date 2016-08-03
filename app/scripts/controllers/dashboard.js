@@ -67,7 +67,6 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
 
   eosService.getFileSystems().success(function (response) {
       $scope.fileSystems = response[0].fs.ls;
-      // console.log($scope.fileSystems);
     });
 
   eosService.getNodes().success(function (response) {
@@ -125,6 +124,22 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
                                 'maxBackgroundIoQueue':$scope.clusterDefinition.configuration.maxBackgroundIoQueue,
                                 'maxReadaheadWindow':$scope.clusterDefinition.configuration.maxReadaheadWindow
                               };
+
+      $scope.extraClusterInfo = $scope.clusterDefinition;
+      var i; var j;
+      for ( i = 0; i < $scope.extraClusterInfo.cluster.length; ++i) {
+        var clusterName = $scope.extraClusterInfo.cluster[i].clusterID;
+        $scope.extraClusterInfo.cluster[i].failedDrives = 'Not Available';
+        $scope.extraClusterInfo.cluster[i].indicator = 'Not Available';
+        for ( j = 0; j < $scope.fileSystems.length; ++j) {
+          if ($scope.fileSystems[j].path.indexOf(clusterName) !== -1) {
+            $scope.extraClusterInfo.cluster[i].failedDrives = $scope.fileSystems[j].stat.health.drives_failed;
+            $scope.extraClusterInfo.cluster[i].indicator = $scope.fileSystems[j].stat.health.indicator;
+            break;
+          }
+        }
+      }
+
     });
 
     eosService.getClusterInfo('security',$scope.space).success(function (response) {
@@ -368,9 +383,13 @@ function ModalDemoCtrl($scope, $modal, $log, eosService) {
                           'chunkSizeKB': $scope.modalInfo[0].chunkSizeKB,
                           'minReconnectInterval': $scope.modalInfo[0].minReconnectInterval,
                           'timeout': $scope.modalInfo[0].timeout,
-                          'drives': $scope.modalInfo[0].drives
+                          'drives': []
                         };
-
+    var i;
+    for ( i = 0; i < $scope.modalInfo[0].drives.length; ++i) {
+        $scope.formData.drives.push($scope.modalInfo[0].drives[i].wwn);
+    }
+    
     var modalInstance = $modal.open({
       templateUrl: 'clusterUpdateModal.html',
       controller: 'ModalInstanceCtrl',
@@ -436,6 +455,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
 
   $scope.addNewCluster = function () {
     var newClusterJSON = {};
+    newClusterJSON.clusterID = updatedItem.clusterID;
     newClusterJSON.numData = parseInt(updatedItem.numData);
     newClusterJSON.numParity = parseInt(updatedItem.numParity);
     newClusterJSON.chunkSizeKB = parseInt(updatedItem.chunkSizeKB);
@@ -455,7 +475,6 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
       }
     }
     
-    console.log('I am here');
     originalItem.cluster.push(newClusterJSON);
     originalItem = btoa(JSON.stringify(originalItem));
 
@@ -463,10 +482,12 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
       console.log(response[0].errormsg);
     });
     $state.reload();
+    $modalInstance.dismiss('cancel');
   };
 
 
   $scope.activateChangedConfig = function () {
+    console.log('Activating from Modal Scope');
     eosService.updateConfig($scope.space);
     $state.reload();
     $modalInstance.dismiss('cancel');

@@ -18,6 +18,7 @@
         <i class="fa fa-exclamation-triangle"></i> 
          <span>Set Security</span>
       </button>
+      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
     </div>
   </div>
 
@@ -61,7 +62,7 @@
                     </div>
                     <div class="pull-right">
                       <input type="submit" class="btn btn-primary btn-sm" id="submitConfig" value="Update" />
-                      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
+                      <!-- <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button> -->
                     </div>
                   </form>
                 </div>
@@ -109,17 +110,17 @@
                   <th ng-click="sort('minReconnectInterval')">Connect
                       <span class="glyphicon sort-icon" ng-show="sortKey=='minReconnectInterval'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
-                  <th ng-click="sort('clusterID')">Failed Drives*
-                      <span class="glyphicon sort-icon" ng-show="sortKey=='clusterID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  <th ng-click="sort('failedDrives')">Failed Drives
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='failedDrives'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
-                  <th ng-click="sort('clusterID')">Indicator*
-                      <span class="glyphicon sort-icon" ng-show="sortKey=='clusterID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  <th ng-click="sort('indicator')">Indicator
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='indicator'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
                   <th>Edit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr dir-paginate="cluster in clusterDefinition.cluster|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
+                <tr dir-paginate="cluster in extraClusterInfo.cluster|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
                   <td>{{cluster.clusterID}}</td>
                   <td>{{cluster.drives.length}}</td>
                   <td>{{cluster.numData}}</td>
@@ -127,8 +128,8 @@
                   <td>{{cluster.chunkSizeKB}} KB</td>
                   <td>{{cluster.timeout}} seconds</td>
                   <td>{{cluster.minReconnectInterval}} seconds</td>
-                  <td>{{cluster.clusterID}}</td>
-                  <td>{{cluster.clusterID}}</td>
+                  <td>{{cluster.failedDrives}}</td>
+                  <td>{{cluster.indicator}}</td>
                   <td>
                     <form editable-form name="rowformCluster" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
                       <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
@@ -280,7 +281,11 @@
         <div class="form-group">
           <label class="col-sm-3 control-label">Drives</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.drives.length" placeholder="{{formData.drives.length}}">
+            <select multiple class="form-control" ng-model="formData.drives">
+              <option value="{{drive.wwn}}" ng-repeat="drive in locationDefinition.location | orderBy:'wwn'">
+                  {{drive.wwn}} | {{drive.inet4[0]}} | {{drive.inet4[1]}} | {{drive.port}}
+              </option>
+            </select>
           </div>
         </div>
 
@@ -364,15 +369,13 @@
 
           </div>
         </div>
-
-        // {{formData}}
-
+ 
       </div>
     </div>
+
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary btn-sm" id="addNewCluster" value="Add" />
-      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
-      <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel</button> 
     </div>
   </form>
   
