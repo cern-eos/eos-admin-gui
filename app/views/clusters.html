@@ -120,7 +120,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr dir-paginate="cluster in extraClusterInfo.cluster|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
+                <tr dir-paginate="cluster in extraClusterInfo.cluster|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
                   <td>{{cluster.clusterID}}</td>
                   <td>{{cluster.drives.length}}</td>
                   <td>{{cluster.numData}}</td>
@@ -288,7 +288,7 @@
             </select>
           </div>
         </div>
-
+        {{formData}}
       </div>
     </div>
     <div class="modal-footer">
@@ -310,7 +310,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">Cluster ID</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" ng-model="formData.clusterID" placeholder="This must be unique.">
+            <input type="text" class="form-control" ng-model="formData.clusterID" placeholder="This must be unique." required>
           </div>
         </div>
         <div class="form-group">
@@ -346,7 +346,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">Drives</label>
           <div class="col-sm-6">
-            <select multiple class="form-control" ng-model="formData.drives">
+            <select multiple class="form-control" ng-model="formData.drives" ng-required="( formData.drives ? !formData.automaticSelection : formData.automaticSelection)">
               <option value="{{drive.wwn}}" ng-repeat="drive in locationDefinition.location | orderBy:'wwn'">
                   {{drive.wwn}} | {{drive.inet4[0]}} | {{drive.inet4[1]}} | {{drive.port}}
               </option>
@@ -355,7 +355,7 @@
           <div class="col-sm-4">
             <div class="input-group mb15">
               <span class="input-group-addon">
-                  <input type="checkbox" ng-model="formData.automaticSelection">
+                  <input type="checkbox" ng-model="formData.automaticSelection" ng-required="( formData.automaticSelection ? !formData.drives : formData.drives)">
               </span>
               <input type="text" ng-model="formData.numDrives" placeholder="Choose Drives Automatically" class="form-control">
             </div>
@@ -375,7 +375,7 @@
 
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary btn-sm" id="addNewCluster" value="Add" />
-      <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel</button> 
+      <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel ToDo</button> 
     </div>
   </form>
   

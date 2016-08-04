@@ -10,3 +10,5 @@ Once you have all tools and dependencies installed you can use these commands fo
 
 * grunt serve - launches a localhost preview of your app (with Livereload)
 * grunt or grunt build - build an optimized, production-ready version of your app.
+
+In your browser, go to http://localhost:9001/#/
