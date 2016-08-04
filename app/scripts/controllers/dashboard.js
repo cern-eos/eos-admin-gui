@@ -1,5 +1,5 @@
 'use strict';
-function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
+function dashboardCtrl($scope, $state, $filter, $http, SweetAlert, eosService, COLORS) {
 
 
   $scope.switchQuota = function (value) {
@@ -55,6 +55,23 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
 
   $scope.dataTableOpt = {
     'ajax': 'data/datatables-arrays.json'
+  };
+
+  $scope.updateClusterCount = function (locationInfo, clusterInfo) {
+    var i; var j; var k;
+    for ( i = 0; i < locationInfo.length; ++i) {
+      locationInfo[i].clustersAttachedTo = [];
+      for ( j = 0; j < clusterInfo.length; ++j) {
+          var drivesAttached = clusterInfo[j].drives;
+          for ( k = 0; k < drivesAttached.length; ++k) {
+            if(drivesAttached[k].wwn === locationInfo[i].wwn) {
+              locationInfo[i].clustersAttachedTo.push({'clusterID':clusterInfo[j].clusterID});
+            }
+          }
+      }
+    }
+    $scope.locationDefinition.location = locationInfo;
+    console.log('Count Updated');
   };
 
   eosService.getGroups().success(function (response) {
@@ -151,6 +168,8 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
       var value = response[0].space['node-get'][0]['*:'];
       $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
     });
+
+
   };
 
   $scope.space = 'default';  //ToDO make it space with max clusters..
@@ -170,24 +189,7 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
   $scope.submitConfig = function () {
     var clusterJSON = $scope.clusterDefinition;
     clusterJSON.configuration = $scope.configFormData;
-    $scope.updateClusterDefinition(clusterJSON);
-  };
-
-  $scope.updateClusterDefinition = function (updatedClusterDefinition) {
-    eosService.updateCluster('cluster', $scope.space, btoa(JSON.stringify(updatedClusterDefinition))).success(function (response) {
-      console.log(response[0].errormsg);
-    });
-    $state.reload();
-  };
-  $scope.updateLocationDefinition = function (updatedLocationDefinition) {
-    eosService.updateCluster('location', $scope.space,btoa(JSON.stringify(updatedLocationDefinition))).success(function (response) {
-      console.log(response[0].errormsg);
-    });
-    $state.reload();
-
-  };
-  $scope.updateSecurityDefinition = function (updatedSecurityDefinition) {
-    eosService.updateCluster('security', $scope.space, btoa(JSON.stringify(updatedSecurityDefinition))).success(function (response) {
+    eosService.updateCluster('cluster', $scope.space, btoa(angular.toJson(clusterJSON, true))).success(function (response) {
       console.log(response[0].errormsg);
     });
     $state.reload();
@@ -195,8 +197,8 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
 
   $scope.activateChangedConfig = function () { 
     eosService.updateConfig($scope.space);
+    SweetAlert.swal('Published!', 'Now the changes will reflect.', 'success');
     $state.reload();
-
   };
 
   //Dashboard Tachnometer Options 
@@ -257,43 +259,100 @@ function dashboardCtrl($scope, $state, $filter, $http, eosService, COLORS) {
   });
 
   //Clusters
-  $scope.validationOpt = {
-    rules: {
-      emailfield: {
-        required: true,
-        email: true,
-        minlength: 3
+
+  $scope.delCluster = function (clusterID) {
+
+    $scope.clusterToDel = clusterID;
+    SweetAlert.swal({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this cluster!',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: COLORS.danger,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        closeOnConfirm: false,
+        closeOnCancel: true
       },
-      namefield: {
-        required: true,
-        minlength: 3
-      }
-    }
+      function (isConfirm) {
+        var indexToDel = $scope.clusterDefinition.cluster.map(function(e) { return e.clusterID; }).indexOf(clusterID);
+        if (indexToDel > -1) {
+          $scope.clusterDefinition.cluster.splice(indexToDel, 1);
+        }
+        console.log($scope.clusterDefinition);
+
+        eosService.updateCluster('cluster', $scope.space, btoa(angular.toJson($scope.clusterDefinition, true))).success(function (response) {
+          console.log(response[0].errormsg);
+        });
+
+        //Drives will get freed, so update locationDefinition as well
+        $scope.updateClusterCount($scope.locationDefinition.location, $scope.clusterDefinition.cluster);
+        eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).success(function (response) {
+          console.log(response[0].errormsg);
+        });
+
+        swal('Deleted!', 'This cluster has been deleted. Publish Changes!', 'success');
+        $state.reload();
+      });
   };
 
-  $scope.wizardOpt = {
-    tabClass: '',
-    'nextSelector': '.button-next',
-    'previousSelector': '.button-previous',
-    'firstSelector': '.button-first',
-    'lastSelector': '.button-last',
-    onNext: function () {
-      var $valid = angular.element('#commentForm').valid(),
-        $validator;
-      if (!$valid) {
-        $validator.focusInvalid();
-        return false;
-      }
-    },
-    onTabClick: function () {
-      return false;
-    }
+  $scope.delDrive = function (wwn) {
+    $scope.driveToDel = wwn;
+    SweetAlert.swal({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this drive!',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: COLORS.danger,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        closeOnConfirm: false,
+        closeOnCancel: true
+      },
+      function (isConfirm) {
+        var indexToDel = $scope.locationDefinition.location.map(function(e) { return e.wwn; }).indexOf(wwn);
+        if (indexToDel > -1 && isConfirm) {
+          if ($scope.locationDefinition.location[indexToDel].clustersAttachedTo.length > 0){
+            $scope.locationDefinition.location.splice(indexToDel, 1);
+            console.log($scope.locationDefinition);
+            eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).success(function (response) {
+              console.log(response[0].errormsg);
+            });
+            swal('Deleted!', 'This drive has been deleted. Publish Changes!', 'success');
+            $state.reload();
+          }
+          else {
+            swal('Can\'t Delete!', 'This drive is attached to a cluster', 'error');
+          }
+        }
+      });
+    
   };
-
 }
 
-function ModalDemoCtrl($scope, $modal, $log, eosService) {
+function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
+  
+  $scope.openSetSecurityModal = function (size) {
 
+    $scope.formData = {'securityKey': null};
+
+    var modalInstance = $modal.open({
+      templateUrl: 'setSecurity.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return null;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
 
   $scope.openDriveUpdateModal = function (size, driveName) {
 
@@ -305,7 +364,9 @@ function ModalDemoCtrl($scope, $modal, $log, eosService) {
     $scope.modalInfo = $scope.locationDefinition.location.filter(function(item) { return item.wwn === driveName; });
     $scope.formData = {'inet4': [$scope.modalInfo[0].inet4[0], $scope.modalInfo[0].inet4[1]],
                          'wwn': $scope.modalInfo[0].wwn,
-                         'port': $scope.modalInfo[0].port 
+                         'port': $scope.modalInfo[0].port, 
+                         'clustersAttachedTo': $scope.modalInfo[0].clustersAttachedTo,
+                         'securityKey': ''
                         };
 
     var modalInstance = $modal.open({
@@ -326,13 +387,11 @@ function ModalDemoCtrl($scope, $modal, $log, eosService) {
     });
   };
 
-  
-
   $scope.openNewClusterModal = function (size) {
 
     eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
       var value = response[0].space['node-get'][0]['*:'];
-      $scope.clusterDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1))); //changed original
+      $scope.clusterDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
     });
 
     $scope.formData = {'clusterID': '',
@@ -365,8 +424,6 @@ function ModalDemoCtrl($scope, $modal, $log, eosService) {
       }
     });
   };
-
-
 
   $scope.openClusterUpdateModal = function (size, clusterID) {
 
@@ -412,7 +469,7 @@ function ModalDemoCtrl($scope, $modal, $log, eosService) {
 
 // Please note that $modalInstance represents a modal window (instance) dependency.
 // It is not the same as the $modal service used above.
-function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, originalItem, space, eosService) {
+function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, originalItem, space, SweetAlert, eosService) {
   $scope.formData = updatedItem;
   $scope.space = space;
   eosService.getClusterInfo('location',$scope.space).success(function (response) {
@@ -420,20 +477,45 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
       $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
     });
 
+  $scope.setSecurity = function () {
+    var securityJSON = JSON.parse(updatedItem.securityJSON);
+    securityJSON = btoa(angular.toJson(securityJSON, true));
+    eosService.updateCluster('security', $scope.space, securityJSON).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    SweetAlert.swal('Updated!', 'Publish Changes!', 'success');
+    $state.reload();
+    $modalInstance.dismiss('cancel');
+  };
+
   $scope.submitDriveUpdate = function () {
     var driveJSON = originalItem;
     var index = driveJSON.location.map(function(e) { return e.wwn; }).indexOf(updatedItem.wwn);
     updatedItem.port = parseInt(updatedItem.port);
+    var newKey = updatedItem.securityKey;
 
-    $scope.formData = driveJSON.location[index];
+    if(newKey !== ''){
+      eosService.getClusterInfo('security',$scope.space).success(function (response) {
+        var value = response[0].space['node-get'][0]['*:'];
+        $scope.securityDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
+        var indexSecurity = $scope.securityDefinition.security.map(function(e) { return e.wwn; }).indexOf(updatedItem.wwn);
+        $scope.securityDefinition.security[indexSecurity].key = newKey;
+        eosService.updateCluster('security', $scope.space, btoa(angular.toJson($scope.securityDefinition, true))).success(function (response) {
+          console.log(response[0].errormsg);
+        });
+      });
+    }
 
+    $scope.formData = driveJSON.location[index];  //formData set to original
+    delete updatedItem.securityKey;   //securityKey removed from this json
     driveJSON.location[index] = updatedItem;
-    driveJSON = btoa(JSON.stringify(driveJSON));
-
+    driveJSON = btoa(angular.toJson(driveJSON, true));
     eosService.updateCluster('location', $scope.space, driveJSON).success(function (response) {
       console.log(response[0].errormsg);
     });
+    SweetAlert.swal('Updated!', 'Publish Changes!', 'success');
     $state.reload();
+    $modalInstance.dismiss('cancel');
   };
 
   $scope.submitClusterUpdate = function () {
@@ -445,7 +527,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     $scope.formData = clusterJSON.cluster[index];
 
     clusterJSON.cluster[index] = updatedItem;
-    clusterJSON = btoa(JSON.stringify(clusterJSON));
+    clusterJSON = btoa(angular.toJson(clusterJSON, true));
 
     eosService.updateCluster('cluster', $scope.space, clusterJSON).success(function (response) {
       console.log(response[0].errormsg);
@@ -476,7 +558,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     }
     
     originalItem.cluster.push(newClusterJSON);
-    originalItem = btoa(JSON.stringify(originalItem));
+    originalItem = btoa(angular.toJson(originalItem, true));
 
     eosService.updateCluster('cluster', $scope.space, originalItem).success(function (response) {
       console.log(response[0].errormsg);
@@ -486,12 +568,12 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
   };
 
 
-  $scope.activateChangedConfig = function () {
-    console.log('Activating from Modal Scope');
-    eosService.updateConfig($scope.space);
-    $state.reload();
-    $modalInstance.dismiss('cancel');
-  };
+  // $scope.activateChangedConfig = function () {
+  //   console.log('Activating from Modal Scope');
+  //   eosService.updateConfig($scope.space);
+  //   $state.reload();
+  //   $modalInstance.dismiss('cancel');
+  // };
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
@@ -500,6 +582,6 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
 
 angular
   .module('urbanApp')
-  .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', 'eosService', 'COLORS', dashboardCtrl])
-  .controller('ModalDemoCtrl', ['$scope', '$modal', '$log', 'eosService', ModalDemoCtrl])
-  .controller('ModalInstanceCtrl', ['$scope', '$state', '$modalInstance', 'updatedItem', 'originalItem', 'space', 'eosService', ModalInstanceCtrl]);
+  .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', 'SweetAlert', 'eosService', 'COLORS', dashboardCtrl])
+  .controller('ModalDemoCtrl', ['$scope', '$state', '$modal', '$log', 'eosService', ModalDemoCtrl])
+  .controller('ModalInstanceCtrl', ['$scope', '$state', '$modalInstance', 'updatedItem', 'originalItem', 'space', 'SweetAlert', 'eosService', ModalInstanceCtrl]);

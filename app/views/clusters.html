@@ -14,11 +14,11 @@
         <i class="fa fa-send"></i> 
          <span>Add New Cluster</span>
       </button>
-      <button class="btn btn-sm btn-primary btn-icon mr5" ng-click="openNewClusterModal('lg')"> 
+      <button class="btn btn-sm btn-primary btn-icon mr5" ng-click="openSetSecurityModal()"> 
         <i class="fa fa-exclamation-triangle"></i> 
          <span>Set Security</span>
       </button>
-      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
+      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Publish</button>
     </div>
   </div>
 
@@ -131,25 +131,14 @@
                   <td>{{cluster.failedDrives}}</td>
                   <td>{{cluster.indicator}}</td>
                   <td>
-                    <form editable-form name="rowformCluster" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
-                      <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
-                        save
-                      </button>
-                      <button type="button" ng-disabled="rowform.$waiting" ng-click="rowformCluster.$cancel()" class="btn btn-default btn-xs">
-                        cancel
-                      </button>
-                    </form>
-                    <div class="buttons" ng-controller="ModalDemoCtrl" ng-show="!rowform.$visible">
+                    <div class="buttons" ng-controller="ModalDemoCtrl">
                       <button class="btn btn-primary btn-xs" ng-click="openClusterUpdateModal('', cluster.clusterID)">edit</button>
-                      <button class="btn btn-danger btn-xs" ng-click="removeUser($index)">del</button>
+                      <button class="btn btn-danger btn-xs" ng-click="delCluster(cluster.clusterID)">del</button>
                     </div>
                   </td>
                 </tr>
               </tbody>
-            </table>
-            <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true" >
-              </dir-pagination-controls>
-
+            </table>    
             <!-- <div class="row">
               <div class="col-sm-9">
               </div>
@@ -189,6 +178,9 @@
                   <th ng-click="sort('port')">Port
                       <span class="glyphicon sort-icon" ng-show="sortKey=='port'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
+                  <th ng-click="sort('clustersAttachedTo')">#Clusters
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='clustersAttachedTo'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  </th>
                   <th>Edit</th>
                 </tr>
               </thead>
@@ -198,19 +190,12 @@
                   <td>{{drive.inet4[0]}}</td>
                   <td>{{drive.inet4[1]}}</td>
                   <td>{{drive.port}}</td>
+                  <td>{{drive.clustersAttachedTo}}</td>
                   <td>
-                    <form editable-form name="rowformDrive" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
-                      <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
-                        save
-                      </button>
-                      <button type="button" ng-disabled="rowform.$waiting" ng-click="rowformDrive.$cancel()" class="btn btn-default btn-xs">
-                        cancel
-                      </button>
-                    </form>
-                    <div class="buttons" ng-controller="ModalDemoCtrl" ng-show="!rowform.$visible">
+                    <div class="buttons" ng-controller="ModalDemoCtrl">
                       <button class="btn btn-primary btn-xs" ng-click="openDriveUpdateModal('', drive.wwn)">edit</button>
                       <div ng-show="selected">Selection from a modal: {{ selected }}</div>
-                      <button class="btn btn-danger btn-xs" ng-click="removeUser($index)">del</button>
+                      <button class="btn btn-danger btn-xs" ng-click="delDrive(drive.wwn)">del</button>
                     </div>
                   </td>
                 </tr>
@@ -293,7 +278,6 @@
     </div>
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary btn-sm" id="submitClusterUpdate" value="Update" />
-      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
       <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel</button>
     </div>
   </form>
@@ -375,7 +359,6 @@
 
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary btn-sm" id="addNewCluster" value="Add" />
-      <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel ToDo</button> 
     </div>
   </form>
   
@@ -411,13 +394,45 @@
           <div class="col-sm-9">
             <input type="text" class="form-control" ng-model="formData.port" placeholder="{{formData.port}}">
           </div>
-        </div>      
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">#Clusters</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.clustersAttachedTo.length" placeholder="{{formData.clustersAttachedTo.length}}" disabled="">
+          </div>
+        </div> 
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Security Key</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.securityKey" placeholder="Only enter if secuirty key has to be updated.">
+          </div>
+        </div>     
       </div>
     </div>
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary btn-sm" id="submitDriveUpdate" value="Update" />
-      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Activate</button>
-      <button class="btn btn-danger btn-sm" ng-click="cancel()">Cancel</button>
+    </div>
+  </form>
+  
+</script>
+
+<script type="text/ng-template" id="setSecurity.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Set Security</h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="setSecurity()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Security JSON</label>
+          <div class="col-sm-9">
+            <textarea type="text" class="form-control" ng-model="formData.securityJSON" placeholder="Ensure that the JSON format is correct." rows="10"></textarea>
+          </div>
+        </div>    
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="setSecurity" value="Update" />
     </div>
   </form>
   
