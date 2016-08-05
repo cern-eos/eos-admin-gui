@@ -65,13 +65,12 @@ function dashboardCtrl($scope, $state, $filter, $http, SweetAlert, eosService, C
           var drivesAttached = clusterInfo[j].drives;
           for ( k = 0; k < drivesAttached.length; ++k) {
             if(drivesAttached[k].wwn === locationInfo[i].wwn) {
-              locationInfo[i].clustersAttachedTo.push({'clusterID':clusterInfo[j].clusterID});
+              locationInfo[i].clustersAttachedTo.push({'id':clusterInfo[j].clusterID});
             }
           }
       }
     }
     $scope.locationDefinition.location = locationInfo;
-    console.log('Count Updated');
   };
 
   eosService.getGroups().success(function (response) {
@@ -199,6 +198,12 @@ function dashboardCtrl($scope, $state, $filter, $http, SweetAlert, eosService, C
     eosService.updateConfig($scope.space);
     SweetAlert.swal('Published!', 'Now the changes will reflect.', 'success');
     $state.reload();
+    $scope.updateClusterCount($scope.locationDefinition.location, $scope.clusterDefinition.cluster);
+    eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    eosService.updateConfig($scope.space);
+    $state.reload();
   };
 
   //Dashboard Tachnometer Options 
@@ -279,15 +284,8 @@ function dashboardCtrl($scope, $state, $filter, $http, SweetAlert, eosService, C
         if (indexToDel > -1) {
           $scope.clusterDefinition.cluster.splice(indexToDel, 1);
         }
-        console.log($scope.clusterDefinition);
 
         eosService.updateCluster('cluster', $scope.space, btoa(angular.toJson($scope.clusterDefinition, true))).success(function (response) {
-          console.log(response[0].errormsg);
-        });
-
-        //Drives will get freed, so update locationDefinition as well
-        $scope.updateClusterCount($scope.locationDefinition.location, $scope.clusterDefinition.cluster);
-        eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).success(function (response) {
           console.log(response[0].errormsg);
         });
 
@@ -312,9 +310,8 @@ function dashboardCtrl($scope, $state, $filter, $http, SweetAlert, eosService, C
       function (isConfirm) {
         var indexToDel = $scope.locationDefinition.location.map(function(e) { return e.wwn; }).indexOf(wwn);
         if (indexToDel > -1 && isConfirm) {
-          if ($scope.locationDefinition.location[indexToDel].clustersAttachedTo.length > 0){
+          if ($scope.locationDefinition.location[indexToDel].clustersAttachedTo.length === 0){
             $scope.locationDefinition.location.splice(indexToDel, 1);
-            console.log($scope.locationDefinition);
             eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).success(function (response) {
               console.log(response[0].errormsg);
             });
@@ -425,6 +422,35 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
     });
   };
 
+  $scope.openNewDriveModal = function (size) {
+
+    $scope.formData = {'eth0': '',
+                         'eth1': '',
+                         'wwn': '',
+                         'port': '', 
+                         'securityKey': '',
+                         'userID': ''
+                        };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'newDriveModal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return null;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
+
   $scope.openClusterUpdateModal = function (size, clusterID) {
 
     eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
@@ -503,6 +529,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         eosService.updateCluster('security', $scope.space, btoa(angular.toJson($scope.securityDefinition, true))).success(function (response) {
           console.log(response[0].errormsg);
         });
+        // eosService.updateConfig($scope.space);  //Relying on user to activate
       });
     }
 
@@ -544,18 +571,37 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     newClusterJSON.minReconnectInterval = parseInt(updatedItem.minReconnectInterval);
     newClusterJSON.timeout = parseInt(updatedItem.timeout);
     newClusterJSON.drives = [];
-    var i;
+    var i; var drivesAvailable;
     var drives = $scope.locationDefinition.location;
+
     if (updatedItem.automaticSelection === true) {
-      for ( i = 0; i < updatedItem.numDrives; ++i) {
-        newClusterJSON.drives.push({'wwn': drives[Math.floor(Math.random() * (drives.length))].wwn});
+      if (updatedItem.sharing === false) {
+        drivesAvailable = drives.filter(function(item) { return item.clustersAttachedTo.length === 0; });
+      }
+      else {
+        if (updatedItem.numShare > 0) {
+          drivesAvailable = drives.filter(function(item) { return item.clustersAttachedTo.length < updatedItem.numShare; });  
+        }
+        else {
+          drivesAvailable = [];
+        } 
+      }
+      if(drivesAvailable.length >= updatedItem.numDrives) {
+        var index ;
+        for ( i = 0; i < updatedItem.numDrives; ++i) {
+          index = Math.floor(Math.random() * (drivesAvailable.length));
+          newClusterJSON.drives.push({'wwn': drivesAvailable[index].wwn});
+          drivesAvailable.splice(index, 1);
+        }
       }
     }
+
     else {
-      for ( i = 0; i < newClusterJSON.drives.length; ++i) {
+      for ( i = 0; i < updatedItem.drives.length; ++i) {
         newClusterJSON.drives.push({'wwn': updatedItem.drives[i]});
       }
     }
+
     
     originalItem.cluster.push(newClusterJSON);
     originalItem = btoa(angular.toJson(originalItem, true));
@@ -563,17 +609,47 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     eosService.updateCluster('cluster', $scope.space, originalItem).success(function (response) {
       console.log(response[0].errormsg);
     });
+
+    SweetAlert.swal('Added!', 'Publish Changes!', 'success');
     $state.reload();
     $modalInstance.dismiss('cancel');
   };
 
+  $scope.addNewDrive = function () {
+    var newDriveJSON = {};
+    newDriveJSON.wwn = updatedItem.wwn;
+    newDriveJSON.inet4 = [];
+    newDriveJSON.inet4.push(updatedItem.eth0);
+    newDriveJSON.inet4.push(updatedItem.eth1);
+    newDriveJSON.port = parseInt(updatedItem.port);
+    newDriveJSON.clustersAttachedTo = [];
 
-  // $scope.activateChangedConfig = function () {
-  //   console.log('Activating from Modal Scope');
-  //   eosService.updateConfig($scope.space);
-  //   $state.reload();
-  //   $modalInstance.dismiss('cancel');
-  // };
+    var newKey = updatedItem.securityKey;
+    if(newKey !== ''){
+      eosService.getClusterInfo('security',$scope.space).success(function (response) {
+        var value = response[0].space['node-get'][0]['*:'];
+        $scope.securityDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
+        var securityJSON = {};
+        securityJSON.wwn = updatedItem.wwn;
+        securityJSON.userId = parseInt(updatedItem.userID);
+        securityJSON.key = newKey;
+        $scope.securityDefinition.security.push(securityJSON);
+        eosService.updateCluster('security', $scope.space, btoa(angular.toJson($scope.securityDefinition, true))).success(function (response) {
+          console.log(response[0].errormsg);
+        });
+      });
+      // eosService.updateConfig($scope.space);  //Relying on user for activation
+    }
+
+    $scope.locationDefinition.location.push(newDriveJSON);
+    var driveJSON = btoa(angular.toJson($scope.locationDefinition, true));
+    eosService.updateCluster('location', $scope.space, driveJSON).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+    SweetAlert.swal('Added!', 'Publish Changes!', 'success');
+    $state.reload();
+    $modalInstance.dismiss('cancel');
+  };
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
@@ -585,3 +661,5 @@ angular
   .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', 'SweetAlert', 'eosService', 'COLORS', dashboardCtrl])
   .controller('ModalDemoCtrl', ['$scope', '$state', '$modal', '$log', 'eosService', ModalDemoCtrl])
   .controller('ModalInstanceCtrl', ['$scope', '$state', '$modalInstance', 'updatedItem', 'originalItem', 'space', 'SweetAlert', 'eosService', ModalInstanceCtrl]);
+  
+angular.element('head').append('<link rel="stylesheet" href="vendor/jquery.tagsinput/src/jquery.tagsinput.css">');

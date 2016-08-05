@@ -11,14 +11,21 @@
     </div>
     <div class="pull-right" ng-controller="ModalDemoCtrl">
       <button class="btn btn-sm btn-info btn-icon mr5" ng-click="openNewClusterModal('lg')"> 
-        <i class="fa fa-send"></i> 
-         <span>Add New Cluster</span>
+        <i class="fa fa-plus-circle"></i> 
+         <span>Add Cluster</span>
       </button>
-      <button class="btn btn-sm btn-primary btn-icon mr5" ng-click="openSetSecurityModal()"> 
+      <button class="btn btn-sm btn-success btn-icon mr5" ng-click="openNewDriveModal()"> 
+        <i class="fa fa-plus-circle"></i> 
+         <span>Add Drive</span>
+      </button>
+      <button class="btn btn-sm btn-danger btn-icon mr5" ng-click="openSetSecurityModal()"> 
         <i class="fa fa-exclamation-triangle"></i> 
          <span>Set Security</span>
       </button>
-      <button class="btn btn-warning btn-sm" ng-click="activateChangedConfig()">Publish</button>
+      <button class="btn btn-sm btn-warning btn-icon mr5" ng-click="activateChangedConfig()"> 
+        <i class="fa fa-flash"></i> 
+         <span>Publish</span>
+      </button>
     </div>
   </div>
 
@@ -120,7 +127,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr dir-paginate="cluster in extraClusterInfo.cluster|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+                <tr dir-paginate="cluster in extraClusterInfo.cluster|orderBy:sortKey:reverse|filter:search|itemsPerPage:5 track by cluster.clusterID">
                   <td>{{cluster.clusterID}}</td>
                   <td>{{cluster.drives.length}}</td>
                   <td>{{cluster.numData}}</td>
@@ -178,19 +185,19 @@
                   <th ng-click="sort('port')">Port
                       <span class="glyphicon sort-icon" ng-show="sortKey=='port'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
-                  <th ng-click="sort('clustersAttachedTo')">#Clusters
-                      <span class="glyphicon sort-icon" ng-show="sortKey=='clustersAttachedTo'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  <th ng-click="sort('clustersAttachedTo.length')">Clusters
+                      <span class="glyphicon sort-icon" ng-show="sortKey=='clustersAttachedTo.length'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
                   <th>Edit</th>
                 </tr>
               </thead>
               <tbody>
-                <tr dir-paginate="drive in locationDefinition.location|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
+                <tr dir-paginate="drive in locationDefinition.location|orderBy:sortKey:reverse|filter:search|itemsPerPage:10 track by drive.wwn">
                   <td>{{drive.wwn}}</td>
                   <td>{{drive.inet4[0]}}</td>
                   <td>{{drive.inet4[1]}}</td>
                   <td>{{drive.port}}</td>
-                  <td>{{drive.clustersAttachedTo}}</td>
+                  <td>{{drive.clustersAttachedTo | joinBy:clusterID}}</td>
                   <td>
                     <div class="buttons" ng-controller="ModalDemoCtrl">
                       <button class="btn btn-primary btn-xs" ng-click="openDriveUpdateModal('', drive.wwn)">edit</button>
@@ -214,6 +221,7 @@
           </div>
         </tab>
       </tabset>
+
     </div>
   </div>
 
@@ -221,6 +229,7 @@
 
 
 <script type="text/ng-template" id="clusterUpdateModal.html">
+
   <div class="modal-header">
     <h3 class="modal-title"> Edit Cluster</h3>
   </div>
@@ -285,6 +294,7 @@
 </script>
 
 <script type="text/ng-template" id="newClusterModal.html">
+
   <div class="modal-header">
     <h3 class="modal-title"> Add Cluster</h3>
   </div>
@@ -328,32 +338,43 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="col-sm-2 control-label">Drives</label>
-          <div class="col-sm-6">
-            <select multiple class="form-control" ng-model="formData.drives" ng-required="( formData.drives ? !formData.automaticSelection : formData.automaticSelection)">
-              <option value="{{drive.wwn}}" ng-repeat="drive in locationDefinition.location | orderBy:'wwn'">
-                  {{drive.wwn}} | {{drive.inet4[0]}} | {{drive.inet4[1]}} | {{drive.port}}
-              </option>
-            </select>
+
+          <div class="row">
+            <label class="col-sm-2 control-label">Drives</label>
+            <div class="col-sm-10">
+              <select multiple class="form-control" ng-model="formData.drives" ng-required="!(formData.automaticSelection)">
+                <option value="{{drive.wwn}}" ng-repeat="drive in locationDefinition.location | orderBy:'clustersAttachedTo' track by drive.wwn">
+                    {{drive.wwn}} | {{drive.inet4[0]}} | {{drive.inet4[1]}} | {{drive.port}} | {{drive.clustersAttachedTo.length}}
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="col-sm-4">
-            <div class="input-group mb15">
-              <span class="input-group-addon">
-                  <input type="checkbox" ng-model="formData.automaticSelection" ng-required="( formData.automaticSelection ? !formData.drives : formData.drives)">
-              </span>
-              <input type="text" ng-model="formData.numDrives" placeholder="Choose Drives Automatically" class="form-control">
+          <br>
+          <div class="row">
+
+            <label class="col-sm-2 control-label"></label>
+
+            <div class="col-sm-5">
+              <div class="input-group mb15">
+                <span class="input-group-addon">
+                    <input type="checkbox" ng-model="formData.automaticSelection" ng-required="!(formData.drives)">
+                </span>
+                <input type="text" ng-model="formData.numDrives" ng-required="(formData.automaticSelection)" placeholder="Choose drives automatically" class="form-control">
+              </div>
             </div>
 
-            <div class="input-group mb15">
-              <span class="input-group-addon">
-                  <input type="checkbox" ng-model="formData.sharing">
-              </span>
-              <input type="text" ng-model="formData.numShare" placeholder="Allow Sharing Among Drives" class="form-control">
+            <div class="col-sm-5">
+              <div class="input-group mb15">
+                <span class="input-group-addon">
+                    <input type="checkbox" ng-model="formData.sharing">
+                </span>
+                <input type="text" ng-model="formData.numShare" ng-required="(formData.sharing)" placeholder="Allow sharing of drives among these many clusters" class="form-control">
+              </div>
             </div>
 
           </div>
+
         </div>
- 
       </div>
     </div>
 
@@ -363,6 +384,58 @@
   </form>
   
 </script>
+<script type="text/ng-template" id="newDriveModal.html">
+  <div class="modal-header">
+    <h3 class="modal-title"> Add Drive</h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="addNewDrive()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">WWN</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.wwn" placeholder="This must be unique." required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">ETH0</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.eth0" placeholder="ETH0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">ETH1</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.eth1" placeholder="ETH1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Port</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.port" placeholder="Port Number">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">User ID</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.userID" placeholder="userID">
+          </div>
+        </div> 
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Security Key</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.securityKey" placeholder="Key to access the drive" required>
+          </div>
+        </div>     
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="addNewDrive" value="Add" />
+    </div>
+  </form>
+  
+</script>
+
 
 <script type="text/ng-template" id="driveUpdateModal.html">
   <div class="modal-header">

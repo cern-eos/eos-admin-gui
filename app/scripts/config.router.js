@@ -38,11 +38,13 @@ angular
                                 'styles/climacons-font.css',
                                 'vendor/rickshaw/rickshaw.min.css',
                                 'vendor/chosen_v1.4.0/chosen.min.css',
-                                'vendor/datatables/media/css/jquery.dataTables.css'
+                                'vendor/datatables/media/css/jquery.dataTables.css',
+                                'vendor/sweetalert/dist/sweetalert.css'
                             ]
                         },
               {
                 serie: true,
+                name: 'oitozero.ngSweetAlert',
                 files: [
                                 'vendor/d3/d3.min.js',
                                 'vendor/rickshaw/rickshaw.min.js',
@@ -54,6 +56,8 @@ angular
                                 'vendor/datatables/media/js/jquery.dataTables.js',
                                 'scripts/extentions/bootstrap-datatables.js',
                                 'vendor/jquery.easy-pie-chart/dist/angular.easypiechart.js',
+                                'vendor/sweetalert/dist/sweetalert.min.js',
+                                'vendor/angular-sweetalert/SweetAlert.min.js'
                             ]
                         },
               {
@@ -89,16 +93,20 @@ angular
                     insertBefore: '#load_styles_before',
                     files: [
                                   'vendor/chosen_v1.4.0/chosen.min.css',
-                                  'vendor/datatables/media/css/jquery.dataTables.css'
+                                  'vendor/datatables/media/css/jquery.dataTables.css',
+                                  'vendor/sweetalert/dist/sweetalert.css'
                               ]
                           },
                   {
                     serie: true,
+                    name: 'oitozero.ngSweetAlert',
                     files: [
                                   'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                   'vendor/datatables/media/js/jquery.dataTables.js',
                                   'vendor/angularutils-pagination/dirPagination.js',
-                                  'scripts/extentions/bootstrap-datatables.js'
+                                  'scripts/extentions/bootstrap-datatables.js',
+                                  'vendor/sweetalert/dist/sweetalert.min.js',
+                                'vendor/angular-sweetalert/SweetAlert.min.js'
                               ]
                           }]).then(function () {
 
@@ -123,16 +131,20 @@ angular
                   insertBefore: '#load_styles_before',
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.min.css',
-                                'vendor/datatables/media/css/jquery.dataTables.css'
+                                'vendor/datatables/media/css/jquery.dataTables.css',
+                                'vendor/sweetalert/dist/sweetalert.css'
                             ]
                         },
                 {
                   serie: true,
+                  name: 'oitozero.ngSweetAlert',
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
                                 'vendor/angularutils-pagination/dirPagination.js',
-                                'scripts/extentions/bootstrap-datatables.js'
+                                'scripts/extentions/bootstrap-datatables.js',
+                                'vendor/sweetalert/dist/sweetalert.min.js',
+                                'vendor/angular-sweetalert/SweetAlert.min.js'
                             ]
                         }]).then(function () {
                 return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
@@ -156,16 +168,20 @@ angular
                   insertBefore: '#load_styles_before',
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.min.css',
-                                'vendor/datatables/media/css/jquery.dataTables.css'
+                                'vendor/datatables/media/css/jquery.dataTables.css',
+                                'vendor/sweetalert/dist/sweetalert.css'
                             ]
                         },
                 {
                   serie: true,
+                  name: 'oitozero.ngSweetAlert',
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
                                 'vendor/angularutils-pagination/dirPagination.js',
-                                'scripts/extentions/bootstrap-datatables.js'
+                                'scripts/extentions/bootstrap-datatables.js',
+                                'vendor/sweetalert/dist/sweetalert.min.js',
+                                'vendor/angular-sweetalert/SweetAlert.min.js'
                             ]
                         }]).then(function () {
                 return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
@@ -189,16 +205,20 @@ angular
                   insertBefore: '#load_styles_before',
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.min.css',
-                                'vendor/datatables/media/css/jquery.dataTables.css'
+                                'vendor/datatables/media/css/jquery.dataTables.css',
+                                'vendor/sweetalert/dist/sweetalert.css'
                             ]
                         },
                 {
                   serie: true,
+                  name: 'oitozero.ngSweetAlert',
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
                                 'vendor/angularutils-pagination/dirPagination.js',
-                                'scripts/extentions/bootstrap-datatables.js'
+                                'scripts/extentions/bootstrap-datatables.js',
+                                'vendor/sweetalert/dist/sweetalert.min.js',
+                                'vendor/angular-sweetalert/SweetAlert.min.js'
                             ]
                         }]).then(function () {
                 return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
@@ -228,11 +248,20 @@ angular
                     files: [
                                   'vendor/checkbo/src/0.1.4/css/checkBo.min.css',
                                   'vendor/chosen_v1.4.0/chosen.min.css',
-                                  'vendor/jquery.tagsinput/src/jquery.tagsinput.css',
                                   'vendor/datatables/media/css/jquery.dataTables.css',
                                   'vendor/sweetalert/dist/sweetalert.css'
                               ]
                           },
+
+
+                          // 'vendor/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css',
+
+                                // 'vendor/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js',
+                                // 'vendor/moment/min/moment.min.js',
+
+
+
+
                   {
                     serie: true,
                     name: 'oitozero.ngSweetAlert',
@@ -241,7 +270,6 @@ angular
                                 'vendor/card/lib/js/jquery.card.js',
                                 'vendor/bootstrap/js/tab.js',
                                 'vendor/jquery-validation/dist/jquery.validate.min.js',
-                                'vendor/jquery.tagsinput/src/jquery.tagsinput.js',
                                 'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',

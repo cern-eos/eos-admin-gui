@@ -63,4 +63,19 @@ angular
 
         return bytes.toFixed( + precision ) + ' ' + units[ unit ];
       };
+    })
+  .filter('joinBy', function () {
+        return function (input) {
+          if(input.length === 0) {
+            return '';
+          }
+          else {
+            var stringOutput = ''; var j;
+            for ( j = 0; j < input.length - 1; ++j) {
+              stringOutput = stringOutput.concat(input[j].id + ', ');
+            }
+            stringOutput = stringOutput.concat(input[input.length - 1].id);
+            return stringOutput;
+          }
+        };
     });
