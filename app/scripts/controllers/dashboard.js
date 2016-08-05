@@ -1,5 +1,5 @@
 'use strict';
-function dashboardCtrl($scope, $state, $filter, $http, SweetAlert, eosService, COLORS) {
+function dashboardCtrl($scope, $state, $filter, $http, $window, SweetAlert, eosService, COLORS) {
 
 
   $scope.switchQuota = function (value) {
@@ -171,18 +171,17 @@ function dashboardCtrl($scope, $state, $filter, $http, SweetAlert, eosService, C
 
   };
 
-  $scope.space = 'default';  //ToDO make it space with max clusters..
+  //Set and get Space info for the session
+  $scope.space = $window.localStorage.getItem('space');
+  if($scope.space === '') {
+    $scope.space = 'default';  //ToDO make it space with max clusters..
+  }
   $scope.loadClusterInfo();
-  console.log($scope.space);
 
   $scope.setSpaceName = function (spaceName) {
-
     $scope.space = spaceName;
+    $window.localStorage.setItem('space', spaceName);
     $scope.loadClusterInfo();
-    // $scope.$digest();
-    console.log($scope.space);
-    // $state.reload();
-
   };
 
   $scope.submitConfig = function () {
@@ -658,7 +657,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
 
 angular
   .module('urbanApp')
-  .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', 'SweetAlert', 'eosService', 'COLORS', dashboardCtrl])
+  .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', '$window', 'SweetAlert', 'eosService', 'COLORS', dashboardCtrl])
   .controller('ModalDemoCtrl', ['$scope', '$state', '$modal', '$log', 'eosService', ModalDemoCtrl])
   .controller('ModalInstanceCtrl', ['$scope', '$state', '$modalInstance', 'updatedItem', 'originalItem', 'space', 'SweetAlert', 'eosService', ModalInstanceCtrl]);
   
