@@ -65,7 +65,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr dir-paginate="fileSystem in fileSystems|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
+            <tr dir-paginate="fileSystem in fileSystems|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
               <td>{{fileSystem.host}}</td>
               <td>{{fileSystem.id}}</td>
               <td>{{fileSystem.path}}</td>

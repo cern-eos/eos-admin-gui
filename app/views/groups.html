@@ -51,7 +51,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr dir-paginate="group in groups|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
+          <tr dir-paginate="group in groups|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
             <td>{{group.name}}</td>
             <td>{{group.cfg.status}}</td>
             <td>{{group.nofs}}</td>

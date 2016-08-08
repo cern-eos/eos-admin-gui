@@ -54,7 +54,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr dir-paginate="node in nodes|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
+            <tr dir-paginate="node in nodes|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
               <td>{{node.hostport}}</td>
               <td>{{node.cfg.stat.geotag}}</td>
               <td>{{node.status}}</td>
