@@ -2,7 +2,7 @@
 
   <!-- logo -->
   <div class="brand-logo">
-    <img data-ng-src="images/eos2.png" height="35" alt="">
+    <img data-ng-src="images/logo1.png" height="25" alt="">
   </div>
   <!-- /logo -->
 
@@ -18,7 +18,7 @@
 </div>
 
 <!-- main navigation -->
-<nav role="navigation" side-navigation>
+<nav role="navigation" side-navigation data-ng-controller="dashboardCtrl">
 
   <ul class="nav">
 
@@ -61,42 +61,21 @@
       </ul>
     </li>
     <!-- /views -->
-
+    
     <li data-ng-class="{open: $state.includes('app.kineticClusters')}">
       <a href="javascript:;">
-        <span class="label label-success pull-right">2</span>
         <i class="fa fa-cogs"></i>
-        <span>Kinetic Clusters</span>
+        <span>Kinetic Drives</span>
       </a>
       <ul class="sub-menu">
         <li ui-sref-active="active">
           <a ui-sref="app.kineticClusters.clusters">
+            <span class="label label-success pull-right">{{clusterDefinition.cluster.length}}</span>
             <span>Clusters</span>
           </a>
         </li>
       </ul>
     </li>
-
-
-    <!-- customizer -->
-    <!-- <li ui-sref-active="active">
-      <a href="http://customizer.nyasha.me/#urban" target="_blank">
-        <span class="label label-danger pull-right">hot</span>
-        <i class="fa fa-sliders"></i>
-        <span>Customizer</span>
-      </a>
-    </li> -->
-    <!-- /customizer -->
-
-    <!-- html version -->
-   <!--  <li>
-      <a href="http://urban.nyasha.me/html/" target="_blank">
-        <span class="label label-info pull-right">new</span>
-        <i class="fa fa-circle"></i>
-        <span>HTML Version</span>
-      </a>
-    </li> -->
-    <!-- /html version -->
 
   </ul>
 </nav>

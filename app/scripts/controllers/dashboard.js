@@ -465,11 +465,12 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
                           'chunkSizeKB': $scope.modalInfo[0].chunkSizeKB,
                           'minReconnectInterval': $scope.modalInfo[0].minReconnectInterval,
                           'timeout': $scope.modalInfo[0].timeout,
-                          'drives': []
+                          'drives': ''
                         };
+
     var i;
     for ( i = 0; i < $scope.modalInfo[0].drives.length; ++i) {
-        $scope.formData.drives.push($scope.modalInfo[0].drives[i].wwn);
+        $scope.formData.drives = $scope.formData.drives + $scope.modalInfo[0].drives[i].wwn + ' ';
     }
     
     var modalInstance = $modal.open({
