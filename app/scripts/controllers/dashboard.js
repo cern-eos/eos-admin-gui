@@ -143,19 +143,22 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, SweetAlert, eosS
 
       $scope.extraClusterInfo = $scope.clusterDefinition;
       var i; var j;
-      for ( i = 0; i < $scope.extraClusterInfo.cluster.length; ++i) {
-        var clusterName = $scope.extraClusterInfo.cluster[i].clusterID;
-        $scope.extraClusterInfo.cluster[i].failedDrives = 'Not Available';
-        $scope.extraClusterInfo.cluster[i].indicator = 'Not Available';
-        for ( j = 0; j < $scope.fileSystems.length; ++j) {
-          if ($scope.fileSystems[j].path.indexOf(clusterName) !== -1) {
-            $scope.extraClusterInfo.cluster[i].failedDrives = $scope.fileSystems[j].stat.health.drives_failed;
-            $scope.extraClusterInfo.cluster[i].indicator = $scope.fileSystems[j].stat.health.indicator;
-            break;
+
+      eosService.getFileSystems().success(function (response) {  //fetching again to ensure it is in the scope
+        $scope.fileSystems = response[0].fs.ls;
+        for ( i = 0; i < $scope.extraClusterInfo.cluster.length; ++i) {
+          var clusterName = $scope.extraClusterInfo.cluster[i].clusterID;
+          $scope.extraClusterInfo.cluster[i].failedDrives = 'Not Available';
+          $scope.extraClusterInfo.cluster[i].indicator = 'Not Available';
+          for ( j = 0; j < $scope.fileSystems.length; ++j) {
+            if ($scope.fileSystems[j].path.indexOf(clusterName) !== -1) {
+              $scope.extraClusterInfo.cluster[i].failedDrives = $scope.fileSystems[j].stat.health.drives_failed;
+              $scope.extraClusterInfo.cluster[i].indicator = $scope.fileSystems[j].stat.health.indicator;
+              break;
+            }
           }
         }
-      }
-
+      });
     });
 
     eosService.getClusterInfo('security',$scope.space).success(function (response) {
@@ -643,6 +646,8 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
 
     $scope.locationDefinition.location.push(newDriveJSON);
     var driveJSON = btoa(angular.toJson($scope.locationDefinition, true));
+    // console.log(newDriveJSON);
+    // console.log($scope.locationDefinition);
     eosService.updateCluster('location', $scope.space, driveJSON).success(function (response) {
       console.log(response[0].errormsg);
     });

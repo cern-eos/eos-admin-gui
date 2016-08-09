@@ -278,7 +278,7 @@
           <div class="row">
             <label class="col-sm-2 control-label">Drives</label>
             <div class="col-sm-10">
-              <select multiple class="form-control" ng-model="formData.drives" ng-required="!(formData.automaticSelection)">
+              <select multiple class="form-control" ng-model="formData.drives" >
                 <option value="{{drive.wwn}}" ng-repeat="drive in locationDefinition.location | orderBy:'clustersAttachedTo' track by drive.wwn">
                     {{drive.wwn}} | {{drive.inet4[0]}} | {{drive.inet4[1]}} | {{drive.port}} | {{drive.clustersAttachedTo.length}}
                 </option>
@@ -293,9 +293,9 @@
             <div class="col-sm-5">
               <div class="input-group mb15">
                 <span class="input-group-addon">
-                    <input type="checkbox" ng-model="formData.automaticSelection" ng-required="!(formData.drives)">
+                    <input type="checkbox" ng-model="formData.automaticSelection">
                 </span>
-                <input type="text" ng-model="formData.numDrives" ng-required="(formData.automaticSelection)" placeholder="Choose drives automatically" class="form-control">
+                <input type="text" ng-model="formData.numDrives" placeholder="Choose drives automatically" class="form-control">
               </div>
             </div>
 
@@ -304,7 +304,7 @@
                 <span class="input-group-addon">
                     <input type="checkbox" ng-model="formData.sharing">
                 </span>
-                <input type="text" ng-model="formData.numShare" ng-required="(formData.sharing)" placeholder="Allow sharing of drives among these many clusters" class="form-control">
+                <input type="text" ng-model="formData.numShare" placeholder="Allow sharing of drives among these many clusters" class="form-control">
               </div>
             </div>
 
