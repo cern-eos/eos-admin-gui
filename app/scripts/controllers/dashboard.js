@@ -1,5 +1,5 @@
 'use strict';
-function dashboardCtrl($scope, $state, $filter, $http, $window, SweetAlert, eosService, COLORS) {
+function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, SweetAlert, eosService, COLORS) {
 
 
   $scope.switchQuota = function (value) {
@@ -98,11 +98,21 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, SweetAlert, eosS
       $scope.clientInfo = whoResponse[whoResponse.length - 1];
     });
 
-  eosService.getNsStat().success(function (response) {
+  // eosService.getNsStat().success(function (response) {
+  //     $scope.nsStatData = response[0].ns.stat;
+  //     $scope.avgExecLatency = parseFloat($scope.nsStatData[18].total.exec.avg);
+  //     $scope.sigExecLatency = $scope.nsStatData[18].total.exec.sigma;
+  //   });
+
+  function callAtInterval() {
+    eosService.getNsStat().success(function (response) {
       $scope.nsStatData = response[0].ns.stat;
       $scope.avgExecLatency = parseFloat($scope.nsStatData[18].total.exec.avg);
       $scope.sigExecLatency = $scope.nsStatData[18].total.exec.sigma;
     });
+  }
+
+  $interval(callAtInterval, 1000);
 
   eosService.getSpaceStatus().success(function (response) {
       $scope.spaceStatus = response[0];
@@ -663,7 +673,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
 
 angular
   .module('urbanApp')
-  .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', '$window', 'SweetAlert', 'eosService', 'COLORS', dashboardCtrl])
+  .controller('dashboardCtrl', ['$scope', '$state', '$filter', '$http', '$window', '$interval', 'SweetAlert', 'eosService', 'COLORS', dashboardCtrl])
   .controller('ModalDemoCtrl', ['$scope', '$state', '$modal', '$log', 'eosService', ModalDemoCtrl])
   .controller('ModalInstanceCtrl', ['$scope', '$state', '$modalInstance', 'updatedItem', 'originalItem', 'space', 'SweetAlert', 'eosService', ModalInstanceCtrl]);
   
