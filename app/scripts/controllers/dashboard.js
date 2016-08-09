@@ -120,7 +120,6 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       $scope.quota =  $scope.checkValue(response[0].space.status[0].quota);
     });
 
-
     eosService.getSpaces().success(function (response) {
       $scope.spaces = response[0].space.ls;
       $scope.readratemb = $scope.spaces[0].sum.stat.disk.readratemb;
@@ -135,7 +134,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
 
     });
   }
-
+  callAtInterval();
   $interval(callAtInterval, 1000);
 
   //Kinetic Cluster Info
@@ -203,6 +202,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
     eosService.updateCluster('cluster', $scope.space, btoa(angular.toJson(clusterJSON, true))).success(function (response) {
       console.log(response[0].errormsg);
     });
+    SweetAlert.swal('Updated!', 'Publish Changes!', 'success');
     $state.reload();
   };
 
@@ -572,7 +572,9 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     eosService.updateCluster('cluster', $scope.space, clusterJSON).success(function (response) {
       console.log(response[0].errormsg);
     });
+    SweetAlert.swal('Updated!', 'Publish Changes!', 'success');
     $state.reload();
+    $modalInstance.dismiss('cancel');
   };
 
   $scope.addNewCluster = function () {
