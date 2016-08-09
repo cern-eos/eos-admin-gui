@@ -110,11 +110,8 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       $scope.avgExecLatency = parseFloat($scope.nsStatData[18].total.exec.avg);
       $scope.sigExecLatency = $scope.nsStatData[18].total.exec.sigma;
     });
-  }
 
-  $interval(callAtInterval, 1000);
-
-  eosService.getSpaceStatus().success(function (response) {
+    eosService.getSpaceStatus().success(function (response) {
       $scope.spaceStatus = response[0];
       $scope.balancer =  $scope.checkValue(response[0].space.status[0].balancer.status);
       $scope.converter =  $scope.checkValue(response[0].space.status[0].converter.status);
@@ -124,7 +121,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
     });
 
 
-  eosService.getSpaces().success(function (response) {
+    eosService.getSpaces().success(function (response) {
       $scope.spaces = response[0].space.ls;
       $scope.readratemb = $scope.spaces[0].sum.stat.disk.readratemb;
       $scope.writeratemb = $scope.spaces[0].sum.stat.disk.writeratemb;
@@ -137,6 +134,9 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       $scope.percent3 = ($scope.outratemib/$scope.ethratemib)*100;
 
     });
+  }
+
+  $interval(callAtInterval, 1000);
 
   //Kinetic Cluster Info
 
