@@ -23,6 +23,7 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -70,7 +71,7 @@ module.exports = function (grunt) {
       options: {
         port: 9001,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost',
+        hostname: '0.0.0.0',
         livereload: 35729
       },
       livereload: {
@@ -391,8 +392,21 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
-    }
-  });
+    },
+    easy_rpm: {
+      options: {
+        name: 'eus-gui',
+        version: '0.1.0'
+        },
+      release: {
+        files: [
+          {src: "dist/**", dest: "/dist"}, //Target = All files & directory structure under /output folders 
+             ]
+          },
+       },
+     });
+
+  grunt.loadNpmTasks("grunt-easy-rpm");
 
   grunt.registerTask('less-compile', ['less:compileCore', 'less:compileSkin']);
 
@@ -435,7 +449,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'easy_rpm'
   ]);
 
   grunt.registerTask('default', [

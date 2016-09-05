@@ -135,7 +135,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
     });
   }
   callAtInterval();
-  $interval(callAtInterval, 1000);
+  $interval(callAtInterval, 1000000);
 
   //Kinetic Cluster Info
 

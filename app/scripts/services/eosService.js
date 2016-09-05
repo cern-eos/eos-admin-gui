@@ -7,11 +7,15 @@ function eosServiceAPI($http) {
     // var url_user = 'http://eosservicetest2:8000/proc/user/';
     var url_admin = 'http://p05614910a92540.cern.ch:8000/proc/admin/';
     var url_user = 'http://p05614910a92540.cern.ch:8000/proc/user/';
-
+    //var url_admin = 'http://eos-dev01.cern.ch:8000/proc/admin/';
+    //var url_user = 'http://eos-dev01.cern.ch:8000/proc/user/';
     eosAPI.getGroups = function() {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'group',
           'mgm.subcmd': 'ls',
@@ -27,6 +31,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'fs',
           'mgm.subcmd': 'ls',
@@ -42,6 +49,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'node',
           'mgm.subcmd': 'ls',
@@ -57,6 +67,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'ls',
@@ -100,6 +113,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'ns',
           'mgm.subcmd': 'stat',
@@ -115,6 +131,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'status',
@@ -131,6 +150,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'quota',
@@ -148,6 +170,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'config',
@@ -166,6 +191,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'node-get',
@@ -183,6 +211,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'kinetic-json-store',
@@ -200,6 +231,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'node-set',
@@ -217,6 +251,9 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_admin,
+	headers: {
+           'remote-user': 'root'
+        },
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'node-set',
