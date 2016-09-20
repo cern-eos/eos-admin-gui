@@ -218,6 +218,7 @@ module.exports = function (grunt) {
           html: {
             steps: {
               js: ['concat', 'uglifyjs'],
+              //js: ['concat'],
               css: ['cssmin']
             },
             post: {}
@@ -395,12 +396,12 @@ module.exports = function (grunt) {
     },
     easy_rpm: {
       options: {
-        name: 'eus-gui',
+        name: 'eos-gui',
         version: '0.1.0'
         },
       release: {
         files: [
-          {src: "dist/**", dest: "/dist"}, //Target = All files & directory structure under /output folders 
+          {src: "dist/**", dest: "/var/www/eos-gui"}, //Target = All files & directory structure under /output folders 
              ]
           },
        },
