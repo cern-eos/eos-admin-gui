@@ -348,9 +348,10 @@ module.exports = function (grunt) {
             'data/{,*/}*.*',
             'fonts/{,*/}*.*',
             'views/{,*/}*.html',
-            'images/{,*/}*.{webp}',
+            'images/{,*/}*.{jpg}',
             'styles/{,*}*.css',
-            'scripts/*/*.*'
+            'scripts/*/*.*',
+            'vendor/*/*.*'
           ]
         }, {
           expand: true,
@@ -451,7 +452,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'easy_rpm'
+    //'easy_rpm'
   ]);
 
   grunt.registerTask('default', [
