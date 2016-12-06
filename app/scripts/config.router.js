@@ -103,7 +103,7 @@ angular
                     files: [
                                   'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                   'vendor/datatables/media/js/jquery.dataTables.js',
-                                  'vendor/angularutils-pagination/dirPagination.js',
+                                  'vendor/angular-utils-pagination/dirPagination.js',
                                   'scripts/extentions/bootstrap-datatables.js',
                                   'vendor/sweetalert/dist/sweetalert.min.js',
                                 'vendor/angular-sweetalert/SweetAlert.min.js'
@@ -141,7 +141,7 @@ angular
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
-                                'vendor/angularutils-pagination/dirPagination.js',
+                                'vendor/angular-utils-pagination/dirPagination.js',
                                 'scripts/extentions/bootstrap-datatables.js',
                                 'vendor/sweetalert/dist/sweetalert.min.js',
                                 'vendor/angular-sweetalert/SweetAlert.min.js'
@@ -178,7 +178,7 @@ angular
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
-                                'vendor/angularutils-pagination/dirPagination.js',
+                                'vendor/angular-utils-pagination/dirPagination.js',
                                 'scripts/extentions/bootstrap-datatables.js',
                                 'vendor/sweetalert/dist/sweetalert.min.js',
                                 'vendor/angular-sweetalert/SweetAlert.min.js'
@@ -215,7 +215,7 @@ angular
                   files: [
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
-                                'vendor/angularutils-pagination/dirPagination.js',
+                                'vendor/angular-utils-pagination/dirPagination.js',
                                 'scripts/extentions/bootstrap-datatables.js',
                                 'vendor/sweetalert/dist/sweetalert.min.js',
                                 'vendor/angular-sweetalert/SweetAlert.min.js'
@@ -273,7 +273,7 @@ angular
                                 'vendor/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js',
                                 'vendor/chosen_v1.4.0/chosen.jquery.min.js',
                                 'vendor/datatables/media/js/jquery.dataTables.js',
-                                'vendor/angularutils-pagination/dirPagination.js',
+                                'vendor/angular-utils-pagination/dirPagination.js',
                                 'scripts/extentions/bootstrap-datatables.js',
                                 'vendor/sweetalert/dist/sweetalert.min.js',
                                 'vendor/angular-sweetalert/SweetAlert.min.js'
