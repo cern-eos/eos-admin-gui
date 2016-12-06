@@ -167,7 +167,21 @@ module.exports = function (grunt) {
         },
         src: '<%= config.app %>/styles/less/urban.skins.less',
         dest: '.tmp/styles/<%= config.name %>.skins.css'
-      }
+      },
+      compileCoreDist: {
+        options: {
+          strictMath: true
+        },
+        src: '<%= config.app %>/styles/less/urban.less',
+        dest: '<%= config.dist %>/styles/<%= config.name %>.css'
+      },
+      compileSkinDist: {
+        options: {
+          strictMath: true
+        },
+        src: '<%= config.app %>/styles/less/urban.skins.less',
+        dest: '<%= config.dist %>/styles/<%= config.name %>.skins.css'
+      },
     },
 
     // Add vendor prefixed styles
@@ -250,16 +264,16 @@ module.exports = function (grunt) {
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
+    //cssmin: {
+    //  dist: {
     //     files: {
     //       '<%= config.dist %>/styles/main.css': [
     //         '.tmp/styles/{,*/}*.css'
     //       ]
     //     }
     //   }
-    // },
-    // uglify: {
+    //  },
+    //  uglify: {
     //   dist: {
     //     files: {
     //       '<%= config.dist %>/scripts/scripts.js': [
@@ -270,7 +284,7 @@ module.exports = function (grunt) {
     // },
     // concat: {
     //   dist: {}
-    // },
+    //},
 
     imagemin: {
       dist: {
@@ -334,6 +348,28 @@ module.exports = function (grunt) {
 
     // Copies remaining files to places other tasks can use
     copy: {
+      distNoOptimize: {
+	files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= config.app %>',
+          dest: '<%= config.dist %>',
+          src: [
+           '**',
+          ]
+         }
+      ,{
+          expand: true,
+          cwd: 'bower_components/bootstrap/dist',
+          src: 'fonts/*',
+          dest: '<%= config.dist %>'
+        }, {
+          expand: true,
+          cwd: 'bower_components',
+          dest: '<%= config.dist %>/vendor',
+          src: ['**']
+        }]
+      },
       dist: {
         files: [{
           expand: true,
@@ -349,7 +385,7 @@ module.exports = function (grunt) {
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
             'styles/{,*}*.css',
-            'scripts/*/*.*',
+            'scripts/*/*.*'
           ]
         }, {
           expand: true,
@@ -400,7 +436,7 @@ module.exports = function (grunt) {
         },
       release: {
         files: [
-          {src: "dist/**", dest: "/var/www/eos-gui"}, //Target = All files & directory structure under /output folders 
+          {src: "dist/**", dest: "/var/www/eos-gui"},  
              ]
           },
        },
@@ -410,11 +446,15 @@ module.exports = function (grunt) {
 
   grunt.registerTask('less-compile', ['less:compileCore', 'less:compileSkin']);
 
+  grunt.registerTask('less-compile-dist', ['less:compileCoreDist', 'less:compileSkinDist']);
+
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
-
+    if (target === 'distNoOptimize') {
+      return grunt.task.run(['buildNoOptmize', 'connect:dist:keepalive']);
+    }
     grunt.task.run([
       'clean:server',
       'less-compile',
@@ -436,7 +476,16 @@ module.exports = function (grunt) {
     'karma'
   ]);
 
-  grunt.registerTask('build', [
+  grunt.registerTask('buildNoOptmize', [
+    'clean:dist',
+    'less-compile-dist',
+    'concurrent:dist',
+    'ngAnnotate',
+    'copy:distNoOptimize',
+    'easy_rpm'
+  ]);
+  
+   grunt.registerTask('build', [
     'clean:dist',
     'less-compile',
     'useminPrepare',
@@ -450,9 +499,8 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    //'easy_rpm'
+    'easy_rpm'
   ]);
-
   grunt.registerTask('default', [
     'newer:jshint',
     'build'
