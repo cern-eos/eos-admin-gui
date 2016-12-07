@@ -436,9 +436,10 @@ module.exports = function (grunt) {
         },
       release: {
         files: [
-          {src: "dist/**", dest: "/var/www/eos-gui"},  
+          {src: "dist/**", dest: "/var/www/eos-gui"}, 
+	  {config: true, noreplace: true, cwd: "etc",  src: "eos-gui.conf", dest: "/etc/httpd/conf.d/", owner: "root", group: "root"}
              ]
-          },
+         },
        },
      });
 
