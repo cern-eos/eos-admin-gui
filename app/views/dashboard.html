@@ -254,32 +254,32 @@
               <tr>
                 <td>
                   <span></span>Boot Status</td>
-                <td>{{nsStatData[7].ns.boot.status}}</td>
+                <td>{{nsStatData[8].ns.boot.status}}</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Boot Time</td>
-                <td>{{nsStatData[8].ns.boot.time}} Seconds</td>
+                <td>{{nsStatData[9].ns.boot.time}} Seconds</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Latency Avg</td>
-                <td>{{nsStatData[9].ns.latency.avg}} Seconds</td>
+                <td>{{nsStatData[10].ns.latency.avg}} Seconds</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Latency Sigma</td>
-                <td>{{nsStatData[10].ns.latency.sig}} Seconds</td>
+                <td>{{nsStatData[11].ns.latency.sig}} Seconds</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Threads</td>
-                <td>{{nsStatData[15].ns.stat.threads}}</td>
+                <td>{{nsStatData[16].ns.stat.threads}}</td>
               </tr>
               <tr>
                 <td>
                   <span></span>Uptime</td>
-                <td>{{nsStatData[17].ns.uptime}}</td>
+                <td>{{nsStatData[18].ns.uptime}}</td>
               </tr>
 
             </tbody>
@@ -296,7 +296,7 @@
         <div class="widget-icon bg-blue pull-left fa fa-database">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{nsStatData[12].ns.memory.virtual |filesize:2}}</span>
+          <span class="widget-title">{{nsStatData[13].ns.memory.virtual |filesize:2}}</span>
           <span class="widget-subtitle">Virtual Memory</span>
         </div>
       </div>
@@ -306,7 +306,7 @@
         <div class="widget-icon bg-danger pull-left fa fa-home">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{nsStatData[13].ns.memory.resident | filesize:2}}</span>
+          <span class="widget-title">{{nsStatData[14].ns.memory.resident | filesize:2}}</span>
           <span class="widget-subtitle">Resident Memory</span>
         </div>
       </div>
@@ -316,7 +316,7 @@
         <div class="widget-icon bg-success pull-left fa fa-share-alt">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{nsStatData[14].ns.memory.share | filesize:2}}</span>
+          <span class="widget-title">{{nsStatData[15].ns.memory.share | filesize:2}}</span>
           <span class="widget-subtitle">Share Memory</span>
         </div>
       </div>
@@ -326,7 +326,7 @@
         <div class="widget-icon bg-purple pull-left fa fa-cube">
         </div>
         <div class="overflow-hidden">
-          <span class="widget-title">{{nsStatData[16].ns.memory.growth | filesize:2}}</span>
+          <span class="widget-title">{{nsStatData[17].ns.memory.growth | filesize:2}}</span>
           <span class="widget-subtitle">Growth Memory</span>
         </div>
       </div>

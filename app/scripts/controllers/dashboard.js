@@ -107,15 +107,15 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
   function callAtInterval() {
     eosService.getNsStat().success(function (response) {
       $scope.nsStatData = response[0].ns.stat;
-      $scope.avgExecLatency = parseFloat($scope.nsStatData[18].total.exec.avg);
-      $scope.sigExecLatency = $scope.nsStatData[18].total.exec.sigma;
+      $scope.avgExecLatency = parseFloat($scope.nsStatData[19].total.exec.avg);
+      $scope.sigExecLatency = $scope.nsStatData[19].total.exec.sigma;
     });
 
     eosService.getSpaceStatus().success(function (response) {
       $scope.spaceStatus = response[0];
       $scope.balancer =  $scope.checkValue(response[0].space.status[0].balancer.status);
       $scope.converter =  $scope.checkValue(response[0].space.status[0].converter.status);
-      $scope.geoBalancer =  $scope.checkValue(response[0].space.status[0].geotagbalancer.status);
+      $scope.geoBalancer =  $scope.checkValue(response[0].space.status[0].geobalancer.status);
       $scope.groupBalancer =  $scope.checkValue(response[0].space.status[0].groupbalancer.status);
       $scope.quota =  $scope.checkValue(response[0].space.status[0].quota);
     });
