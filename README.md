@@ -1,4 +1,4 @@
-#Installatin requirements
+# Installation requirements
 
 In order to get started you need to install the following on your development computer..
 
