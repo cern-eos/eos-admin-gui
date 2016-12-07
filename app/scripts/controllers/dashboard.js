@@ -107,6 +107,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
   function callAtInterval() {
     eosService.getNsStat().success(function (response) {
       $scope.nsStatData = response[0].ns.stat;
+      console.log($scope.nsStatData)
       $scope.avgExecLatency = parseFloat($scope.nsStatData[19].total.exec.avg);
       $scope.sigExecLatency = $scope.nsStatData[19].total.exec.sigma;
     });
@@ -122,6 +123,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
 
     eosService.getSpaces().success(function (response) {
       $scope.spaces = response[0].space.ls;
+      console.log($scope.spaces)
       $scope.readratemb = $scope.spaces[0].sum.stat.disk.readratemb;
       $scope.writeratemb = $scope.spaces[0].sum.stat.disk.writeratemb;
       $scope.inratemib = $scope.spaces[0].sum.stat.net.inratemib;
@@ -130,7 +132,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       // For the Tachometers
       $scope.percent2 = ($scope.spaces[0].sum.stat.statfs.usedbytes/$scope.spaces[0].sum.stat.statfs.capacity)*100;
       $scope.percent3 = ($scope.inratemib/$scope.ethratemib)*100;
-      $scope.percent3 = ($scope.outratemib/$scope.ethratemib)*100;
+      $scope.percent4 = ($scope.outratemib/$scope.ethratemib)*100;
 
     });
   }
