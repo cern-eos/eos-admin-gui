@@ -123,7 +123,6 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
 
     eosService.getSpaces().success(function (response) {
       $scope.spaces = response[0].space.ls;
-      console.log($scope.spaces)
       $scope.readratemb = $scope.spaces[0].sum.stat.disk.readratemb;
       $scope.writeratemb = $scope.spaces[0].sum.stat.disk.writeratemb;
       $scope.inratemib = $scope.spaces[0].sum.stat.net.inratemib;
@@ -137,7 +136,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
     });
   }
   callAtInterval();
-  $interval(callAtInterval, 1000000);
+  $interval(callAtInterval, 100000);
 
   //Kinetic Cluster Info
 
@@ -187,8 +186,9 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
 
   //Set and get Space info for the session
   $scope.space = $window.localStorage.getItem('space');
-  if($scope.space === '') {
+  if(!$scope.space) {
     $scope.space = 'default';  //ToDO make it space with max clusters..
+    $window.localStorage.setItem('space',  $scope.space);
   }
   $scope.loadClusterInfo();
 
