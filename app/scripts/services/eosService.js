@@ -16,6 +16,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'group',
           'mgm.subcmd': 'ls',
@@ -34,6 +35,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'fs',
           'mgm.subcmd': 'ls',
@@ -52,6 +54,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'node',
           'mgm.subcmd': 'ls',
@@ -70,6 +73,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'ls',
@@ -85,6 +89,7 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_user,
+        withCredentials: true,
         params: {
           'mgm.cmd': 'version',
           'mgm.option': 'fm',
@@ -99,6 +104,7 @@ function eosServiceAPI($http) {
       return $http({
         method: 'JSONP',
         url: url_user,
+        withCredentials: true,
         params: {
           'mgm.cmd': 'who',
           'mgm.option': 'sm',
@@ -116,6 +122,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'ns',
           'mgm.subcmd': 'stat',
@@ -134,6 +141,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'status',
@@ -153,6 +161,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'quota',
@@ -173,6 +182,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'config',
@@ -194,6 +204,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'node-get',
@@ -214,6 +225,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'kinetic-json-store',
@@ -234,6 +246,7 @@ function eosServiceAPI($http) {
         headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'node-set',
@@ -254,6 +267,7 @@ function eosServiceAPI($http) {
 	headers: {
            'remote-user': 'root'
         },
+        withCredentials: true,
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'node-set',
