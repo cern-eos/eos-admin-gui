@@ -9,8 +9,8 @@ angular
 
       $scope.app = {
         name: 'EOS',
-        author: 'Megha Arora',
-        version: '1.0.0',
+        author: 'Megha Arora, Andrea Manzi',
+        version: '0.1.0',
         year: (new Date()).getFullYear(),
         layout: {
           isSmallSidebar: false,

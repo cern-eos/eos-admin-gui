@@ -5,10 +5,33 @@ function eosServiceAPI($http) {
   var eosAPI = {};
     // var url_admin = 'http://eosservicetest2:8000/proc/admin/';
     // var url_user = 'http://eosservicetest2:8000/proc/user/';
-    var url_admin = 'http://p05614910a92540.cern.ch:8000/proc/admin/';
-    var url_user = 'http://p05614910a92540.cern.ch:8000/proc/user/';
+    //var url_admin = 'http://p05614910a92540.cern.ch:8000/proc/admin/';
+    //var url_user = 'http://p05614910a92540.cern.ch:8000/proc/user/';
+    var url_admin = 'https://p05614910a92540.cern.ch/proc/admin/';
+    var url_user = 'https://p05614910a92540.cern.ch/proc/user/';
     //var url_admin = 'http://eos-dev01.cern.ch:8000/proc/admin/';
     //var url_user = 'http://eos-dev01.cern.ch:8000/proc/user/';
+    
+    eosAPI.whoami = function() {
+      return $http({
+        method: 'JSONP',
+        url: url_user,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'whoami',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.format': 'm',
+          'mgm.option': 'am',
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
+    
     eosAPI.getGroups = function() {
       return $http({
         method: 'JSONP',

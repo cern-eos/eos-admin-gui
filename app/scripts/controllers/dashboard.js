@@ -103,11 +103,20 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
   //     $scope.avgExecLatency = parseFloat($scope.nsStatData[18].total.exec.avg);
   //     $scope.sigExecLatency = $scope.nsStatData[18].total.exec.sigma;
   //   });
-
+  //
+  eosService.whoami().success(function (response) {
+        console.log(response[0]);
+        $scope.user = {
+      	  fname: response[0].whoami[0].gid,
+       	  lname: response[0].whoami[0].uid,
+       	  jobDesc: 'IT-ST-AD',
+       	  avatar: 'images/avatar.jpg',
+        };
+   });
+ 
   function callAtInterval() {
     eosService.getNsStat().success(function (response) {
       $scope.nsStatData = response[0].ns.stat;
-      console.log($scope.nsStatData)
       $scope.avgExecLatency = parseFloat($scope.nsStatData[19].total.exec.avg);
       $scope.sigExecLatency = $scope.nsStatData[19].total.exec.sigma;
     });
