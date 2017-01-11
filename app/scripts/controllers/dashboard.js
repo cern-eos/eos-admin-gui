@@ -105,12 +105,13 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
   //   });
   //
   eosService.whoami().success(function (response) {
-        console.log(response[0]);
+	console.log(response[0].whoami[0].gid);
+	console.log(response[0].whoami[0].uid);
         $scope.user = {
       	  fname: response[0].whoami[0].gid,
        	  lname: response[0].whoami[0].uid,
        	  jobDesc: 'IT-ST-AD',
-       	  avatar: 'images/avatar.jpg',
+       	  avatar: '../../images/avatar.jpg',
         };
    });
  

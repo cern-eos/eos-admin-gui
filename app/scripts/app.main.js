@@ -30,13 +30,6 @@ angular
         isConfigOpen: false
       };
 
-      $scope.user = {
-        fname: 'Andreas',
-        lname: 'Joachim',
-        jobDesc: 'IT-ST-AD',
-        avatar: 'images/avatar.jpg',
-      };
-
       if (angular.isDefined($localStorage.layout)) {
         $scope.app.layout = $localStorage.layout;
       } else {
