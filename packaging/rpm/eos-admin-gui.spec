@@ -11,10 +11,9 @@ URL:            https://gitlab.cern.ch/eos/eos-admin-gui
 #  tar --exclude-vcs -zcvf webfts-2.2.8.tar.gz webfts-2.2.8
 Source:         %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArchitectures: noarch
+BuildArchitectures: x86_64
 
 Requires:	httpd
-
 
 %description
 The package provides the WEB Interface for the EOS service admnistraton
@@ -34,7 +33,7 @@ mkdir -p -m0755 %{buildroot}/etc
 mkdir -p -m0755 %{buildroot}/etc/httpd
 mkdir -p -m0755 %{buildroot}/etc/httpd/conf.d
 
-cp -rp %{name}-%{version}/conf/%{name}.conf %{buildroot}/etc/httpd/conf.d/
+cp -rp %{name}-%{version}/etc/%{name}.conf %{buildroot}/etc/httpd/conf.d/
 
 %clean
 rm -rf %{buildroot}

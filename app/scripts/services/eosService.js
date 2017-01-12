@@ -23,7 +23,8 @@ function eosServiceAPI($http) {
           'mgm.format': 'm',
           'mgm.option': 'am',
           'callback':'JSON_CALLBACK'
-        }
+        },
+	timeout: 1000,
       });
     };
 

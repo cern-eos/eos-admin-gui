@@ -429,22 +429,6 @@ module.exports = function (grunt) {
         singleRun: true
       }
     },
-    easy_rpm: {
-      options: {
-        name: 'eos-gui',
-        version: '0.1.0',
-        buildArch: "x86_64",
-        },
-      release: {
-        files: [
-          {src: "dist/**", dest: "/var/www/eos-gui"}, 
-	  {config: true, noreplace: true, cwd: "etc",  src: "eos-gui.conf", dest: "/etc/httpd/conf.d/", owner: "root", group: "root"}
-             ]
-         },
-       },
-     });
-
-  grunt.loadNpmTasks("grunt-easy-rpm");
 
   grunt.registerTask('less-compile', ['less:compileCore', 'less:compileSkin']);
 
@@ -484,7 +468,6 @@ module.exports = function (grunt) {
     'concurrent:dist',
     'ngAnnotate',
     'copy:distNoOptimize',
-    'easy_rpm'
   ]);
   
    grunt.registerTask('build', [
@@ -501,7 +484,6 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'easy_rpm'
   ]);
   grunt.registerTask('default', [
     'newer:jshint',
