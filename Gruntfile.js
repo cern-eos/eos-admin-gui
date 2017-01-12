@@ -433,6 +433,7 @@ module.exports = function (grunt) {
       options: {
         name: 'eos-gui',
         version: '0.1.0'
+        buildArch: "x86_64",
         },
       release: {
         files: [
