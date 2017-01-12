@@ -432,7 +432,7 @@ module.exports = function (grunt) {
     easy_rpm: {
       options: {
         name: 'eos-gui',
-        version: '0.1.0'
+        version: '0.1.0',
         buildArch: "x86_64",
         },
       release: {
