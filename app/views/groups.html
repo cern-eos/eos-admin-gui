@@ -56,7 +56,7 @@
             <th ng-click="sort('sum.stat.drainer.running')">Drain-shd
                 <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.drainer.running'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
-             <th align="center">Actions
+             <th align="center">Edit
             </th>
           </tr>
         </thead>
@@ -71,13 +71,14 @@
             <td>{{group.cfg.stat.balancing}}</td>
             <td>{{group.sum.stat.balancer.running}}</td>
             <td>{{group.sum.stat.drainer.running}}</td>
-            <td  align="center"><button class="btn btn-sm btn-danger btn-icon mr5" ng-click="openNewClusterModal('lg')">
-                  <i class="fa fa-minus-circle"></i>
-                  <span>Remove</span>
-                </button>
-                <button class="btn btn-sm btn-success  btn-icon mr5" ng-click="openNewClusterModal('lg')">
+            <td  align="center">
+                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openNewClusterModal('lg')">
                   <i class="fa fa-flash"></i>
                   <span>Config</span>
+                </button>
+		<button class="btn btn-sm btn-danger btn-icon mr5" ng-click="openNewClusterModal('lg')">
+                  <i class="fa fa-minus-circle"></i>
+                  <span>Remove</span>
                 </button>
             </td>
           </tr>
@@ -96,4 +97,55 @@
     </div>
   </div>
 
+<script type="text/ng-template" id="groupAddModal.html">
+
+  <div class="modal-header">
+    <h3 class="modal-title"> Add Group</h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="addGroup()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Cluster ID</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.clusterID" placeholder="{{formData.clusterID}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Data</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.numData" placeholder="{{formData.numData}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Parity</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.numParity" placeholder="{{formData.numParity}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Chunk Size</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.chunkSizeKB" placeholder="{{formData.chunkSizeKB}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Timeout</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.timeout" placeholder="{{formData.timeout}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Reconnect Interval</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.minReconnectInterval" placeholder="{{formData.minReconnectInterval}}">
+          </div>
+        </div>
+
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="addNewGroup" value="Add" />
+    </div>
+  </form>
+  
+</script>
 </div>

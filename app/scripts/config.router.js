@@ -111,8 +111,10 @@ angular
                           }]).then(function () {
 
                   return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+			return $ocLazyLoad.load('scripts/controllers/modal.js').then(function () {
                       return $ocLazyLoad.load('scripts/services/eosService.js');
                   });
+		 });
                 });
                       }]
             },
@@ -148,8 +150,10 @@ angular
                             ]
                         }]).then(function () {
                 return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
-                    return $ocLazyLoad.load('scripts/services/eosService.js');
+		      return $ocLazyLoad.load('scripts/controllers/modal.js').then(function () {
+                       return $ocLazyLoad.load('scripts/services/eosService.js');
                 });
+               });
               });
                     }]
           },
@@ -185,7 +189,9 @@ angular
                             ]
                         }]).then(function () {
                 return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+		return $ocLazyLoad.load('scripts/controllers/modal.js').then(function () {
                     return $ocLazyLoad.load('scripts/services/eosService.js');
+                  });
                 });
               });
                     }]
@@ -222,9 +228,11 @@ angular
                             ]
                         }]).then(function () {
                 return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+		    return $ocLazyLoad.load('scripts/controllers/modal.js').then(function () {
                     return $ocLazyLoad.load('scripts/services/eosService.js');
                 });
               });
+             });
                     }]
           },
           data: {
@@ -280,9 +288,11 @@ angular
                               ]
                           }]).then(function () {
                   return $ocLazyLoad.load('scripts/controllers/dashboard.js').then(function () {
+                      return $ocLazyLoad.load('scripts/controllers/modal.js').then(function () {
                         return $ocLazyLoad.load('scripts/services/eosService.js');
                     });
                   });
+                 });
                       }]
             },
             data: {
