@@ -5,6 +5,14 @@
     <p>Group View</p>
     </div>
     <div class="panel-body">
+     <div class="row mb25">
+       <div class="pull-right" ng-controller="ModalDemoCtrl">
+       <button class="btn btn-sm btn-info btn-icon mr5" ng-click="openNewClusterModal('lg')">
+        <i class="fa fa-plus-circle"></i>
+         <span>Add Group</span>
+        </button>
+      </div>
+    </div>
       <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
       <div class="row">
         <div class="col-sm-9">
@@ -48,6 +56,8 @@
             <th ng-click="sort('sum.stat.drainer.running')">Drain-shd
                 <span class="glyphicon sort-icon" ng-show="sortKey=='sum.stat.drainer.running'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
             </th>
+             <th align="center">Actions
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -61,6 +71,15 @@
             <td>{{group.cfg.stat.balancing}}</td>
             <td>{{group.sum.stat.balancer.running}}</td>
             <td>{{group.sum.stat.drainer.running}}</td>
+            <td  align="center"><button class="btn btn-sm btn-danger btn-icon mr5" ng-click="openNewClusterModal('lg')">
+                  <i class="fa fa-minus-circle"></i>
+                  <span>Remove Group</span>
+                </button>
+                <button class="btn btn-sm btn-success  btn-icon mr5" ng-click="openNewClusterModal('lg')">
+                  <i class="fa fa-flash"></i>
+                  <span>Config Group</span>
+                </button>
+            </td>
           </tr>
         </tbody>
       </table>
