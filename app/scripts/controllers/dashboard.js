@@ -287,6 +287,40 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
     });
   });
 
+  //Groups
+  $scope.openNewGroupModal = function () {
+
+    $scope.formData = {'clusterID': '',
+                          'numData': '',
+                          'numParity': '',
+                          'chunkSizeKB': '',
+                          'minReconnectInterval': '',
+                          'timeout': '',
+                          'drives': [],
+                          'automaticSelection': false,
+                          'numDrives': '',
+                          'sharing': false,
+                          'numShare':''
+                        };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'newClusterModal.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return $scope.clusterDefinition;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
+
   //Clusters
 
   $scope.delCluster = function (clusterID) {
