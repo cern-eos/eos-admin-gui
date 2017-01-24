@@ -58,17 +58,8 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
 
   $scope.openNewGroupModal = function () {
 
-    $scope.formData = {'clusterID': '',
-                          'numData': '',
-                          'numParity': '',
-                          'chunkSizeKB': '',
-                          'minReconnectInterval': '',
-                          'timeout': '',
-                          'drives': [],
-                          'automaticSelection': false,
-                          'numDrives': '',
-                          'sharing': false,
-                          'numShare':''
+    $scope.formData = {'name': '',
+                          'state':'off'
                         };
 
     var modalInstance = $modal.open({
@@ -78,8 +69,8 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
         updatedItem: function () {
           return $scope.formData;
         },
-        originalItem: function () {
-          return $scope.clusterDefinition;
+	originalItem: function () {
+          return null;
         },
         space: function () {
           return $scope.space;
@@ -209,7 +200,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     $modalInstance.dismiss('cancel');
   };
 
-$scope.submitClusterUpdate = function () {
+  $scope.submitClusterUpdate = function () {
     var clusterJSON = originalItem;
     var index = clusterJSON.cluster.map(function(e) { return e.clusterID; }).indexOf(updatedItem.clusterID);
     updatedItem.timeout = parseInt(updatedItem.timeout);
@@ -227,6 +218,17 @@ $scope.submitClusterUpdate = function () {
     $state.reload();
     $modalInstance.dismiss('cancel');
   };
+
+  $scope.addNewGroup = function () {
+
+    eosService.setGroup(updatedItem.name, updatedItem.state).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+
+    SweetAlert.swal('Added!', 'Publish Changes!', 'success');
+    $state.reload();
+    $modalInstance.dismiss('cancel');
+  }
 
   $scope.addNewCluster = function () {
     var newClusterJSON = {};

@@ -102,46 +102,21 @@
   <div class="modal-header">
     <h3 class="modal-title"> Add Group</h3>
   </div>
-  <form class="form-horizontal bordered-group" ng-submit="addGroup()" role="form">
+  <form class="form-horizontal bordered-group" ng-submit="addNewGroup()" role="form">
     <div class="modal-body">
       <div class="panel-body">
         <div class="form-group">
-          <label class="col-sm-3 control-label">Cluster ID</label>
+          <label class="col-sm-3 control-label">Group Name</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.clusterID" placeholder="{{formData.clusterID}}" disabled="">
+            <input type="text" class="form-control" ng-model="formData.name" placeholder="{{formData.name}}" >
           </div>
         </div>
         <div class="form-group">
-          <label class="col-sm-3 control-label">Data</label>
+          <label class="col-sm-3 control-label">Activated</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.numData" placeholder="{{formData.numData}}" disabled="">
+            <input type="text" class="form-control" ng-model="formData.state" placeholder="{{formData.state}}" >
           </div>
         </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Parity</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.numParity" placeholder="{{formData.numParity}}" disabled="">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Chunk Size</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.chunkSizeKB" placeholder="{{formData.chunkSizeKB}}" disabled="">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Timeout</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.timeout" placeholder="{{formData.timeout}}">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Reconnect Interval</label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.minReconnectInterval" placeholder="{{formData.minReconnectInterval}}">
-          </div>
-        </div>
-
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary btn-sm" id="addNewGroup" value="Add" />
     </div>

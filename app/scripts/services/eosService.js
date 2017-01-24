@@ -47,7 +47,27 @@ function eosServiceAPI($http) {
         }
       });
     };
-
+    
+    eosAPI.setGroup = function(name, state) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'group',
+          'mgm.subcmd': 'set',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'json',
+          'mgm.group': name,
+          'mgm.group.state': state,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
     eosAPI.getFileSystems = function() {
       return $http({
         method: 'JSONP',
