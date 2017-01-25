@@ -68,6 +68,26 @@ function eosServiceAPI($http) {
         }
       });
     };
+    eosAPI.removeGroup = function(name) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'group',
+          'mgm.subcmd': 'rm',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'json',
+          'mgm.group': name,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
     eosAPI.getFileSystems = function() {
       return $http({
         method: 'JSONP',

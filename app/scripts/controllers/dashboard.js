@@ -287,7 +287,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
     });
   });
 
-  //Clusters
+  //Group
   $scope.delCluster = function (clusterID) {
 
     $scope.clusterToDel = clusterID;
@@ -313,6 +313,30 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
         });
 
         swal('Deleted!', 'This cluster has been deleted. Publish Changes!', 'success');
+        $state.reload();
+      });
+  };
+  //Clusters
+  $scope.delGroup = function (group) {
+
+    SweetAlert.swal({
+        title: 'Are you sure?',
+        text: '',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: COLORS.danger,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        closeOnConfirm: false,
+        closeOnCancel: true
+      },
+      function (isConfirm) {
+
+        eosService.removeGroup(group).success(function (response) {
+          console.log(response[0].errormsg);
+        });
+
+        swal('Deleted!', 'The group has been deleted', 'success');
         $state.reload();
       });
   };

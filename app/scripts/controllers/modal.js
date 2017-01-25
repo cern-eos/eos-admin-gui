@@ -225,7 +225,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
       console.log(response[0].errormsg);
     });
 
-    SweetAlert.swal('Added!', 'Publish Changes!', 'success');
+    SweetAlert.swal('Added!','The group has been added!', 'success');
     $state.reload();
     $modalInstance.dismiss('cancel');
   }

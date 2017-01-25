@@ -72,11 +72,11 @@
             <td>{{group.sum.stat.balancer.running}}</td>
             <td>{{group.sum.stat.drainer.running}}</td>
             <td  align="center">
-                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openNewClusterModal('lg')">
+                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openUpdateGroupModal(group.name)">
                   <i class="fa fa-flash"></i>
                   <span>Config</span>
                 </button>
-		<button class="btn btn-sm btn-danger btn-icon mr5" ng-click="openNewClusterModal('lg')">
+		<button class="btn btn-sm btn-danger btn-icon mr5" ng-click="delGroup(group.name)">
                   <i class="fa fa-minus-circle"></i>
                   <span>Remove</span>
                 </button>
