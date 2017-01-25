@@ -303,17 +303,19 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
         closeOnCancel: true
       },
       function (isConfirm) {
-        var indexToDel = $scope.clusterDefinition.cluster.map(function(e) { return e.clusterID; }).indexOf(clusterID);
-        if (indexToDel > -1) {
-          $scope.clusterDefinition.cluster.splice(indexToDel, 1);
+        if (isConfirm) {
+          var indexToDel = $scope.clusterDefinition.cluster.map(function(e) { return e.clusterID; }).indexOf(clusterID);
+          if (indexToDel > -1) {
+            $scope.clusterDefinition.cluster.splice(indexToDel, 1);
+          }
+
+          eosService.updateCluster('cluster', $scope.space, btoa(angular.toJson($scope.clusterDefinition, true))).success(function (response) {
+            console.log(response[0].errormsg);
+          });
+
+          swal('Deleted!', 'This cluster has been deleted. Publish Changes!', 'success');
+          $state.reload();
         }
-
-        eosService.updateCluster('cluster', $scope.space, btoa(angular.toJson($scope.clusterDefinition, true))).success(function (response) {
-          console.log(response[0].errormsg);
-        });
-
-        swal('Deleted!', 'This cluster has been deleted. Publish Changes!', 'success');
-        $state.reload();
       });
   };
   //Clusters
@@ -326,18 +328,19 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
         showCancelButton: true,
         confirmButtonColor: COLORS.danger,
         confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
+        cancelButtonText: 'No!',
         closeOnConfirm: false,
         closeOnCancel: true
       },
       function (isConfirm) {
+        if (isConfirm) {
+          eosService.removeGroup(group).success(function (response) {
+            console.log(response[0].errormsg);
+          });
 
-        eosService.removeGroup(group).success(function (response) {
-          console.log(response[0].errormsg);
-        });
-
-        swal('Deleted!', 'The group has been deleted', 'success');
-        $state.reload();
+          swal('Deleted!', 'The group has been deleted', 'success');
+          $state.reload();
+        }
       });
   };
 
@@ -355,18 +358,20 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
         closeOnCancel: true
       },
       function (isConfirm) {
-        var indexToDel = $scope.locationDefinition.location.map(function(e) { return e.wwn; }).indexOf(wwn);
-        if (indexToDel > -1 && isConfirm) {
-          if ($scope.locationDefinition.location[indexToDel].clustersAttachedTo.length === 0){
-            $scope.locationDefinition.location.splice(indexToDel, 1);
-            eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).success(function (response) {
-              console.log(response[0].errormsg);
-            });
-            swal('Deleted!', 'This drive has been deleted. Publish Changes!', 'success');
-            $state.reload();
-          }
-          else {
-            swal('Can\'t Delete!', 'This drive is attached to a cluster', 'error');
+        if (isConfirm) {
+          var indexToDel = $scope.locationDefinition.location.map(function(e) { return e.wwn; }).indexOf(wwn);
+          if (indexToDel > -1 && isConfirm) {
+            if ($scope.locationDefinition.location[indexToDel].clustersAttachedTo.length === 0){
+              $scope.locationDefinition.location.splice(indexToDel, 1);
+              eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).success(function (response) {
+                console.log(response[0].errormsg);
+              });
+              swal('Deleted!', 'This drive has been deleted. Publish Changes!', 'success');
+              $state.reload();
+            }
+            else {
+              swal('Can\'t Delete!', 'This drive is attached to a cluster', 'error');
+            }
           }
         }
       });

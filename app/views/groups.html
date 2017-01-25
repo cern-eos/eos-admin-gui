@@ -60,7 +60,7 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody  ng-controller="ModalDemoCtrl">
           <tr dir-paginate="group in groups|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
             <td>{{group.name}}</td>
             <td>{{group.cfg.status}}</td>
@@ -72,7 +72,7 @@
             <td>{{group.sum.stat.balancer.running}}</td>
             <td>{{group.sum.stat.drainer.running}}</td>
             <td  align="center">
-                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openUpdateGroupModal(group.name)">
+                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openUpdateGroupModal(group.name,group.cfg.status)">
                   <i class="fa fa-flash"></i>
                   <span>Config</span>
                 </button>
@@ -114,13 +114,45 @@
         <div class="form-group">
           <label class="col-sm-3 control-label">Activated</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.state" placeholder="{{formData.state}}" >
+            <select ng-init="formData.state = 'off'" class="form-control" ng-model="formData.state" placeholder="{{formData.state}}" >
+		 <option value="on">on</option>
+		 <option value="off">off</option>
+            </select>
           </div>
         </div>
     <div class="modal-footer">
       <input type="submit" class="btn btn-primary btn-sm" id="addNewGroup" value="Add" />
     </div>
   </form>
-  
 </script>
+
+<script type="text/ng-template" id="updateGroupModal.html">
+
+  <div class="modal-header">
+    <h3 class="modal-title"> Update Group</h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="updateGroup()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Group Name</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.name" placeholder="{{formData.name}}" disabled="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Activated</label>
+          <div class="col-sm-9">
+            <select class="form-control" ng-model="formData.state" placeholder="{{formData.state}}" >
+                 <option value="on">on</option>
+                 <option value="off">off</option>
+            </select>
+          </div>
+        </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="updateGroup" value="Update" />
+    </div>
+  </form>
+</script>
+
 </div>

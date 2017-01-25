@@ -59,8 +59,8 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
   $scope.openNewGroupModal = function () {
 
     $scope.formData = {'name': '',
-                          'state':'off'
-                        };
+                       'state': 'off',
+                      };
 
     var modalInstance = $modal.open({
       templateUrl: 'groupAddModal.html',
@@ -70,7 +70,7 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
           return $scope.formData;
         },
 	originalItem: function () {
-          return null;
+          return $scope.formData;
         },
         space: function () {
           return $scope.space;
@@ -78,6 +78,32 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
       }
     });
   };
+
+  $scope.openUpdateGroupModal = function (name,state) {
+    $scope.formData = {'name': name,
+                      'state': state,
+                     };
+    $scope.originalData = {'name': name,
+                      'state': state,
+                     };
+    
+    var modalInstance = $modal.open({
+      templateUrl: 'updateGroupModal.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return $scope.originalData;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
 
  $scope.openNewClusterModal = function (size) {
 
@@ -229,6 +255,18 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     $state.reload();
     $modalInstance.dismiss('cancel');
   }
+
+  $scope.updateGroup = function () {
+
+    eosService.setGroup(originalItem.name, updatedItem.state).success(function (response) {
+      console.log(response[0].errormsg);
+    });
+
+    SweetAlert.swal('Updated!','The group has been updated!', 'success');
+    $state.reload();
+    $modalInstance.dismiss('cancel');
+  }
+
 
   $scope.addNewCluster = function () {
     var newClusterJSON = {};
