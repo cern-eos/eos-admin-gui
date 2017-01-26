@@ -107,6 +107,32 @@ function eosServiceAPI($http) {
       });
     };
 
+    eosAPI.addFileSystem = function(hostname, port, fsid, uuid, node, mountpoint, space, status) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'fs',
+          'mgm.subcmd': 'add',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.fs.hostname': hostname,
+	  'mgm.fs.port': port,
+          'mgm.fs.uuid': uuid,
+	  'mgm.fs.fsid': fsid,
+	  'mgm.fs.node': node,
+	  'mgm.fs.mountpoint' : mountpoint,
+	  'mgm.fs.space' : space,
+	  'mgm.fs.configstatus': status,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
     eosAPI.getNodes = function() {
       return $http({
         method: 'JSONP',

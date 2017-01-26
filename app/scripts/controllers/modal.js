@@ -128,6 +128,34 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
       }
     });
   };
+  $scope.openNewFSModal = function () {
+     $scope.formData = {'hostname': '',
+                        'port': 1095,
+                        'fsid': '',
+                        'uuid': '',
+			'node':'',
+			'mountpoint':'',
+			'space': '',
+			'configstatus':'off',
+                       };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'fsAddModal.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return null;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
 
  $scope.openNewClusterModal = function (size) {
 
@@ -329,7 +357,22 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     });
     $modalInstance.dismiss('cancel');
   }
-
+  
+  $scope.addNewFilesystem = function () {
+     eosService.addFileSystem(updatedItem.hostname,updatedItem.port,updatedItem.fsid, updatedItem.uuid, updatedItem.node,updatedItem.mountpoint, updatedItem.space, updatedItem.status).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Added!','The space has been defined!', 'success');
+        $state.reload();
+      }
+    }).catch(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
+    });
+    $modalInstance.dismiss('cancel');
+  }
+ 
 
   $scope.addNewCluster = function () {
     var newClusterJSON = {};

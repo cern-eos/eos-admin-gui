@@ -8,6 +8,14 @@
       </div>
 
       <div class="panel-body">
+        <div class="row mb25">
+        <div class="pull-right" ng-controller="ModalDemoCtrl">
+        <button class="btn btn-sm btn-info btn-icon mr5" ng-click="openNewFSModal()">
+          <i class="fa fa-plus-circle"></i>
+            <span>Add Filesystem</span>
+          </button>
+        </div>
+      </div>
         <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
         <div class="row">
 
@@ -93,5 +101,71 @@
 
   </div>
 
+<script type="text/ng-template" id="fsAddModal.html">
 
+  <div class="modal-header">
+    <h3 class="modal-title"> Add Filesystem</h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="addNewFilesystem()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Hostname</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.hostname" placeholder="{{formData.hostname}}" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Port </label>
+          <div class="col-sm-9">
+             <input type="number" class="form-control" ng-model="formData.port" placeholder="{{formData.port}}" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">FS UUID</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.uuid" placeholder="{{formData.uuid}}" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">FS ID (numeric filesystem id 1..65535) </label>
+          <div class="col-sm-9">
+             <input type="text" class="form-control" ng-model="formData.fsid" placeholder="{{formData.fsid}}" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Node Queue </label>
+          <div class="col-sm-9">
+             <input type="text" class="form-control" ng-model="formData.node" placeholder="{{formData.node}}" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Mountpoint </label>
+          <div class="col-sm-9">
+             <input type="text" class="form-control" ng-model="formData.mountpoint" placeholder="{{formData.mountpoint}}" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Space </label>
+          <div class="col-sm-9">
+             <input type="text" class="form-control" ng-model="formData.space" placeholder="{{formData.space}}" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Config Status </label>
+          <div class="col-sm-9">
+             <select ng-init="formData.status = 'off'" class="form-control" ng-model="formData.status" placeholder="{{formData.status}}" >
+                 <option value="ro">ro</option>
+                 <option value="off">off</option>
+                 <option value="rw">off</option>
+            </select>
+          </div>
+        </div>
+       </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="addNewFilesystem" value="Add" />
+    </div>
+  </form>
+</script>
 </div>
