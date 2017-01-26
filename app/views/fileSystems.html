@@ -87,14 +87,8 @@
               <td>{{fileSystem.stat.drain}}</td>
               <td>{{fileSystem.stat.active}}</td>
               <td  align="center">
-                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openUpdateFSModal(group.name,group.cfg.status)">
-                  <i class="fa fa-flash"></i>
-                  <span>Config</span>
-                </button>
-                <button class="btn btn-sm btn-danger btn-icon mr5" ng-click="delFS(fileSystem.id)">
-                  <i class="fa fa-minus-circle"></i>
-                  <span>Remove</span>
-                </button>
+                <button class="btn btn-info  btn-xs" ng-click="openUpdateFSModal(group.name,group.cfg.status)">edit</button>
+                <button class="btn btn-danger  btn-xs" ng-click="delFS(fileSystem.id)">del</button>
             </td>
 
             </tr>

@@ -72,14 +72,8 @@
             <td>{{group.sum.stat.balancer.running}}</td>
             <td>{{group.sum.stat.drainer.running}}</td>
             <td  align="center">
-                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openUpdateGroupModal(group.name,group.cfg.status)">
-                  <i class="fa fa-flash"></i>
-                  <span>Config</span>
-                </button>
-		<button class="btn btn-sm btn-danger btn-icon mr5" ng-click="delGroup(group.name)">
-                  <i class="fa fa-minus-circle"></i>
-                  <span>Remove</span>
-                </button>
+                <button class="btn btn-info  btn-xs" ng-click="openUpdateGroupModal(group.name,group.cfg.status)">edit</button>
+		<button class="btn btn-danger btn-xs" ng-click="delGroup(group.name)">del</button>
             </td>
           </tr>
         </tbody>
