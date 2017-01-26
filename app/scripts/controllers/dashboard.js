@@ -384,7 +384,67 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
         }
       });
   };
+ 
+  //FS
+  $scope.delFS = function (fs) {
+    SweetAlert.swal({
+        title: 'Are you sure?',
+        text: '',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: COLORS.danger,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No!',
+        closeOnConfirm: false,
+        closeOnCancel: true
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          eosService.removeFileSystem(fs).then(function (data) {
+            console.log(data);
+            if (data.data[0].retc != 0) {
+              SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+            } else {
+              swal('Deleted!', 'The filesystem has been deleted', 'success');
+              $state.reload();
+            }
+          }).catch(function (error) {
+             SweetAlert.swal('Error!',error, 'error');
+          });
+        }
+      });
+   };
 
+  //Node
+   
+  $scope.delNode = function (node) {
+    SweetAlert.swal({
+        title: 'Are you sure?',
+        text: '',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: COLORS.danger,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No!',
+        closeOnConfirm: false,
+        closeOnCancel: true
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          eosService.removeNode(node).then(function (data) {
+            console.log(data);
+            if (data.data[0].retc != 0) {
+              SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+            } else {
+              swal('Deleted!', 'The node has been deleted', 'success');
+              $state.reload();
+            }
+          }).catch(function (error) {
+             SweetAlert.swal('Error!',error, 'error');
+          });
+        }
+      });
+   };
 
   $scope.delDrive = function (wwn) {
     $scope.driveToDel = wwn;

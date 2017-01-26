@@ -8,6 +8,14 @@
       </div>
 
       <div class="panel-body">
+       <div class="row mb25">
+        <div class="pull-right" ng-controller="ModalDemoCtrl">
+        <button class="btn btn-sm btn-info btn-icon mr5" ng-click="openNewGroupModal()">
+          <i class="fa fa-plus-circle"></i>
+            <span>Add Node</span>
+          </button>
+        </div>
+       </div>
         <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
         <div class="row">
           <div class="col-sm-9">
@@ -51,9 +59,11 @@
               <th ng-click="sort('nofs')">Nofs
                   <span class="glyphicon sort-icon" ng-show="sortKey=='nofs'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
               </th>
+              <th align="center">Edit
+              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody  ng-controller="ModalDemoCtrl">
             <tr dir-paginate="node in nodes|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
               <td>{{node.hostport}}</td>
               <td>{{node.cfg.stat.geotag}}</td>
@@ -64,6 +74,16 @@
               <td>{{node.cfg.gw.rate}}</td>
               <td>{{node.heartbeatdelta}}</td>
               <td>{{node.nofs}}</td>
+	         <td  align="center">
+                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openUpdateGroupModal(group.name,group.cfg.status)">
+                  <i class="fa fa-flash"></i>
+                  <span>Config</span>
+                </button>
+                <button class="btn btn-sm btn-danger btn-icon mr5" ng-click="delNode(node.hostport)">
+                  <i class="fa fa-minus-circle"></i>
+                  <span>Remove</span>
+                </button>
+            </td>
             </tr>
           </tbody>
         </table>

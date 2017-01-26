@@ -133,6 +133,27 @@ function eosServiceAPI($http) {
       });
     };
 
+    eosAPI.removeFileSystem =  function(fs) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'fs',
+          'mgm.subcmd': 'rm',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'json',
+          'mgm.fs.id': fs,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
+
     eosAPI.getNodes = function() {
       return $http({
         method: 'JSONP',
@@ -147,6 +168,26 @@ function eosServiceAPI($http) {
           'eos.ruid': '0',
           'eos.rgid': '0',
           'mgm.outformat': 'm',
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
+     eosAPI.removeNode =  function(node) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'node',
+          'mgm.subcmd': 'rm',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'json',
+          'mgm.node': node,
           'callback':'JSON_CALLBACK'
         }
       });

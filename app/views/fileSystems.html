@@ -70,9 +70,12 @@
               <th ng-click="sort('stat.active')">Active
                   <span class="glyphicon sort-icon" ng-show="sortKey=='stat.active'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
               </th>
+              </th>
+                <th align="center">Edit
+              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody  ng-controller="ModalDemoCtrl">
             <tr dir-paginate="fileSystem in fileSystems|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
               <td>{{fileSystem.host}}</td>
               <td>{{fileSystem.id}}</td>
@@ -83,6 +86,17 @@
               <td>{{fileSystem.configstatus}}</td>
               <td>{{fileSystem.stat.drain}}</td>
               <td>{{fileSystem.stat.active}}</td>
+              <td  align="center">
+                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openUpdateFSModal(group.name,group.cfg.status)">
+                  <i class="fa fa-flash"></i>
+                  <span>Config</span>
+                </button>
+                <button class="btn btn-sm btn-danger btn-icon mr5" ng-click="delFS(fileSystem.id)">
+                  <i class="fa fa-minus-circle"></i>
+                  <span>Remove</span>
+                </button>
+            </td>
+
             </tr>
           </tbody>
         </table>
