@@ -145,6 +145,49 @@ function eosServiceAPI($http) {
       });
     };
 
+    eosAPI.defineSpace = function(name,groupmod,groupsize) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'space',
+          'mgm.subcmd': 'define',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'json',
+          'mgm.space': name,
+          'mgm.space.groupmod' : groupmod,
+	  'mgm.space.groupsize' : groupsize,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
+    eosAPI.removeSpace = function(name) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'space',
+          'mgm.subcmd': 'rm',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'json',
+          'mgm.space': name,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
+
     eosAPI.getVersion = function() {
       return $http({
         method: 'JSONP',

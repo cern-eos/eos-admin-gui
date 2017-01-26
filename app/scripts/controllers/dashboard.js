@@ -309,16 +309,21 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
             $scope.clusterDefinition.cluster.splice(indexToDel, 1);
           }
 
-          eosService.updateCluster('cluster', $scope.space, btoa(angular.toJson($scope.clusterDefinition, true))).success(function (response) {
-            console.log(response[0].errormsg);
+          eosService.updateCluster('cluster', $scope.space, btoa(angular.toJson($scope.clusterDefinition, true))).then(function (data) {
+            console.log(data);
+            if (data.data[0].retc != 0) {
+              SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+            } else {
+	      swal('Deleted!', 'This cluster has been deleted. Please publish the changes!', 'success');
+              $state.reload();
+            }
+          }).catch(function (error) {
+             SweetAlert.swal('Error!',error, 'error');
           });
-
-          swal('Deleted!', 'This cluster has been deleted. Publish Changes!', 'success');
-          $state.reload();
         }
       });
   };
-  //Clusters
+  //Groups
   $scope.delGroup = function (group) {
 
     SweetAlert.swal({
@@ -334,15 +339,52 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       },
       function (isConfirm) {
         if (isConfirm) {
-          eosService.removeGroup(group).success(function (response) {
-            console.log(response[0].errormsg);
+          eosService.removeGroup(group).then(function (data) {
+	    console.log(data);
+            if (data.data[0].retc != 0) {
+              SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+            } else {
+              swal('Deleted!', 'The group has been deleted', 'success');
+             $state.reload();
+            }
+          }).catch(function (error) {
+       	     SweetAlert.swal('Error!',error, 'error');
           });
-
-          swal('Deleted!', 'The group has been deleted', 'success');
-          $state.reload();
         }
       });
   };
+
+  //Spaces
+  $scope.delSpace = function (space) {
+
+    SweetAlert.swal({
+        title: 'Are you sure?',
+        text: '',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: COLORS.danger,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No!',
+        closeOnConfirm: false,
+        closeOnCancel: true
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          eosService.removeSpace(space).then(function (data) {
+            console.log(data);
+            if (data.data[0].retc != 0) {
+              SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+            } else {
+              swal('Deleted!', 'The space has been deleted', 'success');
+              $state.reload();
+            }
+          }).catch(function (error) {
+             SweetAlert.swal('Error!',error, 'error');
+          });
+        }
+      });
+  };
+
 
   $scope.delDrive = function (wwn) {
     $scope.driveToDel = wwn;
@@ -363,11 +405,17 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
           if (indexToDel > -1 && isConfirm) {
             if ($scope.locationDefinition.location[indexToDel].clustersAttachedTo.length === 0){
               $scope.locationDefinition.location.splice(indexToDel, 1);
-              eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).success(function (response) {
-                console.log(response[0].errormsg);
+              eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).then(function (data) {
+                console.log(data);
+                if (data.data[0].retc != 0) {
+                  SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+                } else {
+                  swal('Deleted!', 'This drive has been deleted. Please publish  the changes!', 'success');
+                  $state.reload();
+                }
+              }).catch(function (error) {
+                 SweetAlert.swal('Error!',error, 'error');
               });
-              swal('Deleted!', 'This drive has been deleted. Publish Changes!', 'success');
-              $state.reload();
             }
             else {
               swal('Can\'t Delete!', 'This drive is attached to a cluster', 'error');

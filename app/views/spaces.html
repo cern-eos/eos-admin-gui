@@ -8,6 +8,15 @@
       </div>
       
       <div class="panel-body">
+        <div class="row mb25">
+          <div class="pull-right" ng-controller="ModalDemoCtrl">
+            <button class="btn btn-sm btn-info btn-icon mr5" ng-click="openDefineSpaceModal()">
+              <i class="fa fa-plus-circle"></i>
+              <span>Define Space</span>
+            </button>
+          </div>
+        </div>
+  
         <!-- <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable"> -->
         <div class="row">
           <div class="col-sm-9">
@@ -53,12 +62,15 @@
               <th ng-click="sort('cfg.balancer.threshold')">threshold
                   <span class="glyphicon sort-icon" ng-show="sortKey=='cfg.balancer.threshold'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
               </th>
+              </th>
+                 <th align="center">Edit
+              </th>  
               <!--               <th>ntx</th>
               <th>active</th>
               <th>intergroup</th> -->
             </tr>
           </thead>
-          <tbody>
+         <tbody  ng-controller="ModalDemoCtrl">
             <tr dir-paginate="space in spaces|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
               <td>{{space.name}}</td>
               <td>{{space.cfg.groupsize}}</td>
@@ -69,6 +81,16 @@
               <td>{{space.sum.stat.statfs.capacity_rw | filesize:2}}</td>
               <td>{{space.cfg.nominalsize}}</td>
               <td>{{space.cfg.balancer.threshold}}</td>
+	      <td  align="center">
+                <button class="btn btn-sm btn-info  btn-icon mr5" ng-click="openUpdateSpaceModal(group.name,group.cfg.status)">
+                  <i class="fa fa-flash"></i>
+                  <span>Config</span>
+                </button>
+                <button class="btn btn-sm btn-danger btn-icon mr5" ng-click="delSpace(space.name)">
+                  <i class="fa fa-minus-circle"></i>
+                  <span>Remove</span>
+                </button>
+              </td>
 
             </tr>
           </tbody>
@@ -87,5 +109,38 @@
     </div>
 
   </div>
+
+
+<script type="text/ng-template" id="defineSpaceModal.html">
+
+  <div class="modal-header">
+    <h3 class="modal-title"> Define Space</h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="addNewSpace()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Space Name</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.name" placeholder="{{formData.name}}" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label"> Max Filesystems per Scheduling group</label>
+          <div class="col-sm-9">
+           <input type="number" class="form-control" ng-model="formData.groupsize" placeholder="{{formData.groupsize}}" >
+          </div>
+        </div>
+          <div class="form-group">
+          <label class="col-sm-3 control-label">Max Filesystems per Node</label>
+          <div class="col-sm-9">
+           <input type="number" class="form-control" ng-model="formData.groupmod" placeholder="{{formData.groupmod}}" >
+          </div>
+        </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="addNewSpace" value="Add" />
+    </div>
+  </form>
+</script>
 
 </div>

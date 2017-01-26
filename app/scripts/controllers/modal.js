@@ -105,6 +105,30 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
   };
 
 
+  $scope.openDefineSpaceModal = function () {
+    
+     $scope.formData = {'name': '',
+                        'modegroup': 0,
+                        'modesize': 0,
+                       };
+   
+    var modalInstance = $modal.open({
+      templateUrl: 'defineSpaceModal.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return null;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
  $scope.openNewClusterModal = function (size) {
 
     eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
@@ -187,11 +211,15 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
   $scope.setSecurity = function () {
     var securityJSON = JSON.parse(updatedItem.securityJSON);
     securityJSON = btoa(angular.toJson(securityJSON, true));
-    eosService.updateCluster('security', $scope.space, securityJSON).success(function (response) {
-      console.log(response[0].errormsg);
+    eosService.updateCluster('security', $scope.space, securityJSON).then(function (data) {
+      if (data.data[0].retc != 0) {
+        console.log(data.data[0].errormsg);
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Updated!', 'Publish Changes!', 'success');
+        $state.reload();
+      }
     });
-    SweetAlert.swal('Updated!', 'Publish Changes!', 'success');
-    $state.reload();
     $modalInstance.dismiss('cancel');
   };
 
@@ -208,9 +236,8 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         var indexSecurity = $scope.securityDefinition.security.map(function(e) { return e.wwn; }).indexOf(updatedItem.wwn);
         $scope.securityDefinition.security[indexSecurity].key = newKey;
         eosService.updateCluster('security', $scope.space, btoa(angular.toJson($scope.securityDefinition, true))).success(function (response) {
-          console.log(response[0].errormsg);
+           console.log(response[0].errormsg);
         });
-        // eosService.updateConfig($scope.space);  //Relying on user to activate
       });
     }
 
@@ -218,11 +245,17 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     delete updatedItem.securityKey;   //securityKey removed from this json
     driveJSON.location[index] = updatedItem;
     driveJSON = btoa(angular.toJson(driveJSON, true));
-    eosService.updateCluster('location', $scope.space, driveJSON).success(function (response) {
-      console.log(response[0].errormsg);
+    eosService.updateCluster('location', $scope.space, driveJSON).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Updated!','Please publish Changes!', 'success');
+        $state.reload();
+      }
+    }).error(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
     });
-    SweetAlert.swal('Updated!', 'Publish Changes!', 'success');
-    $state.reload();
     $modalInstance.dismiss('cancel');
   };
 
@@ -237,33 +270,63 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     clusterJSON.cluster[index] = updatedItem;
     clusterJSON = btoa(angular.toJson(clusterJSON, true));
 
-    eosService.updateCluster('cluster', $scope.space, clusterJSON).success(function (response) {
-      console.log(response[0].errormsg);
+    eosService.updateCluster('cluster', $scope.space, clusterJSON).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Updated!','Please publish Changes!', 'success');
+        $state.reload();
+      }
+    }).error(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
     });
-    SweetAlert.swal('Updated!', 'Publish Changes!', 'success');
-    $state.reload();
     $modalInstance.dismiss('cancel');
-  };
+  }
 
   $scope.addNewGroup = function () {
-
-    eosService.setGroup(updatedItem.name, updatedItem.state).success(function (response) {
-      console.log(response[0].errormsg);
+    eosService.setGroup(updatedItem.name, updatedItem.state).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Added!','The group has been defined!', 'success');
+        $state.reload();
+      }
+    }).error(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
     });
-
-    SweetAlert.swal('Added!','The group has been added!', 'success');
-    $state.reload();
     $modalInstance.dismiss('cancel');
   }
 
   $scope.updateGroup = function () {
-
-    eosService.setGroup(originalItem.name, updatedItem.state).success(function (response) {
-      console.log(response[0].errormsg);
+    eosService.setGroup(originalItem.name, updatedItem.state).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Updated!','The group has been updated!', 'success');
+        $state.reload();
+      }
+    }).error(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
     });
+    
+    $modalInstance.dismiss('cancel');
+  }
 
-    SweetAlert.swal('Updated!','The group has been updated!', 'success');
-    $state.reload();
+  $scope.addNewSpace = function () {
+    eosService.defineSpace(updatedItem.name, updatedItem.groupmod,updatedItem.groupsize).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Added!','The space has been defined!', 'success');
+        $state.reload();
+      }
+    }).error(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
+    });
     $modalInstance.dismiss('cancel');
   }
 
@@ -312,13 +375,19 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     originalItem.cluster.push(newClusterJSON);
     originalItem = btoa(angular.toJson(originalItem, true));
 
-    eosService.updateCluster('cluster', $scope.space, originalItem).success(function (response) {
-      console.log(response[0].errormsg);
+    eosService.updateCluster('cluster', $scope.space, originalItem).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Added!','Please Publish Changes!', 'success');
+        $state.reload();
+      }
+    }).error(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
     });
-
-    SweetAlert.swal('Added!', 'Publish Changes!', 'success');
-    $state.reload();
     $modalInstance.dismiss('cancel');
+
   };
 
   $scope.addNewDrive = function () {
@@ -344,18 +413,21 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
           console.log(response[0].errormsg);
         });
       });
-      // eosService.updateConfig($scope.space);  //Relying on user for activation
     }
 
     $scope.locationDefinition.location.push(newDriveJSON);
     var driveJSON = btoa(angular.toJson($scope.locationDefinition, true));
-    // console.log(newDriveJSON);
-    // console.log($scope.locationDefinition);
-    eosService.updateCluster('location', $scope.space, driveJSON).success(function (response) {
-      console.log(response[0].errormsg);
+    eosService.updateCluster('location', $scope.space, driveJSON).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Added!','Please Publish Changes!', 'success');
+        $state.reload();
+      }
+    }).error(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
     });
-    SweetAlert.swal('Added!', 'Publish Changes!', 'success');
-    $state.reload();
     $modalInstance.dismiss('cancel');
   };
 
