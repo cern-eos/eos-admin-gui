@@ -253,7 +253,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         SweetAlert.swal('Updated!','Please publish Changes!', 'success');
         $state.reload();
       }
-    }).error(function (error) {
+    }).catch(function (error) {
        SweetAlert.swal('Error!',error, 'error');
     });
     $modalInstance.dismiss('cancel');
@@ -278,7 +278,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         SweetAlert.swal('Updated!','Please publish Changes!', 'success');
         $state.reload();
       }
-    }).error(function (error) {
+    }).catch(function (error) {
        SweetAlert.swal('Error!',error, 'error');
     });
     $modalInstance.dismiss('cancel');
@@ -293,7 +293,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         SweetAlert.swal('Added!','The group has been defined!', 'success');
         $state.reload();
       }
-    }).error(function (error) {
+    }).catch(function (error) {
        SweetAlert.swal('Error!',error, 'error');
     });
     $modalInstance.dismiss('cancel');
@@ -308,7 +308,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         SweetAlert.swal('Updated!','The group has been updated!', 'success');
         $state.reload();
       }
-    }).error(function (error) {
+    }).catch(function (error) {
        SweetAlert.swal('Error!',error, 'error');
     });
     
@@ -324,7 +324,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         SweetAlert.swal('Added!','The space has been defined!', 'success');
         $state.reload();
       }
-    }).error(function (error) {
+    }).catch(function (error) {
        SweetAlert.swal('Error!',error, 'error');
     });
     $modalInstance.dismiss('cancel');
@@ -383,7 +383,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         SweetAlert.swal('Added!','Please Publish Changes!', 'success');
         $state.reload();
       }
-    }).error(function (error) {
+    }).catch(function (error) {
        SweetAlert.swal('Error!',error, 'error');
     });
     $modalInstance.dismiss('cancel');
@@ -425,7 +425,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         SweetAlert.swal('Added!','Please Publish Changes!', 'success');
         $state.reload();
       }
-    }).error(function (error) {
+    }).catch(function (error) {
        SweetAlert.swal('Error!',error, 'error');
     });
     $modalInstance.dismiss('cancel');
