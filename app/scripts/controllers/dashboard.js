@@ -1,26 +1,25 @@
 'use strict';
 function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, SweetAlert, eosService, COLORS) {
 
+    $scope.switchQuota = function (space,value) {
+      eosService.setSpaceQuota(space, $scope.checkState(value[space]));
+    };
 
-  $scope.switchQuota = function (value) {
-    eosService.setSpaceQuota('default', $scope.checkState(value));
-  };
+    $scope.switchBalancer = function (space,value) {
+      eosService.setSpaceConfig(space, 'space.balancer',$scope.checkState(value[space]));
+    };
 
-  $scope.switchBalancer = function (value) {
-    eosService.setSpaceConfig('default', 'space.balancer',$scope.checkState(value));
-  };
+    $scope.switchGeoBalancer = function (space,value) {
+      eosService.setSpaceConfig(space, 'space.geobalancer',$scope.checkState(value[space]));
+    };
 
-  $scope.switchGeoBalancer = function (value) {
-    eosService.setSpaceConfig('default', 'space.geobalancer',$scope.checkState(value));
-  };
+    $scope.switchGroupBalancer = function (space,value) {
+      eosService.setSpaceConfig(space, 'space.groupbalancer',$scope.checkState(value[space]));
+    };
 
-  $scope.switchGroupBalancer = function (value) {
-    eosService.setSpaceConfig('default', 'space.groupbalancer',$scope.checkState(value));
-  };
-
-  $scope.switchConverter = function (value) {
-    eosService.setSpaceConfig('default', 'space.converter',$scope.checkState(value));
-  };
+    $scope.switchConverter = function (space,value) {
+      eosService.setSpaceConfig(space, 'space.converter',$scope.checkState(value[space]));
+    };
 
   $scope.sort = function(keyname){
         $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -98,15 +97,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       $scope.clientInfo = whoResponse[whoResponse.length - 1];
     });
 
-  // eosService.getNsStat().success(function (response) {
-  //     $scope.nsStatData = response[0].ns.stat;
-  //     $scope.avgExecLatency = parseFloat($scope.nsStatData[18].total.exec.avg);
-  //     $scope.sigExecLatency = $scope.nsStatData[18].total.exec.sigma;
-  //   });
-  //
   eosService.whoami().success(function (response) {
-	console.log(response[0].whoami[0].gid);
-	console.log(response[0].whoami[0].uid);
         $scope.user = {
       	  fname: response[0].whoami[0].gid,
        	  lname: response[0].whoami[0].uid,
@@ -122,29 +113,54 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       $scope.sigExecLatency = $scope.nsStatData[19].total.exec.sigma;
     });
 
-    eosService.getSpaceStatus().success(function (response) {
-      $scope.spaceStatus = response[0];
-      $scope.balancer =  $scope.checkValue(response[0].space.status[0].balancer.status);
-      $scope.converter =  $scope.checkValue(response[0].space.status[0].converter.status);
-      $scope.geoBalancer =  $scope.checkValue(response[0].space.status[0].geobalancer.status);
-      $scope.groupBalancer =  $scope.checkValue(response[0].space.status[0].groupbalancer.status);
-      $scope.quota =  $scope.checkValue(response[0].space.status[0].quota);
-    });
-
     eosService.getSpaces().success(function (response) {
       $scope.spaces = response[0].space.ls;
-      $scope.readratemb = $scope.spaces[0].sum.stat.disk.readratemb;
-      $scope.writeratemb = $scope.spaces[0].sum.stat.disk.writeratemb;
-      $scope.inratemib = $scope.spaces[0].sum.stat.net.inratemib;
-      $scope.outratemib = $scope.spaces[0].sum.stat.net.outratemib;
-      $scope.ethratemib = $scope.spaces[0].sum.stat.net.ethratemib;
-      // For the Tachometers
-      $scope.percent2 = ($scope.spaces[0].sum.stat.statfs.usedbytes/$scope.spaces[0].sum.stat.statfs.capacity)*100;
-      $scope.percent3 = ($scope.inratemib/$scope.ethratemib)*100;
-      $scope.percent4 = ($scope.outratemib/$scope.ethratemib)*100;
-
+      $scope.readratemb = new Object();
+      $scope.writeratemb = new Object(); 
+      $scope.inratemib = new Object();
+      $scope.outratemib = new Object();
+      $scope.ethratemib = new Object();
+      $scope.percent2 = new Object();
+      $scope.percent3 = new Object();
+      $scope.percent4 = new Object();
+      var i = 0;
+      for (i in $scope.spaces) {
+        var space = $scope.spaces[i].name
+        $scope.readratemb[space] =$scope.spaces[i].sum.stat.disk.readratemb;
+        $scope.writeratemb[space] = $scope.spaces[i].sum.stat.disk.writeratemb;
+        $scope.inratemib[space] = $scope.spaces[i].sum.stat.net.inratemib;
+        $scope.outratemib[space] = $scope.spaces[i].sum.stat.net.outratemib;
+        $scope.ethratemib[space] = $scope.spaces[i].sum.stat.net.ethratemib;
+        // For the Tachometers
+        $scope.percent2[space] = ($scope.spaces[i].sum.stat.statfs.usedbytes/$scope.spaces[i].sum.stat.statfs.capacity)*100;
+        $scope.percent3[space] = ($scope.inratemib[space]/$scope.ethratemib[space])*100;
+        $scope.percent4[space] = ($scope.outratemib[space]/$scope.ethratemib[space])*100;
+      }
+      $scope.$broadcast('eosService:getSpacesSuccess');
     });
-  }
+    //populate space status
+    var i = 0;
+    $scope.$on('eosService:getSpacesSuccess', function() {
+      $scope.balancer = new Object();
+      $scope.converter = new Object();
+      $scope.geoBalancer = new Object();
+      $scope.groupBalancer = new Object();
+      $scope.quota = new Object();
+      var i = 0;
+      for (i in $scope.spaces) {
+        var space = $scope.spaces[i].name;
+        eosService.getSpaceStatus(space).success((function (space ) { return function (response) {
+          $scope.balancer[space] =  $scope.checkValue(response[0].space.status[0].balancer.status);
+          $scope.converter[space] =  $scope.checkValue(response[0].space.status[0].converter.status);
+          //$scope.geoBalancer[space] =  $scope.checkValue(response[0].space.status[0].geobalancer.status);
+          $scope.groupBalancer[space] =  $scope.checkValue(response[0].space.status[0].groupbalancer.status);
+          $scope.quota[space] =  $scope.checkValue(response[0].space.status[0].quota);
+        }
+       })(space));
+      }
+      $scope.$broadcast('eosService:getSpacesStatusSuccess');
+    });
+  } 
   callAtInterval();
   $interval(callAtInterval, 100000);
 
@@ -206,6 +222,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
     $scope.space = spaceName;
     $window.localStorage.setItem('space', spaceName);
     $scope.loadClusterInfo();
+    $state.reload();
   };
 
   $scope.submitConfig = function () {
@@ -310,7 +327,6 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
           }
 
           eosService.updateCluster('cluster', $scope.space, btoa(angular.toJson($scope.clusterDefinition, true))).then(function (data) {
-            console.log(data);
             if (data.data[0].retc != 0) {
               SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
             } else {
@@ -340,7 +356,6 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       function (isConfirm) {
         if (isConfirm) {
           eosService.removeGroup(group).then(function (data) {
-	    console.log(data);
             if (data.data[0].retc != 0) {
               SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
             } else {
@@ -371,7 +386,6 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       function (isConfirm) {
         if (isConfirm) {
           eosService.removeSpace(space).then(function (data) {
-            console.log(data);
             if (data.data[0].retc != 0) {
               SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
             } else {
@@ -401,7 +415,6 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       function (isConfirm) {
         if (isConfirm) {
           eosService.removeFileSystem(fs).then(function (data) {
-            console.log(data);
             if (data.data[0].retc != 0) {
               SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
             } else {
@@ -432,7 +445,6 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       function (isConfirm) {
         if (isConfirm) {
           eosService.removeNode(node).then(function (data) {
-            console.log(data);
             if (data.data[0].retc != 0) {
               SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
             } else {
@@ -466,7 +478,6 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
             if ($scope.locationDefinition.location[indexToDel].clustersAttachedTo.length === 0){
               $scope.locationDefinition.location.splice(indexToDel, 1);
               eosService.updateCluster('location', $scope.space, btoa(angular.toJson($scope.locationDefinition, true))).then(function (data) {
-                console.log(data);
                 if (data.data[0].retc != 0) {
                   SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
                 } else {

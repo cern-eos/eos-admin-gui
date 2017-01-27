@@ -47,16 +47,23 @@
     <div class="col-md-6">
       <div class="panel mb25">
         <div class="panel-heading border">
-          Default Space Status
+          {{space}} space status
         </div>
         <div class="panel-body">
-
+	 <div class="form-group">
+          <label class="col-sm-2 control-label"><h5>Select Space</h5></label>
+          <div class="col-sm-3 pull-right">
+            <select class="form-control " ng-model="space" ng-options="space.name as space.name for space in spaces | orderBy:'name'" ng-change="setSpaceName(space)" required>
+              <option style="display:none" value="">{{space}}</option>
+            </select>
+          </div>
+        </div>
           <div class="widget bg-white">
             <div class="widget-details widget-list">
 
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" ng-model="balancer" ng-change="switchBalancer(balancer)">
+                  <input type="checkbox" ng-model="balancer[space]" ng-change="switchBalancer(space,balancer)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -66,7 +73,7 @@
               
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" ng-model="converter" ng-change="switchConverter(converter)">
+                  <input type="checkbox" ng-model="converter[space]" ng-change="switchConverter(space,converter)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -75,7 +82,7 @@
               </a>
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" ng-model="geoBalancer" ng-change="switchGeoBalancer(geoBalancer)">
+                  <input type="checkbox" ng-model="geoBalancer[space]" ng-change="switchGeoBalancer(space,geoBalancer)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -84,7 +91,7 @@
               </a>
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" ng-model="groupBalancer" ng-change="switchGroupBalancer(groupBalancer)">
+                  <input type="checkbox" ng-model="groupBalancer[space]" ng-change="switchGroupBalancer(space,groupBalancer)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -93,7 +100,7 @@
               </a>
               <a href="javascript:;" class="widget-list-item">
                 <label class="switch switch-sm pull-right">
-                  <input type="checkbox" ng-model="quota" ng-change="switchQuota(quota)">
+                  <input type="checkbox" ng-model="quota[space]" ng-change="switchQuota(space,quota)">
                   <span> 
                     <i class="handle"></i>
                   </span>
@@ -114,7 +121,7 @@
     <div class="col-md-6 col-lg-3">
       <div class="panel bg-danger">
         <div class="panel-heading border">
-          Default Space - Group Status
+          Groups Status
         </div>
         <div class="panel-body text-center">
           <div class="piechart m25">
@@ -135,7 +142,7 @@
         </div>
         <div class="panel-body text-center">
           <div class="piechart m25">
-            <div class="servernodes" easypiechart options="options2" percent="percent2">
+            <div class="servernodes" easypiechart options="options2" percent="percent2[space]">
               <div>
                 <div class="percent h1"></div>
                 <small>Usedbytes / Capacity</small>
@@ -152,7 +159,7 @@
         </div>
         <div class="panel-body text-center">
           <div class="piechart m25">
-            <div class="dailyvisitors" easypiechart options="options3" percent="percent3">
+            <div class="dailyvisitors" easypiechart options="options3" percent="percent3[space]">
               <div>
                 <div class="percent h1"></div>
                 <small>Inratemib / Ethratemib</small>
@@ -169,7 +176,7 @@
         </div>
         <div class="panel-body text-center">
           <div class="piechart m25">
-            <div class="servernodes" easypiechart options="options4" percent="percent4">
+            <div class="servernodes" easypiechart options="options4" percent="percent4[space]">
               <div>
                 <div class="percent h1"></div>
                 <small>Outratemib / Ethratemib</small>
@@ -350,11 +357,11 @@
     <div class="col-md-4">
       <section class="widget bg-brown text-center">
         <div class="widget-details col-xs-6">
-          <h2 class="no-margin">{{(readratemb/1000).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
+          <h2 class="no-margin">{{(readratemb[space]/1000).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
           <small class="text-uppercase">Disk-Read</small>
         </div>
         <div class="widget-details col-xs-6">
-          <h2 class="no-margin">{{(writeratemb/1000).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
+          <h2 class="no-margin">{{(writeratemb[space]/1000).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
           <small class="text-uppercase">Disk-Write</small>
         </div>
       </section>
@@ -362,11 +369,11 @@
     <div class="col-md-4">
       <section class="widget bg-success text-center">
         <div class="widget-details col-xs-6">
-          <h2 class="no-margin">{{((inratemib*1024*1024)/(10|mathPow:9)).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
+          <h2 class="no-margin">{{((inratemib[space]*1024*1024)/(10|mathPow:9)).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
           <small class="text-uppercase">Net-In</small>
         </div>
         <div class="widget-details col-xs-6">
-          <h2 class="no-margin">{{((outratemib*1024*1024)/(10|mathPow:9)).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
+          <h2 class="no-margin">{{((outratemib[space]*1024*1024)/(10|mathPow:9)).toFixed(2)}} <small><font color="white">GB/s</font></small></h2>
           <small class="text-uppercase">Net-Out</small>
         </div>
       </section>

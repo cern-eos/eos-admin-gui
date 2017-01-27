@@ -325,7 +325,7 @@ function eosServiceAPI($http) {
       });
     };
 
-    eosAPI.getSpaceStatus = function() {
+    eosAPI.getSpaceStatus = function(space) {
       return $http({
         method: 'JSONP',
         url: url_admin,
@@ -336,7 +336,7 @@ function eosServiceAPI($http) {
         params: {
           'mgm.cmd': 'space',
           'mgm.subcmd': 'status',
-          'mgm.space': 'default',
+          'mgm.space': space,
           'eos.ruid': '0',
           'eos.rgid': '0',
           'mgm.outformat': 'm',
