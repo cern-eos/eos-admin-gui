@@ -87,7 +87,7 @@
               <td>{{fileSystem.stat.drain}}</td>
               <td>{{fileSystem.stat.active}}</td>
               <td  align="center">
-                <button class="btn btn-info  btn-xs" ng-click="openUpdateFSModal(group.name,group.cfg.status)">edit</button>
+                <button class="btn btn-info  btn-xs" ng-click="openUpdateFSModal(fileSystem.id,fileSystem.configstatus)">edit</button>
                 <button class="btn btn-danger  btn-xs" ng-click="delFS(fileSystem.id)">del</button>
             </td>
 
@@ -120,52 +120,46 @@
         <div class="form-group">
           <label class="col-sm-3 control-label">Hostname</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.hostname" placeholder="{{formData.hostname}}" >
+            <input type="text" class="form-control" ng-model="formData.hostname" placeholder="{{formData.hostname}}" ngRequired="true">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">Port </label>
           <div class="col-sm-9">
-             <input type="number" class="form-control" ng-model="formData.port" placeholder="{{formData.port}}" >
+             <input type="number" class="form-control" ng-model="formData.port" placeholder="{{formData.port}}" ngRequired="true">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">FS UUID</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.uuid" placeholder="{{formData.uuid}}" >
+            <input type="text" class="form-control" ng-model="formData.uuid" placeholder="{{formData.uuid}}" ngRequired="true">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">FS ID (numeric filesystem id 1..65535) </label>
           <div class="col-sm-9">
-             <input type="text" class="form-control" ng-model="formData.fsid" placeholder="{{formData.fsid}}" >
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">Node Queue </label>
-          <div class="col-sm-9">
-             <input type="text" class="form-control" ng-model="formData.node" placeholder="{{formData.node}}" >
+             <input type="number" min="1" max="65535" class="form-control" ng-model="formData.fsid" placeholder="{{formData.fsid}}" ngRequired="false">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">Mountpoint </label>
           <div class="col-sm-9">
-             <input type="text" class="form-control" ng-model="formData.mountpoint" placeholder="{{formData.mountpoint}}" >
+             <input type="text" class="form-control" ng-model="formData.mountpoint" placeholder="{{formData.mountpoint}}" ngRequired="true">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">Space </label>
           <div class="col-sm-9">
-             <input type="text" class="form-control" ng-model="formData.space" placeholder="{{formData.space}}" >
+             <input type="text" class="form-control" ng-model="formData.space" placeholder="{{formData.space}}" ngRequired="true">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-3 control-label">Config Status </label>
           <div class="col-sm-9">
-             <select ng-init="formData.status = 'off'" class="form-control" ng-model="formData.status" placeholder="{{formData.status}}" >
+             <select ng-init="formData.status = 'off'" class="form-control" ng-model="formData.status" placeholder="{{formData.status}}" ngRequired="true">
                  <option value="ro">ro</option>
                  <option value="off">off</option>
-                 <option value="rw">off</option>
+                 <option value="rw">rw</option>
             </select>
           </div>
         </div>
@@ -176,4 +170,50 @@
     </div>
   </form>
 </script>
+
+<script type="text/ng-template" id="fsConfigModal.html">
+
+ <div class="modal-header">
+    <h3 class="modal-title">Update Filesystem </h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="updateFilesystemParams()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Config-Status</label>
+          <div class="col-sm-9">
+	     <select class="form-control" ng-model="formData.value" placeholder="{{formData.value}}" ngRequired="true">
+                 <option value="rw">rw</option>
+                 <option value="wo">wo</option>
+                 <option value="ro">ro</option> 
+		 <option value="drain">drain</option>
+		 <option value="off">off</option>
+		 <option value="empty">empty</option>
+             </select>
+            <input type="hidden" class="form-control" ng-model="formData.key" ng-init="formData.key='configstatus'"/>
+            <input type="hidden" class="form-control" ng-model="formData.fsid" value="{{formData.fsid}}"/>
+            <input type="submit" class="btn btn-primary btn-sm" id="updateFilesystemParams" value="Update" />
+        </div>
+      </div>
+     </div>
+   </div>
+  </form>
+  <form class="form-horizontal bordered-group" ng-submit="updateFilesystemParams()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Scan Interval</label>
+          <div class="col-sm-9">
+            <input class="form-control" ng-model="formData.value" placeholder="{{formData.value}}" ngRequired="true">
+            <input type="hidden" class="form-control" ng-model="formData.key" ng-init="formData.key='scaninterval'"/>
+            <input type="hidden" class="form-control" ng-model="formData.fsid" value="{{formData.fsid}}"/>
+            <input type="submit" class="btn btn-primary btn-sm" id="updateFilesystemParams" value="Update" />
+        </div>
+      </div>
+     </div>
+   </div>
+  </form>
+
+</script>
+
 </div>

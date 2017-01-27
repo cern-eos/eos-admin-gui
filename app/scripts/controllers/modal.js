@@ -108,8 +108,8 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
   $scope.openDefineSpaceModal = function () {
     
      $scope.formData = {'name': '',
-                        'modegroup': 0,
-                        'modesize': 0,
+                        'groupsize': 0,
+                        'groupmod': 0,
                        };
    
     var modalInstance = $modal.open({
@@ -155,7 +155,29 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
       }
     });
   };
+  $scope.openUpdateFSModal = function (fsid,originalvalue) {
 
+    $scope.formData = {'fsid': fsid,
+                        'key': '',
+                        'value': originalvalue,
+                       };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'fsConfigModal.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return  null;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
 
  $scope.openNewClusterModal = function (size) {
 
@@ -359,7 +381,8 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
   }
   
   $scope.addNewFilesystem = function () {
-     eosService.addFileSystem(updatedItem.hostname,updatedItem.port,updatedItem.fsid, updatedItem.uuid, updatedItem.node,updatedItem.mountpoint, updatedItem.space, updatedItem.status).then(function (data) {
+     nodequeue= "/eos/"+updatedItem.hostname+":"+updatedItem.port+updatedItem.mountpoint
+     eosService.addFileSystem(updatedItem.fsid, updatedItem.uuid, nodequeue,updatedItem.mountpoint, updatedItem.space, updatedItem.status).then(function (data) {
       console.log(data);
       if (data.data[0].retc != 0) {
         SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
@@ -372,7 +395,24 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     });
     $modalInstance.dismiss('cancel');
   }
- 
+  
+  $scope.updateFilesystemParams = function () {
+    console.log(updatedItem.fsid)
+    console.log(updatedItem.key)
+    console.log(updatedItem.value)
+    eosService.configFileSystem(updatedItem.fsid, updatedItem.key, updatedItem.value).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Update!','The configuration has been udpated!', 'success');
+        $state.reload();
+      }
+    }).catch(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
+    });
+    $modalInstance.dismiss('cancel');
+  }
 
   $scope.addNewCluster = function () {
     var newClusterJSON = {};
