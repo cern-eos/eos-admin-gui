@@ -47,16 +47,16 @@
     <div class="col-md-6">
       <div class="panel mb25">
         <div class="panel-heading border">
-          {{space}} space status
+          <h4>{{space}} space status</h4>
         </div>
         <div class="panel-body">
 	 <div class="form-group">
-          <label class="col-sm-2 control-label"><h5>Select Space</h5></label>
-          <div class="col-sm-3 pull-right">
-            <select class="form-control " ng-model="space" ng-options="space.name as space.name for space in spaces | orderBy:'name'" ng-change="setSpaceName(space)" required>
-              <option style="display:none" value="">{{space}}</option>
-            </select>
-          </div>
+           <label class="control-label"><h5>Select Space</h5></label>
+           <div class="col-sm-3 pull-right">
+             <select class="form-control" ng-model="space" ng-options="space.name as space.name for space in spaces | orderBy:'name'" ng-change="setSpaceName(space,false)" required>
+               <option style="display:none" value="">{{space}}</option>
+             </select>
+           </div>
         </div>
           <div class="widget bg-white">
             <div class="widget-details widget-list">

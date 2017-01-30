@@ -218,10 +218,12 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
   }
   $scope.loadClusterInfo();
 
-  $scope.setSpaceName = function (spaceName) {
+  $scope.setSpaceName = function (spaceName,clustersRefresh) {
     $scope.space = spaceName;
     $window.localStorage.setItem('space', spaceName);
-    $scope.loadClusterInfo();
+    if (clustersRefresh) {
+      $scope.loadClusterInfo();
+    }
     $state.reload();
   };
 

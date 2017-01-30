@@ -16,7 +16,7 @@
           <div class="form-group">
             <label class="col-sm-4 control-label">Space Name</label>
             <div class="col-sm-5">
-              <select class="form-control" ng-model="spaceName" ng-options="space.name as space.name for space in spaces | orderBy:'name'" ng-change="setSpaceName(spaceName)" required>
+              <select class="form-control" ng-model="spaceName" ng-options="space.name as space.name for space in spaces | orderBy:'name'" ng-change="setSpaceName(spaceName,true)" required>
                 <option style="display:none" value="">Select</option>
               </select>
             </div>
