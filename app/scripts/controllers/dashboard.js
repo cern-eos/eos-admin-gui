@@ -430,6 +430,34 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
       });
    };
 
+   $scope.bootFS = function (fs) {
+    SweetAlert.swal({
+        title: 'Are you sure?',
+        text: '',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: COLORS.danger,
+        confirmButtonText: 'Yes, boot it!',
+        cancelButtonText: 'No!',
+        closeOnConfirm: false,
+        closeOnCancel: true
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          eosService.bootFileSystem(fs).then(function (data) {
+            if (data.data[0].retc != 0) {
+              SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+            } else {
+              swal('Booted!', 'The filesystem has been booted', 'success');
+              $state.reload();
+            }
+          }).catch(function (error) {
+             SweetAlert.swal('Error!',error, 'error');
+          });
+        }
+      });
+   };
+
   //Node
    
   $scope.delNode = function (node) {

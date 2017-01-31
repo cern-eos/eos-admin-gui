@@ -173,7 +173,24 @@ function eosServiceAPI($http) {
       });
     };
 
-
+   eosAPI.bootFileSystem =  function(fs) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'fs',
+          'mgm.subcmd': 'boot',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.fs.id': fs,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
 
     eosAPI.removeFileSystem =  function(fs) {
       return $http({
