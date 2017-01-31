@@ -155,6 +155,30 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
       }
     });
   };
+
+  $scope.openMoveFSModal = function (fsid, space) {
+     $scope.formData = {
+                        'fsid': fsid,
+                        'dstspace': space,
+                       };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'fsMoveModal.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return null;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
   $scope.openUpdateFSModal = function (fsid,originalvalue) {
 
     $scope.formData = {'fsid': fsid,
@@ -387,7 +411,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
       if (data.data[0].retc != 0) {
         SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
       } else {
-        SweetAlert.swal('Added!','The space has been defined!', 'success');
+        SweetAlert.swal('Added!','The Filesystem has been added!', 'success');
         $state.reload();
       }
     }).catch(function (error) {
@@ -396,6 +420,21 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     $modalInstance.dismiss('cancel');
   }
   
+  $scope.moveFilesystem = function () {
+     eosService.moveFileSystem(updatedItem.fsid,  updatedItem.dstspace).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Moved!','The filesystem has been moved!', 'success');
+        $state.reload();
+      }
+    }).catch(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
+    });
+    $modalInstance.dismiss('cancel');
+  }
+
   $scope.updateFilesystemParams = function () {
     console.log(updatedItem.fsid)
     console.log(updatedItem.key)

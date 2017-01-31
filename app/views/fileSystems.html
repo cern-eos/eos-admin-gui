@@ -88,6 +88,7 @@
               <td>{{fileSystem.stat.active}}</td>
               <td  align="center">
                 <button class="btn btn-info  btn-xs" ng-click="openUpdateFSModal(fileSystem.id,fileSystem.configstatus)">edit</button>
+                <button class="btn btn-info  btn-xs" ng-click="openMoveFSModal(fileSystem.id,fileSystem.schedgroup)">move</button>
                 <button class="btn btn-danger  btn-xs" ng-click="delFS(fileSystem.id)">del</button>
             </td>
 
@@ -171,6 +172,33 @@
   </form>
 </script>
 
+<script type="text/ng-template" id="fsMoveModal.html">
+
+ <div class="modal-header">
+    <h3 class="modal-title">Move Filesystem </h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="moveFilesystem()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+       <div class="form-group">
+          <label class="col-sm-3 control-label">FS ID</label>
+          <div class="col-sm-9">
+            <input class="form-control" ng-model="formData.fsid" placeholder="{{formData.fsid}}" disabled>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Destintation Space/ Scheduling Group</label>
+          <div class="col-sm-9">
+             <input class="form-control" ng-model="formData.dstspace" placeholder="{{formData.dstspace}}" ngRequired="true">
+        </div>
+     </div>
+   </div>
+   <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="moveFilesystem" value="Move" />
+    </div>
+  </form>
+</script>
+
 <script type="text/ng-template" id="fsConfigModal.html">
 
  <div class="modal-header">
@@ -198,7 +226,7 @@
      </div>
    </div>
   </form>
-  <form class="form-horizontal bordered-group" ng-submit="updateFilesystemParams()" role="form">
+  <!--form class="form-horizontal bordered-group" ng-submit="updateFilesystemParams()" role="form">
     <div class="modal-body">
       <div class="panel-body">
         <div class="form-group">
@@ -212,8 +240,10 @@
       </div>
      </div>
    </div>
-  </form>
+  </form-->
 
 </script>
+
+
 
 </div>

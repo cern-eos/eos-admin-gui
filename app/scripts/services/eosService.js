@@ -130,6 +130,27 @@ function eosServiceAPI($http) {
         }
       });
     };
+
+    eosAPI.moveFileSystem = function(fsid, space) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'fs',
+          'mgm.subcmd': 'mv',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.space': space,
+          'mgm.fs.id': fsid,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
    
     eosAPI.configFileSystem = function(fsid, key,value) {
       return $http({
