@@ -10,7 +10,7 @@
       <div class="panel-body">
        <div class="row mb25">
         <div class="pull-right" ng-controller="ModalDemoCtrl">
-        <button class="btn btn-sm btn-info btn-icon mr5" ng-click="openNewGroupModal()">
+        <button class="btn btn-sm btn-info btn-icon mr5" ng-click="openNewNodeModal()">
           <i class="fa fa-plus-circle"></i>
             <span>Add Node</span>
           </button>
@@ -75,7 +75,7 @@
               <td>{{node.heartbeatdelta}}</td>
               <td>{{node.nofs}}</td>
 	      <td  align="center">
-                <button class="btn btn-info  btn-xs" ng-click="openUpdateGroupModal(group.name,group.cfg.status)">edit</button>
+                <button class="btn btn-info  btn-xs" ng-click="openUpdateNodeModal(node.hostport)">edit</button>
                 <button class="btn btn-danger  btn-xs" ng-click="delNode(node.hostport)">del</button>
               </td>
             </tr>
@@ -96,5 +96,67 @@
     </div>
 
   </div>
+
+<script type="text/ng-template" id="newNodeModal.html">
+
+  <div class="modal-header">
+    <h3 class="modal-title">Define Node</h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="addNewNode()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Host Name</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.name" placeholder="{{formData.name}}" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Host Port</label>
+          <div class="col-sm-9">
+           <input type="number" min="0" class="form-control" ng-model="formData.port" placeholder="{{formData.port}}" >
+          </div>
+        </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="addNewNode" value="Add" />
+    </div>
+  </form>
+</script>
+
+<script type="text/ng-template" id="updateNodeModal.html">
+
+ <div class="modal-header">
+    <h3 class="modal-title">Update Node </h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="updateNodeParams()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Config Parameter</label>
+          <div class="col-sm-9">
+             <select class="form-control" ng-model="formData.key" placeholder="{{formData.key}}" ngRequired="true">
+                 <option value="gw.rate">Gateway Rate (MB/s)</option>
+                 <option value="gw.ntx">Gateway Node Number of Transactions</option>
+                 <option value="error.simulation">Type of error simulation</option> 
+                 <option value="publish.interval">Publish Interval Rate (sec)</option>
+                 <option value="debug.level">Debug Level ( default=notice)</option>
+             </select>
+            <input type="hidden" class="form-control" ng-model="formData.name" value="{{formData.name}}"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">value</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.value" placeholder="{{formData.value}}">
+          </div>
+        </div>
+     </div>
+   </div>
+   <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="updateNodeParams" value="Update" />
+    </div>
+  </form>
+
+</script>
 
 </div>

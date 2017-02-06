@@ -227,6 +227,53 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
     });
   };
 
+
+  $scope.openNewNodeModal = function () {
+    $scope.formData = {'name': '',
+                        'port': 1095,
+                       };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'newNodeModal.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return null;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
+  $scope.openUpdateNodeModal = function (name) {
+    $scope.formData = {'name': name,
+                      'key': '',
+                      'value':'',
+                     };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'updateNodeModal.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return $scope.originalData;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
+
  $scope.openNewClusterModal = function (size) {
 
     eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
@@ -491,6 +538,38 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     });
     $modalInstance.dismiss('cancel');
   }
+
+  $scope.addNewNode = function () {
+     node= updatedItem.name+":"+updatedItem.port
+     eosService.setNodeStatus(node, 'on').then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Added!','The Node has been added!', 'success');
+        $state.reload();
+      }
+    }).catch(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
+    });
+    $modalInstance.dismiss('cancel');
+  }
+
+  $scope.updateNodeParams = function () {
+    eosService.configNode(updatedItem.name, updatedItem.key, updatedItem.value).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Update!','The configuration has been udpated!', 'success');
+        $state.reload();
+      }
+    }).catch(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
+    });
+    $modalInstance.dismiss('cancel');
+  }
+
 
   $scope.addNewCluster = function () {
     var newClusterJSON = {};

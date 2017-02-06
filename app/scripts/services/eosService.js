@@ -234,7 +234,51 @@ function eosServiceAPI($http) {
       });
     };
 
-     eosAPI.removeNode =  function(node) {
+    eosAPI.setNodeStatus = function(name, state) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'node',
+          'mgm.subcmd': 'set',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'json',
+          'mgm.node': name,
+          'mgm.node.state': state,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+   
+    eosAPI.configNode = function(name, key,value) {
+      return $http({
+        method: 'JSONP',
+        url: url_admin,
+        headers: {
+           'remote-user': 'root'
+        },
+        withCredentials: true,
+        params: {
+          'mgm.cmd': 'node',
+          'mgm.subcmd': 'config',
+          'eos.ruid': '0',
+          'eos.rgid': '0',
+          'mgm.outformat': 'json',
+          'mgm.node.name': name,
+          'mgm.node.key' : key,
+          'mgm.node.value': value,
+          'callback':'JSON_CALLBACK'
+        }
+      });
+    };
+
+
+    eosAPI.removeNode =  function(node) {
       return $http({
         method: 'JSONP',
         url: url_admin,
