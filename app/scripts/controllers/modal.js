@@ -128,6 +128,30 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
       }
     });
   };
+
+  $scope.openUpdateSpaceModal = function (name) {
+    $scope.formData = {'name': name,
+                      'key': '',
+                      'value':'',
+                     };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'updateSpaceModal.html',
+      controller: 'ModalInstanceCtrl',
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return $scope.originalData;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
   $scope.openNewFSModal = function () {
      $scope.formData = {'hostname': '',
                         'port': 1095,
@@ -396,6 +420,21 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
         SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
       } else {
         SweetAlert.swal('Added!','The space has been defined!', 'success');
+        $state.reload();
+      }
+    }).catch(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
+    });
+    $modalInstance.dismiss('cancel');
+  }
+
+  $scope.updateSpaceParams = function () {
+    eosService.setSpaceConfig(updatedItem.name, updatedItem.key, updatedItem.value).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Update!','The configuration has been udpated!', 'success');
         $state.reload();
       }
     }).catch(function (error) {

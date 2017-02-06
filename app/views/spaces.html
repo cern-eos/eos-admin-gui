@@ -82,7 +82,7 @@
               <td>{{space.cfg.nominalsize}}</td>
               <td>{{space.cfg.balancer.threshold}}</td>
 	      <td  align="center">
-                <button class="btn btn-info  btn-xs" ng-click="openUpdateSpaceModal(group.name,group.cfg.status)">edit</button>
+                <button class="btn btn-info  btn-xs" ng-click="openUpdateSpaceModal(space.name)">edit</button>
                 <button class="btn btn-danger  btn-xs" ng-click="delSpace(space.name)">del</button>
               </td>
 
@@ -137,4 +137,51 @@
   </form>
 </script>
 
+<script type="text/ng-template" id="updateSpaceModal.html">
+
+ <div class="modal-header">
+    <h3 class="modal-title">Update Filesystem </h3>
+  </div>
+  <form class="form-horizontal bordered-group" ng-submit="updateSpaceParams()" role="form">
+    <div class="modal-body">
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Config Parameter</label>
+          <div class="col-sm-9">
+             <select class="form-control" ng-model="formData.key" placeholder="{{formData.key}}" ngRequired="true">
+                 <option value="space.nominalsize">Nominal Size</option>
+                 <option value="space.balancer">Balancer (on/off)</option>
+                 <option value="space.balancer.threshold">Balancer Threshold (percent)</option> 
+                 <option value="space.balancer.node.rate">Balancer Node Rate (MB/s)</option>
+                 <option value="space.balancer.node.ntx">Balancer Node Number of Transactions</option>
+                 <option value="space.converter">Converter (on/off)</option>
+		 <option value="space.converter.ntx">Converter Number of Transactions</option>
+		 <option value="space.drainer.node.rate">Drainer Node Rate (MB/s)</option>
+                 <option value="space.drainer.node.ntx">Drainer Node Number of Transactions</option>
+		 <option value="space.lru">LRU (on/off)</option>
+                 <option value="space.lru.interval">LRU Interval (sec)</option>
+                 <option value="space.headroom">Headroom (size)</option>
+		 <option value="space.scaninterval">Scan Interval (sec)</option>
+		 <option value="space.drainperiod">Drain Period (sec)</option>
+	  	 <option value="space.graceperiod">Grace Period (sec)</option>
+                 <option value="space.autorepair">Auto Repair (on/off)</option>
+                 
+             </select>
+            <input type="hidden" class="form-control" ng-model="formData.name" value="{{formData.name}}"/>
+          </div>
+        </div>
+	<div class="form-group">
+          <label class="col-sm-3 control-label">value</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="formData.value" placeholder="{{formData.value}}">
+          </div>
+        </div>
+     </div>
+   </div>
+   <div class="modal-footer">
+      <input type="submit" class="btn btn-primary btn-sm" id="updateSpaceParams" value="Update" />
+    </div>
+  </form>
+
+</script>
 </div>
