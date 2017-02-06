@@ -2,12 +2,14 @@
 
 function eosServiceAPI($http) {
 
-  var eosAPI = {};
-    //var url_admin = 'http://p05614910a92540.cern.ch:8000/proc/admin/';
-    //var url_user = 'http://p05614910a92540.cern.ch:8000/proc/user/';
-    var url_admin = 'https://p05614910a92540.cern.ch/proc/admin/';
-    var url_user = 'https://p05614910a92540.cern.ch/proc/user/';
+    var eosAPI = {};
+
+    var injector = angular.element(document).injector(); // assuming `ng-app` is on the document
+    var config = injector.get('EOS_MGM_REST_CONFIG');
     
+    var url_admin = config.baseUrl+":"+config.port+'/proc/admin/';
+    var url_user = config.baseUrl+":"+config.port+'/proc/user/';
+
     eosAPI.whoami = function() {
       return $http({
         method: 'JSONP',

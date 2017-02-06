@@ -32,6 +32,9 @@ angular
     border: '#e4e4e4',
     bodyBg: '#e0e8f2',
     textColor: '#6B6B6B',
+  }).constant('EOS_MGM_REST_CONFIG', {
+    baseUrl: 'https://p05614910a92540.cern.ch',
+    port: '443',
   })
   .filter('mathPow', function(){
     return function(base, exponent){
