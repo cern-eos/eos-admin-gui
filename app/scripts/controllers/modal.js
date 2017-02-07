@@ -203,11 +203,12 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
     });
   };
 
-  $scope.openUpdateFSModal = function (fsid,originalvalue) {
+  $scope.openUpdateFSModal = function (fsid,configstatus) {
 
     $scope.formData = {'fsid': fsid,
                         'key': '',
-                        'value': originalvalue,
+                        'value':'',
+                        'configstatusvalue':configstatus,
                        };
 
     var modalInstance = $modal.open({
@@ -538,6 +539,22 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     });
     $modalInstance.dismiss('cancel');
   }
+
+  $scope.updateFilesystemStatusParam = function () {
+    eosService.configFileSystem(updatedItem.fsid, 'configstatus', updatedItem.configstatusvalue).then(function (data) {
+      console.log(data);
+      if (data.data[0].retc != 0) {
+        SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
+      } else {
+        SweetAlert.swal('Update!','The configuration has been udpated!', 'success');
+        $state.reload();
+      }
+    }).catch(function (error) {
+       SweetAlert.swal('Error!',error, 'error');
+    });
+    $modalInstance.dismiss('cancel');
+  }
+
 
   $scope.addNewNode = function () {
      node= updatedItem.name+":"+updatedItem.port
