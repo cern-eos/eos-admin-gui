@@ -35,6 +35,7 @@ angular
   }).constant('EOS_MGM_REST_CONFIG', {
     baseUrl: 'https://p05614910a92540.cern.ch',
     port: '443',
+    pollingInterval: '100000',
   })
   .filter('mathPow', function(){
     return function(base, exponent){

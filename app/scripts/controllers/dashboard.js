@@ -1,32 +1,36 @@
 'use strict';
 function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, SweetAlert, eosService, COLORS) {
 
-    $scope.switchQuota = function (space,value) {
-      eosService.setSpaceQuota(space, $scope.checkState(value[space]));
-    };
+   var injector = angular.element(document).injector(); // assuming `ng-app` is on the document
+   var config = injector.get('EOS_MGM_REST_CONFIG');
 
-    $scope.switchBalancer = function (space,value) {
-      eosService.setSpaceConfig(space, 'space.balancer',$scope.checkState(value[space]));
-    };
 
-    $scope.switchGeoBalancer = function (space,value) {
-      eosService.setSpaceConfig(space, 'space.geobalancer',$scope.checkState(value[space]));
-    };
+   $scope.switchQuota = function (space,value) {
+     eosService.setSpaceQuota(space, $scope.checkState(value[space]));
+   };
 
-    $scope.switchGroupBalancer = function (space,value) {
-      eosService.setSpaceConfig(space, 'space.groupbalancer',$scope.checkState(value[space]));
-    };
+   $scope.switchBalancer = function (space,value) {
+     eosService.setSpaceConfig(space, 'space.balancer',$scope.checkState(value[space]));
+   };
 
-    $scope.switchConverter = function (space,value) {
-      eosService.setSpaceConfig(space, 'space.converter',$scope.checkState(value[space]));
-    };
+   $scope.switchGeoBalancer = function (space,value) {
+     eosService.setSpaceConfig(space, 'space.geobalancer',$scope.checkState(value[space]));
+   };
 
-  $scope.sort = function(keyname){
+   $scope.switchGroupBalancer = function (space,value) {
+     eosService.setSpaceConfig(space, 'space.groupbalancer',$scope.checkState(value[space]));
+   };
+
+   $scope.switchConverter = function (space,value) {
+     eosService.setSpaceConfig(space, 'space.converter',$scope.checkState(value[space]));
+   };
+
+   $scope.sort = function(keyname){
         $scope.sortKey = keyname;   //set the sortKey to the param passed
         $scope.reverse = !$scope.reverse; //if true make it false and vice versa
     };
 
-  $scope.checkValue = function (state) {
+   $scope.checkValue = function (state) {
     if (state === 'on') {
       return true;
     }
@@ -162,7 +166,7 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
     });
   } 
   callAtInterval();
-  $interval(callAtInterval, 100000);
+  $interval(callAtInterval, config.pollingInterval);
 
   //Kinetic Cluster Info
 
