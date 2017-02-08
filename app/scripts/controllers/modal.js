@@ -313,6 +313,41 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
     });
   };
 
+ $scope.openClusterUpdateModal = function (size, cluster) {
+
+    eosService.getClusterInfo('location',$scope.space).success(function (response) {
+      var value = response[0].space['node-get'][0]['*:'];
+      $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
+    });
+
+    //$scope.modalInfo = $scope.locationDefinition.location.filter(function(item) { return item.wwn === driveName; });
+    //$scope.formData = {'inet4': [$scope.modalInfo[0].inet4[0], $scope.modalInfo[0].inet4[1]],
+    //                     'wwn': $scope.modalInfo[0].wwn,
+    //                     'port': $scope.modalInfo[0].port,
+    //                     'clustersAttachedTo': $scope.modalInfo[0].clustersAttachedTo,
+    //                     'securityKey': ''
+    //                    };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'clusterUpdateModal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        updatedItem: function () {
+          return $scope.formData;
+        },
+        originalItem: function () {
+          return $scope.locationDefinition;
+        },
+        space: function () {
+          return $scope.space;
+        }
+      }
+    });
+  };
+
+
+
   $scope.openNewDriveModal = function (size) {
 
     $scope.formData = {'eth0': '',
