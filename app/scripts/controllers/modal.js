@@ -327,10 +327,11 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
       $scope.formData = {'clusterID': cluster,
                          'numData': $scope.modalInfo[0].numData,
                          'numParity': $scope.modalInfo[0].numParity,
-                         'chuckSize': $scope.modalInfo[0].chuckSizeKB,
+                         'chunkSizeKB': $scope.modalInfo[0].chunkSizeKB,
                          'timeout': $scope.modalInfo[0].timeout,
                          'minReconnectInterval': $scope.modalInfo[0].minReconnectInterval,
-                         'drives':  $scope.modalInfo[0].drives,
+                         'originalDrives':  $scope.modalInfo[0].drives,
+                         'drives': [],
                          'automaticSelection': false,
                          'sharing': false,
                          'numShare': $scope.modalInfo[0].numShare,
@@ -356,7 +357,9 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
    });
   };
 
-
+  $scope.updateOriginalDrives = function () {
+    alert("puppa")
+  }
 
   $scope.openNewDriveModal = function (size) {
 
@@ -441,7 +444,7 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
       if (data.data[0].retc != 0) {
         SweetAlert.swal('Error!',data.data[0].errormsg, 'error');
       } else {
-        SweetAlert.swal('Updated!','Please publish Changes!', 'success');
+	SweetAlert.swal('Updated!','Please publish Changes!', 'success');
         $state.reload();
       }
     }).catch(function (error) {
@@ -455,9 +458,9 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
     var index = clusterJSON.cluster.map(function(e) { return e.clusterID; }).indexOf(updatedItem.clusterID);
     updatedItem.timeout = parseInt(updatedItem.timeout);
     updatedItem.minReconnectInterval = parseInt(updatedItem.minReconnectInterval);
-
+    updatedItem.drives = updatedItem.originalDrives;
     $scope.formData = clusterJSON.cluster[index];
-
+    console.log(updatedItem);
     clusterJSON.cluster[index] = updatedItem;
     clusterJSON = btoa(angular.toJson(clusterJSON, true));
 

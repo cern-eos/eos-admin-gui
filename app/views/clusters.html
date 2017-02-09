@@ -278,9 +278,9 @@
           <div class="row">
             <label class="col-sm-2 control-label">Attached Drives</label>
             <div class="col-sm-10">
-              <select multiple class="form-control" ng-model="formData.drives" >
-                <option value="{{drive.wwn}}" ng-repeat="drive in modalInfo[0].drives">
-                    {{drive.wwn}}
+              <select multiple class="form-control" ng-model="formData.drives">
+                <option value="{{drive}}" ng-repeat="drive in formData.originalDrives">
+                    {{drive}}
                 </option>
               </select>
             </div>
@@ -289,7 +289,7 @@
           <div class="row">
             <label class="col-sm-2 control-label">Available Drives</label>
             <div class="col-sm-10">
-              <select multiple class="form-control" ng-model="formData.drives" ng-required="!(formData.automaticSelection)">
+              <select multiple class="form-control" ng-model="formData.originalDrives" ng-required="!(formData.automaticSelection)">
                 <option value="{{drive.wwn}}" ng-repeat="drive in locationDefinition.location | orderBy:'clustersAttachedTo' track by drive.wwn">
                     {{drive.wwn}} | {{drive.inet4[0]}} | {{drive.inet4[1]}} | {{drive.port}} | {{drive.clustersAttachedTo.length}}
                 </option>
@@ -515,7 +515,7 @@
         <div class="form-group">
           <label class="col-sm-3 control-label">Security Key</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="formData.securityKey" placeholder="Only enter if secuirty key has to be updated.">
+            <input type="text" class="form-control" ng-model="formData.securityKey" placeholder="Only enter if security key has to be updated.">
           </div>
         </div>     
       </div>
