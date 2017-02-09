@@ -318,12 +318,13 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
     eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
       var value = response[0].space['node-get'][0]['*:'];
       $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
-      console.log($scope.locationDefinition)
+      $scope.$broadcast('eosService:getClusterInfo');
+    });
+    $scope.$on('eosService:getClusterInfo', function() {
       $scope.modalInfo = $scope.locationDefinition.cluster.filter(function(item) { return item.clusterID === cluster; });
       console.log($scope.modalInfo)
-    });
 
-    $scope.formData = {'clusterID': cluster,
+      $scope.formData = {'clusterID': cluster,
                          'numData': $scope.modalInfo[0].numData,
                          'numParity': $scope.modalInfo[0].numParity,
                          'chuckSize': $scope.modalInfo[0].chuckSizeKB,
@@ -335,7 +336,7 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
                          'numShare': $scope.modalInfo[0].numShare,
                          'numDrives': $scope.modalInfo[0].numDrives,
                         };
-
+   
     var modalInstance = $modal.open({
       templateUrl: 'clusterUpdateModal.html',
       controller: 'ModalInstanceCtrl',
@@ -352,6 +353,7 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
         }
       }
     });
+   });
   };
 
 
