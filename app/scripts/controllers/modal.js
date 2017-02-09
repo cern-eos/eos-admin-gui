@@ -315,18 +315,26 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
 
  $scope.openClusterUpdateModal = function (size, cluster) {
 
-    eosService.getClusterInfo('location',$scope.space).success(function (response) {
+    eosService.getClusterInfo('cluster',$scope.space).success(function (response) {
       var value = response[0].space['node-get'][0]['*:'];
       $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
+      console.log($scope.locationDefinition)
+      $scope.modalInfo = $scope.locationDefinition.cluster.filter(function(item) { return item.clusterID === cluster; });
+      console.log($scope.modalInfo)
     });
 
-    //$scope.modalInfo = $scope.locationDefinition.location.filter(function(item) { return item.wwn === driveName; });
-    //$scope.formData = {'inet4': [$scope.modalInfo[0].inet4[0], $scope.modalInfo[0].inet4[1]],
-    //                     'wwn': $scope.modalInfo[0].wwn,
-    //                     'port': $scope.modalInfo[0].port,
-    //                     'clustersAttachedTo': $scope.modalInfo[0].clustersAttachedTo,
-    //                     'securityKey': ''
-    //                    };
+    $scope.formData = {'clusterID': cluster,
+                         'numData': $scope.modalInfo[0].numData,
+                         'numParity': $scope.modalInfo[0].numParity,
+                         'chuckSize': $scope.modalInfo[0].chuckSizeKB,
+                         'timeout': $scope.modalInfo[0].timeout,
+                         'minReconnectInterval': $scope.modalInfo[0].minReconnectInterval,
+                         'drives':  $scope.modalInfo[0].drives,
+                         'automaticSelection': false,
+                         'sharing': false,
+                         'numShare': $scope.modalInfo[0].numShare,
+                         'numDrives': $scope.modalInfo[0].numDrives,
+                        };
 
     var modalInstance = $modal.open({
       templateUrl: 'clusterUpdateModal.html',
@@ -385,9 +393,9 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
   $scope.formData = updatedItem;
   $scope.space = space;
   eosService.getClusterInfo('location',$scope.space).success(function (response) {
-      var value = response[0].space['node-get'][0]['*:'];
+     var value = response[0].space['node-get'][0]['*:'];
       $scope.locationDefinition = JSON.parse(atob(value.substring(value.indexOf(':') + 1)));
-    });
+   });
 
   $scope.setSecurity = function () {
     var securityJSON = JSON.parse(updatedItem.securityJSON);
@@ -558,9 +566,6 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
   }
 
   $scope.updateFilesystemParams = function () {
-    console.log(updatedItem.fsid)
-    console.log(updatedItem.key)
-    console.log(updatedItem.value)
     eosService.configFileSystem(updatedItem.fsid, updatedItem.key, updatedItem.value).then(function (data) {
       console.log(data);
       if (data.data[0].retc != 0) {

@@ -276,9 +276,20 @@
         <div class="form-group">
 
           <div class="row">
-            <label class="col-sm-2 control-label">Drives</label>
+            <label class="col-sm-2 control-label">Attached Drives</label>
             <div class="col-sm-10">
               <select multiple class="form-control" ng-model="formData.drives" >
+                <option value="{{drive.wwn}}" ng-repeat="drive in modalInfo[0].drives">
+                    {{drive.wwn}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <label class="col-sm-2 control-label">Available Drives</label>
+            <div class="col-sm-10">
+              <select multiple class="form-control" ng-model="formData.drives" ng-required="!(formData.automaticSelection)">
                 <option value="{{drive.wwn}}" ng-repeat="drive in locationDefinition.location | orderBy:'clustersAttachedTo' track by drive.wwn">
                     {{drive.wwn}} | {{drive.inet4[0]}} | {{drive.inet4[1]}} | {{drive.port}} | {{drive.clustersAttachedTo.length}}
                 </option>
@@ -286,16 +297,16 @@
             </div>
           </div>
           <br>
+          
           <div class="row">
 
             <label class="col-sm-2 control-label"></label>
-
             <div class="col-sm-5">
               <div class="input-group mb15">
                 <span class="input-group-addon">
                     <input type="checkbox" ng-model="formData.automaticSelection">
                 </span>
-                <input type="text" ng-model="formData.numDrives" placeholder="Choose drives automatically" class="form-control">
+                <input type="number" min="0" ng-model="formData.numDrives" placeholder="Number of drives to choose automatically" class="form-control">
               </div>
             </div>
 
@@ -304,7 +315,7 @@
                 <span class="input-group-addon">
                     <input type="checkbox" ng-model="formData.sharing">
                 </span>
-                <input type="text" ng-model="formData.numShare" placeholder="Allow sharing of drives among these many clusters" class="form-control">
+                <input type="number" min="0" ng-model="formData.numShare" placeholder="Number of clusters to share the drives with" class="form-control">
               </div>
             </div>
 
@@ -337,31 +348,31 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">Data</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" ng-model="formData.numData" placeholder="numData">
+            <input type="number" min="1" class="form-control" ng-model="formData.numData" placeholder="numData">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-2 control-label">Parity</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" ng-model="formData.numParity" placeholder="numParity">
+            <input type="number" min="1" class="form-control" ng-model="formData.numParity" placeholder="numParity">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-2 control-label">Chunk Size</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" ng-model="formData.chunkSizeKB" placeholder="in KB">
+            <input type="number" min="4" class="form-control" ng-model="formData.chunkSizeKB" placeholder="in KB">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-2 control-label">Timeout</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" ng-model="formData.timeout" placeholder="in seconds">
+            <input type="number" min="1" class="form-control" ng-model="formData.timeout" placeholder="in seconds">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-2 control-label">Reconnect Interval</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" ng-model="formData.minReconnectInterval" placeholder="in seconds">
+            <input type="number" min="1" class="form-control" ng-model="formData.minReconnectInterval" placeholder="in seconds">
           </div>
         </div>
         <div class="form-group">
@@ -384,18 +395,18 @@
             <div class="col-sm-5">
               <div class="input-group mb15">
                 <span class="input-group-addon">
-                    <input type="checkbox" ng-model="formData.automaticSelection" ng-required="!(formData.drives)">
+                    <input type="checkbox" alt="Chooe Drives automatically" ng-model="formData.automaticSelection" ng-required="!(formData.drives)">
                 </span>
-                <input type="text" ng-model="formData.numDrives" ng-required="(formData.automaticSelection)" placeholder="Choose drives automatically" class="form-control">
+                <input type="number" min="1" ng-model="formData.numDrives" ng-required="(formData.automaticSelection)" placeholder="Number of drives to choose automatically" class="form-control">
               </div>
             </div>
 
             <div class="col-sm-5">
               <div class="input-group mb15">
                 <span class="input-group-addon">
-                    <input type="checkbox" ng-model="formData.sharing">
+                    <input type="checkbox" title="Share drives with other Clusters" alt="Share drives with other Clusters" ng-model="formData.sharing">
                 </span>
-                <input type="text" ng-model="formData.numShare" ng-required="(formData.sharing)" placeholder="Allow sharing of drives among these many clusters" class="form-control">
+                <input type="number" min="1" ng-model="formData.numShare" ng-required="(formData.sharing)" placeholder="Number of clusters to share the drives with" class="form-control">
               </div>
             </div>
 
