@@ -337,7 +337,7 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
                          'numShare': $scope.modalInfo[0].numShare,
                          'numDrives': $scope.modalInfo[0].numDrives,
                         };
-   
+    });  
     var modalInstance = $modal.open({
       templateUrl: 'clusterUpdateModal.html',
       controller: 'ModalInstanceCtrl',
@@ -354,12 +354,7 @@ function ModalDemoCtrl($scope, $state, $modal, $log, eosService) {
         }
       }
     });
-   });
-  };
-
-  $scope.updateOriginalDrives = function () {
-    alert("puppa")
-  }
+   };
 
   $scope.openNewDriveModal = function (size) {
 
@@ -471,6 +466,8 @@ function ModalInstanceCtrl($scope, $state, $modalInstance, updatedItem, original
       } else {
         SweetAlert.swal('Updated!','Please publish Changes!', 'success');
         $state.reload();
+        //var args = {}
+        //$scope.$emit('updateConfig',args);
       }
     }).catch(function (error) {
        SweetAlert.swal('Error!',error, 'error');

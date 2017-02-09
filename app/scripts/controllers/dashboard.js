@@ -253,6 +253,12 @@ function dashboardCtrl($scope, $state, $filter, $http, $window, $interval, Sweet
     $state.reload();
   };
 
+  $scope.$on('updateConfig', function(event,args) {
+  
+    $scope.activateChangedConfig();
+
+   });
+
   //Dashboard Tachnometer Options 
   $scope.options1 = {
     size: 180,
