@@ -12,3 +12,13 @@ Once you have all tools and dependencies installed you can use these commands fo
 * grunt or grunt build - build an optimized, production-ready version of your app.
 
 In your browser, go to http://localhost:9001/#/
+
+##Configuration
+
+The MGM REST API confifguration is available in the app.js file 
+
+https://github.com/cern-eos/eos-admin-gui/blob/develop/app/scripts/app.js#L35
+
+* baseUrl
+* port
+* pollingInterval ( in ms)
