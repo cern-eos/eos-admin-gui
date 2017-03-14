@@ -15,10 +15,21 @@ In your browser, go to http://localhost:9001/#/
 
 ##Configuration
 
-The MGM REST API confifguration is available in the app.js file 
+The MGM REST API configuration is available in the app.js file 
 
 https://github.com/cern-eos/eos-admin-gui/blob/develop/app/scripts/app.js#L35
 
 * baseUrl
 * port
 * pollingInterval ( in ms)
+
+The app should connect to an  eos-nginx gateway ( via https and X509 Authentication) which can be deployed on the same MGM node or on a separate machine
+
+The following configuration then is needed:
+
+* add https gateway configuration on the MGM: eos -b vid enable https
+* map the DNs whom should have access as admin as root in the /etc/grid-security/grid-mapfile  on the eos-nginx node, i.e.
+   * "/DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=amanzi/CN=683749/CN=Andrea Manzi" root
+
+
+
